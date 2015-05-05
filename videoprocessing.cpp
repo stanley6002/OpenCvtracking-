@@ -7,6 +7,8 @@
 //
 
 #include "videoprocessing.h"
+using namespace std;
+using namespace cv;
 
 IplImage* VideoProcessing :: GrayImg(IplImage* image)
 {
@@ -52,7 +54,7 @@ VideoProcessing:: VideoProcessing (int Width , int Height)
      //Image3=  cvCreateImage(cv::Size(Width, Height), IPL_DEPTH_8U, 3);
      //frame=  cvCreateImage(cv::Size(ImgWidth, ImgHeight), IPL_DEPTH_8U, 3);;
      
-     captureNextFrame =FALSE;
+     captureNextFrame = FALSE;
      captureThirdFrame= FALSE;
      
 }
@@ -65,18 +67,27 @@ IplImage* VideoProcessing :: CaptureInitialFrame(CvCapture* camCapture)
 
     if (count_frame)
     {   
-       
+        //Mat MatGray1, MatGray2;
+
         frame = cvQueryFrame(camCapture);
         
         Image2= cvCloneImage(frame);
         
         cvCvtColor(Image1,imgGray1, CV_BGR2GRAY);  
         cvCvtColor(Image2,imgGray2, CV_BGR2GRAY);
-       
-        goodFeaturesToTrack(imgGray1, cornerfirst,  400, 0.001, 16);
-        goodFeaturesToTrack(imgGray2, cornersecond, 400, 0.001, 16);
+        vector<cv::Point2f> corners;
+
+        Mat MatGray1 (imgGray1 );
+        Mat MatGray2 (imgGray2 );
+
+
+        goodFeaturesToTrack(MatGray1, cornerfirst,  400, 0.001, 16);
+        goodFeaturesToTrack(MatGray2, cornersecond, 400, 0.001, 16);
+
+        MatGray1.release();
+        MatGray2.release();
         
-        cout<< cornerfirst.size()<<" "<<cornersecond.size()<<endl;
+        //cout<< cornerfirst.size()<<" "<<cornersecond.size()<<endl;
     
     if ((int) cornerfirst.size() >= cornersecond.size())
     { 

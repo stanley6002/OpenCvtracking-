@@ -17,7 +17,7 @@
 #include <iostream>
 #include "opencv2/core/core.hpp"
 
-
+#include <vector>
 
 
 #define IMAGE_WIDTH  320

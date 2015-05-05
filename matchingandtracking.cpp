@@ -8,14 +8,18 @@
 
 #include "matchingandtracking.h"
 
+
+using namespace std;
+using namespace cv;
+
  FAST_ :: FAST_(int level, IplImage* imgGrayA, IplImage* imgGrayB, Function Descriptor)
 {
     
     FAST_::Level= level;    
 
-     ImageGray1 = cvCloneImage(imgGrayA);
+    ImageGray1 = cv::cvarrToMat(imgGrayA);
     
-     ImageGray2 = cvCloneImage(imgGrayB);
+    ImageGray2 = cv::cvarrToMat(imgGrayB);
     
     if (Descriptor == SURF_descriptor)
     { 
@@ -71,8 +75,10 @@ void FAST_ :: FAST_tracking(std::vector<CvPoint2D32f>& match_query, std::vector<
      {
          cv::FAST(ImageGray1,  FAST_query_kpts,  Level, TRUE);
          cv::FAST(ImageGray2,  FAST_train_kpts,  Level, TRUE);
-         
-         FAST_descriptor= new cv::SurfDescriptorExtractor(4,2);
+
+
+
+         FAST_descriptor=new cv::OrbDescriptorExtractor(4,2);
          
          FAST_descriptor->compute(ImageGray1, FAST_query_kpts, FAST_query_desc);
          FAST_descriptor->compute(ImageGray2, FAST_train_kpts, FAST_train_desc);
@@ -110,8 +116,10 @@ void FAST_ :: FAST_tracking(std::vector<CvPoint2D32f>& match_query, std::vector<
 
  FAST_::~ FAST_()
 {
-    cvReleaseImage(&ImageGray1);
-    cvReleaseImage(&ImageGray2);
+    //cvReleaseImage(&ImageGray1);
+    //cvReleaseImage(&ImageGray2);
+    ImageGray1.release();
+    ImageGray2.release();
 }
 
 void FAST_ :: warpKeypoints(const cv::Mat& H, const vector<cv::KeyPoint>& in, vector<cv::KeyPoint>& out)
@@ -157,8 +165,12 @@ LKFeatures :: LKFeatures(IplImage* imgGrayA, IplImage* imgGrayB, LKFeatures::Fun
   int Windowsize=7;
   int Wsize =16;
   ParametersInitialized(Numberofcorner, threshold1, Wsize, input);
-  ImageGray1 = cvCloneImage(imgGrayA);    
-  ImageGray2 = cvCloneImage(imgGrayB);
+
+   ImageGray1 = cv::cvarrToMat(imgGrayA);
+
+   ImageGray2 = cv::cvarrToMat(imgGrayB);
+
+  //ImageGray2 = cvCloneImage(imgGrayB);
   LKFeaturesTracking();    
 
 }
@@ -193,64 +205,65 @@ void LKFeatures::  LKFeaturesTracking ()
    }
    else
    {
-        goodFeaturesToTrack(ImageGray1,  LK_query_kpts, 400,0.0001,8);
-        cornerSubPix( ImageGray1, LK_query_kpts, cv::Size(11,11) , cv::Size(-1,-1) , cv::TermCriteria( CV_TERMCRIT_EPS + CV_TERMCRIT_ITER, 10, 0.001 ));
-        goodFeaturesToTrack(ImageGray2,  LK_train_kpts, 400,0.0001,8);
-        cornerSubPix( ImageGray2, LK_train_kpts, cv::Size(11,11) , cv::Size(-1,-1) , cv::TermCriteria( CV_TERMCRIT_EPS + CV_TERMCRIT_ITER, 10, 0.001 ));
-        //calcOpticalFlowPyrLK(ImageGray1, ImageGray2, LK_query_kpts, LK_train_kpts, status, err, cv::Size(30,30));
-       
-        LK_descriptor = new cv::BriefDescriptorExtractor(32);
+       goodFeaturesToTrack(ImageGray1,  LK_query_kpts, 400,0.0001,8);
+       //cornerSubPix( ImageGray1, LK_query_kpts, cv::Size(7,7) , cv::Size(-1,-1) , cv::TermCriteria( CV_TERMCRIT_EPS + CV_TERMCRIT_ITER, 10, 0.001 ));
+       goodFeaturesToTrack(ImageGray2,  LK_train_kpts, 400,0.0001,8);
+       //cornerSubPix( ImageGray2, LK_train_kpts, cv::Size(7,7) , cv::Size(-1,-1) , cv::TermCriteria( CV_TERMCRIT_EPS + CV_TERMCRIT_ITER, 10, 0.001 ));
+       //calcOpticalFlowPyrLK(ImageGray1, ImageGray2, LK_query_kpts, LK_train_kpts, status, err, cv::Size(30,30));
 
-        //// CONVERT 2D pointf to keypoint
+       LK_descriptor = new cv::BriefDescriptorExtractor(16);
 
-        int size_= (int) LK_query_kpts.size(); 
-        std::vector<cv::KeyPoint> temp_query;
-        temp_query.resize(size_);
+       //// CONVERT 2D pointf to keypoint
 
-        std::vector<cv::KeyPoint> temp_train;
-        temp_train.resize(size_);
+       int size_= (int) LK_query_kpts.size();
+       std::vector<cv::KeyPoint> temp_query;
+       //temp_query.resize(size_);
 
-        std::vector<cv::KeyPoint> query_kpts; 
-        cv::KeyPoint tempx;
+       std::vector<cv::KeyPoint> temp_train;
+       //temp_train.resize(size_);
+
+       std::vector<cv::KeyPoint> query_kpts;
+       cv::KeyPoint tempx;
 
 
-        for(int i=0;i<size_;i++)
-            
-        {    temp_query[i].pt.x=  LK_query_kpts[i].x;
-             temp_query[i].pt.y=  LK_query_kpts[i].y;	// ... and convert into kpts
-             
-             temp_train[i].pt.x=  LK_train_kpts[i].x;
-             temp_train[i].pt.y=  LK_train_kpts[i].y;
-        }
-        
-       
-  
-    
-        LK_descriptor->compute(ImageGray1,  temp_query,  LK_query_desc);
-        LK_descriptor->compute(ImageGray2,  temp_train,  LK_train_desc);
-         
-       
-       
-        LK_matcher = cv::DescriptorMatcher::create("BruteForce-Hamming");   
+       for(int i=0;i<size_;i++)
 
-        LK_matcher->match(LK_query_desc, LK_train_desc, LK_matche);
-       
-        for (int i=0; i< (int) LK_matche.size(); i++)
-        {
-            
-            int queryIdx = LK_matche[i].queryIdx;
-            int trainIdx = LK_matche[i].trainIdx;
-            
-            cv::Point2f pt_q;
-            cv::Point2f pt_t;
-            
-            pt_q= (cv::Point2f) temp_query[queryIdx].pt;
-            pt_t= (cv::Point2f) temp_train[trainIdx].pt;
-             
-            corners.push_back(pt_q);
-            nextPts.push_back(pt_t);
-            
-         }
+       {
+          temp_query.push_back(cv::KeyPoint(LK_query_kpts[i], 1.f));
+          temp_train.push_back(cv::KeyPoint(LK_train_kpts[i], 1.f));
+           //cout<<temp_train[i].pt.x<<" "<<temp_train[i].pt.y<<endl;
+       }
+
+
+       cout<<temp_train.size()<<endl;
+
+
+
+       LK_descriptor->compute(ImageGray1,  temp_query,  LK_query_desc);
+       LK_descriptor->compute(ImageGray2,  temp_train,  LK_train_desc);
+
+
+       cout<<LK_query_desc.size()<<endl;
+
+       cv::BFMatcher matcher(cv::NORM_HAMMING, true);
+       matcher.match(LK_query_desc, LK_train_desc, LK_matche);
+
+       for (int i=0; i< (int) LK_matche.size(); i++)
+       {
+
+           int queryIdx = LK_matche[i].queryIdx;
+           int trainIdx = LK_matche[i].trainIdx;
+
+           cv::Point2f pt_q;
+           cv::Point2f pt_t;
+
+           pt_q= (cv::Point2f) temp_query[queryIdx].pt;
+           pt_t= (cv::Point2f) temp_train[trainIdx].pt;
+
+           corners.push_back(pt_q);
+           nextPts.push_back(pt_t);
+
+       }
    }
 }
 void LKFeatures ::  FeaturesMatched  (std::vector<CvPoint2D32f> &match_query, std::vector<CvPoint2D32f> &match_train)
@@ -271,10 +284,67 @@ void LKFeatures ::  FeaturesMatched  (std::vector<CvPoint2D32f> &match_query, st
 }
 LKFeatures:: ~LKFeatures()
 {  
- cvReleaseImage(&ImageGray1);
- cvReleaseImage(&ImageGray2);
+   ImageGray1.release();
+   ImageGray2.release();
 }
 
+SIFTfeature::SIFTfeature(IplImage* imgGrayA, IplImage* imgGrayB,float Th1, float Th2)
+{
 
+    ImageGray1 = cv::cvarrToMat(imgGrayA);
+    ImageGray2 = cv::cvarrToMat(imgGrayB);
+
+    th1=Th1;
+    th2=Th2;
+}
+
+void SIFTfeature::SIFTfeaturematch(vector<CvPoint2D32f> &match_query, vector<CvPoint2D32f> &match_train)
+{
+    std::vector<cv::KeyPoint> kpts;
+    std::vector<cv::KeyPoint> Quepts;
+
+    cv::Mat desc;
+    cv::Mat src;
+
+    Ptr<FeatureDetector> siftdet;
+    siftdet = new cv::SiftFeatureDetector(th1,th2) ;
+
+    Ptr<DescriptorExtractor> Extractor;
+    Extractor= new FREAK(true, true);
+    siftdet->detect(ImageGray1, kpts);
+    Extractor-> compute(ImageGray1, kpts, desc);
+    siftdet->detect(ImageGray2, Quepts);
+    Extractor-> compute(ImageGray2, Quepts, src);
+
+    BFMatcher matcher(NORM_HAMMING, true);
+    std::vector<cv::DMatch> vec_matches;
+    matcher.match(desc, src, vec_matches);
+
+
+    for (size_t i = 0; i < vec_matches.size(); ++i)
+    {
+        const DMatch& match = vec_matches[i];
+        CvPoint2D32f pointA;
+        CvPoint2D32f pointB;
+        pointA.x=kpts[match.queryIdx].pt.x;
+        pointA.y=kpts[match.queryIdx].pt.y;
+
+        pointB.x=Quepts[match.trainIdx].pt.x;
+        pointB.y=Quepts[match.trainIdx].pt.y;
+
+        match_query.push_back(pointA);
+        match_train.push_back(pointB);
+    }
+
+    desc.release();
+    src.release();
+
+}
+
+SIFTfeature:: ~SIFTfeature()
+{
+    ImageGray1.release();
+    ImageGray2.release();
+}
 
 

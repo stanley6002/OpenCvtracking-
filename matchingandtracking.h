@@ -5,9 +5,22 @@
 //  Created by chih-hsiang chang on 3/9/15.
 //  Copyright 2015 __MyCompanyName__. All rights reserved.
 //
-#include "Opencvheaders.h"
+//#include "Opencvheaders.h"
+
+#include <cv.h>
+#include <cxmisc.h>
+#include <cxcore.h>
+#include <highgui.h>
+#include <cvaux.h>
+#include <cxmisc.h>
+#include <iostream>
+#include <math.h>
+#include <features2d/features2d.hpp>
+#include <nonfree/nonfree.hpp>
 
 
+using namespace std;
+ 
 class FAST_
 {
     
@@ -49,8 +62,12 @@ public:
 
 private:
     
-    IplImage* ImageGray1;
-    IplImage* ImageGray2;
+    //IplImage* ImageGray1;
+    //IplImage* ImageGray2;
+
+    cv::Mat ImageGray1;
+    cv::Mat ImageGray2;
+
     bool Surf_activate ;
     //bool countFrameRest;
 };
@@ -76,7 +93,9 @@ class LKFeatures
     cv::Ptr<cv::FeatureDetector> LK_detector;
     std::vector<cv::Point2f> LK_train_kpts, LK_query_kpts;
     std::vector<cv::Point2f> LK_train_pts, LK_query_pts;
-    
+
+    std::vector<cv::KeyPoint> LKtrainkey, LKquerykey;
+
     cv::Ptr<cv::DescriptorExtractor> LK_descriptor;
     cv::Mat LK_train_desc, LK_query_desc;
     
@@ -97,6 +116,43 @@ class LKFeatures
      int Threshold;
      int W_size;
      int Windowsize;
-     IplImage* ImageGray1;
-     IplImage* ImageGray2;
+      cv::Mat ImageGray1;
+      cv::Mat ImageGray2;
+};
+class SIFTfeature
+{
+
+public:
+
+    //vector<cv::Point2f> corners, nextPts, trackedPts;
+    //vector<uchar> status;
+    //vector<float> err;
+    //vector<cv::Point2f> conersNew;
+
+    //cv::Mat LK_H_prev;
+    //cv::Ptr<cv::FeatureDetector> LK_detector;
+    //std::vector<cv::Point2f> LK_train_kpts, LK_query_kpts;
+    //std::vector<cv::Point2f> LK_train_pts, LK_query_pts;
+
+    std::vector<cv::KeyPoint> kpts, Quepts;
+
+    cv::Ptr<cv::DescriptorExtractor> Extractor;;
+
+    cv::Mat desc;
+    cv::Mat src;
+
+    SIFTfeature(IplImage* imgGrayA, IplImage* imgGrayB,float Th1, float Th2);
+    ~ SIFTfeature( );
+    void SIFTfeaturematch(std::vector<CvPoint2D32f> &match_query, std::vector<CvPoint2D32f> &match_train);
+
+    //void ParametersInitialized( int Numberofcorner , int threshold1, int W_size , Function input);
+    //void LKFeaturesTracking ();
+    //void FeaturesMatched  (std::vector<CvPoint2D32f> &match_query, std::vector<CvPoint2D32f> &match_train);
+
+private:
+
+    cv::Mat ImageGray1;
+    cv::Mat ImageGray2;
+    float th1;
+    float th2;
 };

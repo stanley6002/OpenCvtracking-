@@ -46,30 +46,7 @@ double RunSFM_Nviews_Main(int num_pts /*number of 3D pts */,
                           vector<v3_t>& v3Pts                /*triangulation output*/)
 {
     double error ;
-    
-    //    for(int i=0;i< (int) v3Pts.size();i++)
-    //    {
-    //        double temperr=0;
-    //        for(int j=0;j <  mv2_frame[i].size();j++)
-    //        {
-    //            int c = mv2_frame[i][j];
-    //            v3_t _3dpts = v3Pts[i]; 
-    //            v2_t reprojection;
-    //            reprojection.p[0] = mv2_location[i][j].p[0];
-    //            reprojection.p[1] = mv2_location[i][j].p[1];
-    //            double R[9]; double T[3];  double K[9];
-    //            memcpy(R,mtriRotmatrix[c].n,sizeof(double)*9);
-    //            memcpy(T,mtriTcmatrix[c].n,sizeof(double)*3);
-    //            memcpy(K,mtriKmatrix[c].n,sizeof(double)*9);
-    //            //cout<<"frame number"<< c<<" ";
-    //            double err = ReprojectError(R,T, _3dpts,reprojection,K);
-    //            temperr += err;
-    //            
-    //        }
-    //        cout<<temperr/ (int) mv2_frame[i].size()  <<" "<<endl;
-    //        error += temperr;
-    //    }
-    //    cout<<"error before sfm "<<error/ (int) v3Pts.size()<<endl;
+
     
     for (int i = 0; i < num_cameras; i++) 
     {
@@ -230,7 +207,7 @@ double RunSFM_Nviews_Main(int num_pts /*number of 3D pts */,
             }
              double mean_err= (error/num_pts);
         
-             cout<<"error after sfm "<< mean_err<<"num pts "<<num_pts<<endl;
+             cout<<"error after sfm "<< mean_err<<endl;
              double summmation;
         
            for (int i=0;i<num_pts;i++)

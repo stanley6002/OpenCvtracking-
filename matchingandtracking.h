@@ -80,8 +80,9 @@ class LKFeatures
       
     enum Function
     {
-          Optical_flow,
+          Optical_flow ,
           BRIEF_descriptor,
+          Freak_descriptor
     }; 
       
     vector<cv::Point2f> corners, nextPts, trackedPts;
@@ -106,7 +107,7 @@ class LKFeatures
       LKFeatures(IplImage* imgGrayA, IplImage* imgGrayB, Function input);
     ~ LKFeatures( );
       void ParametersInitialized( int Numberofcorner , int threshold1, int W_size , Function input);
-     void LKFeaturesTracking ();
+     void LKFeaturesTracking (Function);
      void FeaturesMatched  (std::vector<CvPoint2D32f> &match_query, std::vector<CvPoint2D32f> &match_train);
     
     private:
@@ -123,36 +124,49 @@ class SIFTfeature
 {
 
 public:
-
-    //vector<cv::Point2f> corners, nextPts, trackedPts;
-    //vector<uchar> status;
-    //vector<float> err;
-    //vector<cv::Point2f> conersNew;
-
-    //cv::Mat LK_H_prev;
-    //cv::Ptr<cv::FeatureDetector> LK_detector;
-    //std::vector<cv::Point2f> LK_train_kpts, LK_query_kpts;
-    //std::vector<cv::Point2f> LK_train_pts, LK_query_pts;
-
     std::vector<cv::KeyPoint> kpts, Quepts;
-
     cv::Ptr<cv::DescriptorExtractor> Extractor;;
-
     cv::Mat desc;
     cv::Mat src;
 
     SIFTfeature(IplImage* imgGrayA, IplImage* imgGrayB,float Th1, float Th2);
     ~ SIFTfeature( );
     void SIFTfeaturematch(std::vector<CvPoint2D32f> &match_query, std::vector<CvPoint2D32f> &match_train);
-
-    //void ParametersInitialized( int Numberofcorner , int threshold1, int W_size , Function input);
-    //void LKFeaturesTracking ();
-    //void FeaturesMatched  (std::vector<CvPoint2D32f> &match_query, std::vector<CvPoint2D32f> &match_train);
-
 private:
 
     cv::Mat ImageGray1;
     cv::Mat ImageGray2;
     float th1;
     float th2;
+};
+class ORBfeature
+{
+   public:
+   std::vector<cv::KeyPoint> kpts, Quepts;
+   cv::Ptr<cv::DescriptorExtractor> Extractor;;
+   cv::Mat desc;
+   cv::Mat src;
+   ORBfeature(IplImage* imgGrayA, IplImage* imgGrayB,float Th1, float Th2);
+   void ORBfeaturematch(std::vector<CvPoint2D32f> &match_query, std::vector<CvPoint2D32f> &match_train);
+   ~ ORBfeature( );
+
+private:
+    cv::Mat ImageGray1;
+    cv::Mat ImageGray2;
+};
+class SURFfeature
+{
+public:
+    std::vector<cv::KeyPoint> kpts, Quepts;
+    cv::Ptr<cv::DescriptorExtractor> Extractor;;
+    cv::Mat desc;
+    cv::Mat src;
+    SURFfeature(IplImage* imgGrayA, IplImage* imgGrayB,int Th1);
+    void SURFfeaturematch(std::vector<CvPoint2D32f> &match_query, std::vector<CvPoint2D32f> &match_train);
+    ~ SURFfeature( );
+
+private:
+    int Th1;
+    cv::Mat ImageGray1;
+    cv::Mat ImageGray2;
 };

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>BE79D45E-3071-46C4-BFB9-A57C0B690899</string>
+	<key>IDESourceControlProjectName</key>
+	<string>OpenCVtracking</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>61AB4416959D03D96E0910088A9BC30C83196B22</key>
+		<string>https://github.com/stanley6002/OpenCvtracking-.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>OpenCVtracking.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>61AB4416959D03D96E0910088A9BC30C83196B22</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/stanley6002/OpenCvtracking-.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>61AB4416959D03D96E0910088A9BC30C83196B22</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>61AB4416959D03D96E0910088A9BC30C83196B22</string>
+			<key>IDESourceControlWCCName</key>
+			<string>OpenCVtracking</string>
+		</dict>
+	</array>
+</dict>
+</plist>

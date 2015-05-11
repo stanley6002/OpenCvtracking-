@@ -10,22 +10,6 @@
 using namespace std;
 using namespace cv;
 
-IplImage* VideoProcessing :: GrayImg(IplImage* image)
-{
-    IplImage*  imgG  = cvCreateImage(cv::Size(ImgWidth, ImgHeight), IPL_DEPTH_8U, 1);
-    cvCvtColor(image,imgG, CV_BGR2GRAY);
-    
-    cout<<"test "<<endl;
-    return(NULL);
-}
-
-IplImage*  VideoProcessing :: ToGrayImg()
-{
-    IplImage* imgGray  = cvCreateImage(cv::Size(ImgWidth, ImgHeight), IPL_DEPTH_8U, 1);
-    cvCvtColor(VideoProcessing::Image1,imgGray, CV_BGR2GRAY);
-    return(imgGray);
-}
-
 IplImage* VideoProcessing :: capture(CvCapture* camCapture)
 {
      frame = cvQueryFrame(camCapture);
@@ -35,22 +19,36 @@ IplImage* VideoProcessing :: capture(CvCapture* camCapture)
     return(Image1);
 
 }
+
 bool VideoProcessing :: CaptureNextframe()
 {
     return(captureNextFrame)  ;
 }
 
-VideoProcessing:: VideoProcessing (int Width , int Height)
+void VideoProcessing :: skipNFrames(CvCapture* capture, int n)
 {
-    ImgWidth = Width;
-    ImgHeight = Height;
-    count_frame= FALSE;
-    
+    for(int i = 0; i < n; ++i)
+    {
+        if(cvQueryFrame(capture) == NULL)
+        {
+            cout<<"cannot capture frame";
+        }
+    }
+}
+VideoProcessing:: VideoProcessing (int Width , int Height, bool readfromvideo)
+{
+     ImgWidth = Width;
+     ImgHeight = Height;
+     count_frame= FALSE;
+     readvideo = readfromvideo;
+
      imgGray1  = cvCreateImage(cv::Size(Width, Height), IPL_DEPTH_8U, 1);
      imgGray2  = cvCreateImage(cv::Size(Width, Height), IPL_DEPTH_8U, 1);
     
      Image1=  cvCreateImage(cv::Size(Width, Height), IPL_DEPTH_8U, 3);
      Image2=  cvCreateImage(cv::Size(Width, Height), IPL_DEPTH_8U, 3);
+
+     frame = cvCreateImage(cv::Size(Width, Height), IPL_DEPTH_8U, 3);
      //Image3=  cvCreateImage(cv::Size(Width, Height), IPL_DEPTH_8U, 3);
      //frame=  cvCreateImage(cv::Size(ImgWidth, ImgHeight), IPL_DEPTH_8U, 3);;
      
@@ -59,19 +57,26 @@ VideoProcessing:: VideoProcessing (int Width , int Height)
      
 }
 
-IplImage* VideoProcessing :: CaptureInitialFrame(CvCapture* camCapture)
+IplImage* VideoProcessing :: CaptureFrame(CvCapture* camCapture)
 {
-    
-    
-    vector<cv::Point2f> cornerfirst, cornersecond;
+vector<cv::Point2f> cornerfirst, cornersecond;
 
     if (count_frame)
     {   
-        //Mat MatGray1, MatGray2;
 
-        frame = cvQueryFrame(camCapture);
-        
-        Image2= cvCloneImage(frame);
+        if (readvideo)
+        {
+            IplImage* tempframe = cvQueryFrame(camCapture);
+            cvResize(tempframe, frame);
+            Image2= cvCloneImage(frame);
+        }
+
+        //Mat MatGray1, MatGray2;
+        else
+        {
+            frame = cvQueryFrame(camCapture);
+            Image2= cvCloneImage(frame);
+        }
         
         cvCvtColor(Image1,imgGray1, CV_BGR2GRAY);  
         cvCvtColor(Image2,imgGray2, CV_BGR2GRAY);
@@ -108,10 +113,22 @@ IplImage* VideoProcessing :: CaptureInitialFrame(CvCapture* camCapture)
 
     if( ! count_frame)
     {
-       
-        VideoProcessing::frame = cvQueryFrame(camCapture);
-        VideoProcessing::Image1= cvCloneImage(frame);
-        count_frame = true;  
+        if (readvideo)
+        {
+            IplImage* tempframe = cvQueryFrame(camCapture);
+            cvResize(tempframe, frame);
+            Image1= cvCloneImage(frame);
+            count_frame = true;
+        }
+
+        //Mat MatGray1, MatGray2;
+        else
+        {
+            VideoProcessing::frame = cvQueryFrame(camCapture);
+            VideoProcessing::Image1= cvCloneImage(frame);
+            count_frame = true;
+            
+        }
     }
 
     //count_frame++;
@@ -119,6 +136,26 @@ IplImage* VideoProcessing :: CaptureInitialFrame(CvCapture* camCapture)
     
     return (frame);
 }
+
+IplImage*  VideoProcessing::CaptureFirstFrame(CvCapture* camCapture)
+{
+
+    if (readvideo)
+    {
+        IplImage* tempframe = cvQueryFrame(camCapture);
+        cvResize(tempframe, frame);
+        Image2= cvCloneImage(frame);
+    }
+
+    //Mat MatGray1, MatGray2;
+    else
+    {
+        frame = cvQueryFrame(camCapture);
+        Image2= cvCloneImage(frame);
+    }
+    return(frame);
+}
+
 VideoProcessing::~VideoProcessing()
 {
     cvReleaseImage(&Image1);
@@ -126,6 +163,4 @@ VideoProcessing::~VideoProcessing()
     cvReleaseImage(&imgGray1);
     cvReleaseImage(&imgGray2);
     cvReleaseImage(&frame);
-
-    
 }

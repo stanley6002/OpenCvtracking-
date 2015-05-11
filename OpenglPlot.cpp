@@ -149,7 +149,7 @@ void OpenGLPlot::Reshape(int height, int width )
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     cout<<"theta " <<theta<<endl;
-    matrixProjection = setFrustum(80 ,(float)width/height ,  0.1 , 700);    // given near and far from point set
+    matrixProjection = setFrustum(40 ,(float)width/height ,  0.01 , 5000);    // given near and far from point set
     glLoadMatrixf(matrixProjection.getTranspose());
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -157,7 +157,7 @@ void OpenGLPlot::Reshape(int height, int width )
 void OpenGLPlot::PlotCamera(double *t_relative)
 {
     glPushMatrix();
-    glTranslated(-0.0 ,-0.0  , -30.0); 
+    glTranslated(-0.0 ,-0.0  , -200.0);
     glBegin(GL_LINES);
     glColor3f(1, 0, 0);
     glVertex3f(0.0f, 0.0f, 0.0f);
@@ -201,7 +201,7 @@ void OpenGLPlot::PlotCamera(double *t_relative)
     //glLoadMatrixf(matrixModelView2.getTranspose());
     glPushMatrix();
     //glScaled(0.6,0.6,0.6);
-    glTranslated(-center_x, +center_y  , center_z-10);
+    glTranslated(-center_x, +center_y  , center_z);
     glBegin( GL_POINTS);
     for (int i=0;i<size_;i++)
     {

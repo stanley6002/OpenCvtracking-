@@ -12,26 +12,21 @@
 
 using namespace std;
 
-void F_matrix_process (int num_pts, v3_t* r_pt, v3_t* l_pt, double *F_final, int num_trial, int F_threshold, int essential, matched* refined_pts, int ith_pair)
+void F_matrix_process (int num_pts, v3_t* r_pt, v3_t* l_pt, double *F_final, int num_trial, int F_threshold, int essential, matched* refined_pts, int ith_pair, float thres)
 {
     int F_estimated;
     double F[9];
-    F_estimated= estimate_fmatrix_ransac_matches(num_pts, r_pt, l_pt, 50, 2.0, 2.0,essential, F); 
+    F_estimated= estimate_fmatrix_ransac_matches(num_pts, r_pt, l_pt, num_trial, 5.0, 2.0,essential, F);
    
     vector<int> inliers;
     
     for (int i=0; i<num_pts;i++)
     {
         double distance = fmatrix_compute_residual(F,r_pt[i],l_pt[i]);
-        if (distance<50)
+        if (distance<thres)
         { 
-        
-        //cout<<distance1<<endl;
+        //cout<<distance<<endl;
         inliers.push_back(i);
-        //cout<< l_pt[i].p[1]<<" "<<r_pt[i].p[1]<<" "<<distance<<" "<<distance1<<endl;
-        //cout<< l_pt[i].p[0]<<" "<<l_pt[i].p[1]<<" "<<r_pt[i].p[0]<<" "<<r_pt[i].p[1]<<endl;
-        //error_brefine= distance+error_brefine;
-        //cout<<"Geometry_distance "<<distance<<endl;
         }
     }
     
@@ -66,7 +61,7 @@ void F_matrix_process (int num_pts, v3_t* r_pt, v3_t* l_pt, double *F_final, int
         double distance = fmatrix_compute_residual(F,r_pt[i],l_pt[i]);
         // double distance= fmatrix_compute_distance(F,  r_pt[i],  l_pt[i]); 
       
-        if (distance<50)
+        if (distance<thres)
         {
             non_inliers.push_back(i);
           }
@@ -490,7 +485,7 @@ double align_horn(int n, v3_t *right_pts, v3_t *left_pts,
 }
 
 
-EpipolarGeometry::EpipolarGeometry(const std::vector<CvPoint2D32f> match_query , const std::vector<CvPoint2D32f> match_train,int num_pts, int trialFmatrix, int trialRelativepose , int focuslength, int Ransac_threshold)
+EpipolarGeometry::EpipolarGeometry(const std::vector<CvPoint2D32f> match_query , const std::vector<CvPoint2D32f> match_train,int num_pts, int trialFmatrix, int trialRelativepose , int focuslength, int Ransac_threshold, float threshold,int ImgWidth, int ImgHeight)
 {
 
     //initialize all of parameters for EpipolarGeometry  
@@ -499,6 +494,10 @@ EpipolarGeometry::EpipolarGeometry(const std::vector<CvPoint2D32f> match_query ,
     EpipolarGeometry::essential= 0;
     EpipolarGeometry::Numofpts= num_pts;
     EpipolarGeometry::Ransac_threshold= Ransac_threshold;
+
+    EpipolarGeometry::Image_Width=ImgWidth;
+    EpipolarGeometry::Image_Height=ImgHeight;
+
    
     this->FocusLength= focuslength;
     
@@ -516,7 +515,7 @@ EpipolarGeometry::EpipolarGeometry(const std::vector<CvPoint2D32f> match_query ,
         l_pt[i].p[1]=match_train[i].y;
         l_pt[i].p[2]=1.0;
     }
-    
+    F_matrix_threh=threshold;
 }
 void EpipolarGeometry::MainProcess()
 {
@@ -692,7 +691,7 @@ void EpipolarGeometry::FindFundamentalMatrix()
     
     //double F[9];
 
-    F_matrix_process (this->Numofpts,  r_pt, l_pt, this-> Fmatrix , this->num_trial_Fmatrix, 10 ,  this->essential, refined_pts, 0);
+    F_matrix_process (this->Numofpts,  r_pt, l_pt, this-> Fmatrix , this->num_trial_Fmatrix, 10 ,  this->essential, refined_pts, 0, F_matrix_threh);
     
     
     
@@ -957,7 +956,7 @@ void EpipolarGeometry::PointRefinement(v3_t* m_3Dpts,vector<v2_t> & left_pts,vec
          float a=-fabs(x-depth)*(1./(1.06*(sqrt(varince))*2.1));
           float density = exp(a);
          densitytemp =exp(a);
-        if (densitytemp <0.5)
+        if (densitytemp <0.3)
             tempvector[i] = true;
     }
 
@@ -972,7 +971,7 @@ float  EpipolarGeometry:: Variance (v3_t* _3Dpts, const float depth , const int 
     int num=0;
     for (int i=0;i<size_;i++)
     { 
-        if(_3Dpts[i].p[2]< 0 && _3Dpts[i].p[2]> -30 )
+        if(_3Dpts[i].p[2]< 0 && _3Dpts[i].p[2]> 2.5 *depth)
         {
           tempz[i]= (float)(_3Dpts[i].p[2]-depth)*(_3Dpts[i].p[2]-depth);
           sum=sum+tempz[i];
@@ -1017,10 +1016,10 @@ IplImage* EpipolarGeometry:: plot_two_imagesf(IplImage *IGray, IplImage *IGray1)
         cvRectangle(Imagedisplay,pt1 , pt2, CV_RGB(0,256,0), 4, 8, 0 );
         for (int i=0;i<num_ofrefined_pts; i++)
     {           
-        newmatched.x= (int)(lrefined_pt[i].p[0]+(IGray->width))+160;
-        newmatched.y= (int)(lrefined_pt[i].p[1])+120;
-        matched.x = (int) rrefined_pt[i].p[0]+160;
-        matched.y = (int) rrefined_pt[i].p[1]+120;
+        newmatched.x= (int)(lrefined_pt[i].p[0])+(IGray->width)+(0.5*(IGray->width));
+        newmatched.y= (int)(lrefined_pt[i].p[1])+(0.5*(IGray->height));
+        matched.x = (int) rrefined_pt[i].p[0]+(0.5*(IGray->width));
+        matched.y = (int) rrefined_pt[i].p[1]+(0.5*(IGray->height));
         
         cvLine(Imagedisplay, 
         cvPoint( matched.x, matched.y ), 

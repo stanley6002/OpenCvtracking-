@@ -13,7 +13,6 @@
 # include "matrix.h"
 # include "F_matrix.h"
 # include "FeaturePoint.h"
-# include  "CameraPoseRefinement.h"
 
 //#include "FeaturePoint.h"
 

@@ -5,13 +5,13 @@
 //  Created by chih-hsiang chang on 3/24/15.
 //  Copyright 2015 __MyCompanyName__. All rights reserved.
 //
-#include "glfw3.h"
-#include <vector.h>
+#include "GLFW/glfw3.h"
+#include <vector>
 #include "vector.h"
 #include "OpenGLMatrices.h"
 #include <math.h>
 
-
+using namespace std;
 
 //float near=5;
 //float far=700;

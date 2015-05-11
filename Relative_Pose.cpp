@@ -7,9 +7,9 @@
 //
 //  for other multiple frame remove and modify the trimatrix
 
-# define MiniDensity 0.65
+# define MiniDensity 0.45
 #include "Relative_Pose.h"
-//#include "CameraPoseRefinement.h"
+#include "CameraPoseRefinement.h"
 
 double CameraPose:: CameraReprojectError(int NumPts, double *R, double* Tc, v3_t* Pts,v2_t* Projpts, double * Kmatrix)
 {
@@ -191,8 +191,8 @@ void CameraPose::Egomotion(double* R, double*T, vector<v3_t> v3ProjectPts, vecto
     
     
     
-    //double error1 =  CameraReprojectError( NumofReprojectPts, updated_rotation, updated_t , mv3ProjectPts , mv2ReprojectPts ,  Kmatrix);
-    //cout<<"reprojection error no alightment  " <<error1 / NumofReprojectPts<<endl;    
+    double error1 =  CameraReprojectError( NumofReprojectPts, updated_rotation, updated_t , mv3ProjectPts , mv2ReprojectPts ,  Kmatrix);
+    cout<<"reprojection error no alightment  " <<error1 / NumofReprojectPts<<endl;
 
     // this part alight the 3D point with delat vector//   
     TwoDalighment(NumofReprojectPts, updated_rotation , updated_t , mv3ProjectPts, mv2ReprojectPts);
@@ -582,7 +582,7 @@ double CameraPose:: CameraReprojctionErrorRefinement(vector<vector<v2_t> > mv2_l
             PopTriRotcMatrix(c, R);
             PopTriTcMatrix(c, T);
                
-            err_temp += ReprojectError(R, T, v3pt , ProjectPts, K);          
+            err_temp += ReprojectionError(R, T, v3pt , ProjectPts, K);
            }
         error_vec[i] = err_temp /(int) mv2_frame[i].size();
         num++;
@@ -615,7 +615,7 @@ double CameraPose:: CameraReprojctionErrorRefinement(vector<vector<v2_t> > mv2_l
           if( x> mean_err)
           {
             
-            if (density< 0.6)
+            if (density< MiniDensity)
               {
                tempvector[i] = true;
                //cout<<" "<<" "<< x<<endl
@@ -626,6 +626,7 @@ double CameraPose:: CameraReprojctionErrorRefinement(vector<vector<v2_t> > mv2_l
 }
     
     delete [] error_vec;
+    return(0);
 
 }
 
@@ -691,7 +692,7 @@ void _3DdepthRefine (vector<v3_t> m_3Dpts, vector<bool>& tempvector, int num_ofr
         }
         
     }
-    
+
     range = fabs((maxDepth - minDepth) / (Nbins+1));
     for(i=0; i<size_;i++)
     {
@@ -699,10 +700,22 @@ void _3DdepthRefine (vector<v3_t> m_3Dpts, vector<bool>& tempvector, int num_ofr
         {
             float x = (float) m_3Dpts[i].p[2];
             int idx = floor((x-minDepth)/range);
-            Bin[idx] += 1; 
+
+            if (idx < 0)
+            {
+                idx = 0;
+            }
+
+            if (idx > 49)
+            {
+                idx = 49;
+            }
+            Bin[idx] += 1;
+
         }
     }
-    
+
+
     int mx_bin  = 0;
     for (int i=0;i< Nbins;i++)
     {
@@ -713,11 +726,11 @@ void _3DdepthRefine (vector<v3_t> m_3Dpts, vector<bool>& tempvector, int num_ofr
             mx_index = i;
         }
     }
-    
+
+
     float depth = (minDepth+(mx_index)*range);
-    //float depth = minDepth+((maxDepth - minDepth)*(mx_index/Nbins));
     float varince= Variance (m_3Dpts, depth, size_);
-    float *densitytemp  = new float [size_]; 
+    float *densitytemp  = new float [size_];
     cout<< depth <<"variance "<<varince <<endl;
     for (int i=0;i< size_;i++)
     {
@@ -725,7 +738,7 @@ void _3DdepthRefine (vector<v3_t> m_3Dpts, vector<bool>& tempvector, int num_ofr
         float a=-fabs(x-depth)*(1./(1.06*(sqrt(varince))*2.1));
         //float density = exp(a);
         densitytemp[i]=exp(a);
-        if (densitytemp[i]< 0.65)
+        if (densitytemp[i]< MiniDensity)
             tempvector[i] = true;
     }
     delete [] densitytemp;

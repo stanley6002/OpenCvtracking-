@@ -109,7 +109,7 @@ void FeaturePts::ConnectedVideoSequence(vector<v2_t> Previous_pts   /*previous f
                         int x_m =  (int) Connected_pts[j].p[0];
                         int y_m =  (int) Connected_pts[j].p[1];
                         
-                        if (sqrt(((x-x_m)*(x-x_m))+((y-y_m)*(y-y_m)))<=3.0)
+                        if (sqrt(((x-x_m)*(x-x_m))+((y-y_m)*(y-y_m)))<=1.414)
                         {
                             numreprojection++;
                             //StackIndex[i]=j;

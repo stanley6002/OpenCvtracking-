@@ -10,8 +10,8 @@
 #include "Opencvheaders.h"
 
 
-#define CenterX(x) ((x)-IMAGE_WIDTH/2)
-#define CenterY(x) ((x)-IMAGE_HEIGHT/2)
+//#define CenterX(x) ((x)-IMAGE_WIDTH/2)
+//#define CenterY(x) ((x)-IMAGE_HEIGHT/2)
 
 class EpipolarGeometry 
 {
@@ -36,7 +36,9 @@ public:
     double t1matrix[3];
     
     double Fmatrix[9];
-    
+
+    int Image_Width;
+    int Image_Height;
     
     int num_ofrefined_pts;
     int Ransac_threshold;
@@ -52,7 +54,7 @@ public:
     v3_t* _3Dpts;
   
     EpipolarGeometry(const std::vector<CvPoint2D32f> match_query , const std::vector<CvPoint2D32f> match_train,
-           int num_pts,int num_trial_Fmatrix, int num_trial_relativepose , int FocusLength, int Ransac_threshold);
+           int num_pts,int num_trial_Fmatrix, int num_trial_relativepose , int FocusLength, int Ransac_threshold, float threshold, int ImgWidth, int ImgHeight);
     
     void FindFundamentalMatrix();   // Find the fundamental matrix and push the refinded points
     void MainProcess();
@@ -98,7 +100,16 @@ public:
     { 
         return (skipFrame);
     }
-    
+
+    inline float CenterX (float X)
+    {
+        return((X)-Image_Width/2);
+    }
+    inline float CenterY (float Y)
+    {
+        return((Y)-Image_Height/2);
+    }
+
     ~ EpipolarGeometry ();
     
     friend void test();
@@ -115,6 +126,7 @@ private:
     static void _3DdepthRefine (v3_t* m_3Dpts, bool* tempvector, int num_ofrefined_pts);
     bool Use_FivePoints;
     bool Use_FundamentalMatrix;
+    float F_matrix_threh;
     //IplImage* ImageGray1;
     //IplImage* ImageGray2;
     //bool Surf_activate ;
@@ -124,7 +136,7 @@ private:
 
 enum Motion {MotionHomography,MotionRigid};
 
-void F_matrix_process (int num_pts, v3_t* r_pt, v3_t* l_pt,double *F, int num_trial, int F_threshold, int essential,matched *refined_pts,int ith_pairs);
+void F_matrix_process (int num_pts, v3_t* r_pt, v3_t* l_pt,double *F, int num_trial, int F_threshold, int essential,matched *refined_pts,int ith_pairs, float thres);
 void pop_backpts_WI(v2_t*lpts, v2_t*rpts, matched *pts, int ith_pair);
 void pop_backpts(v3_t*lpts, v3_t*rpts, matched *pts);
 void pushback_Fmatrix(double* F, F_key_matrix *F_matrix,int ith_pair);

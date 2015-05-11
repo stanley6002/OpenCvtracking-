@@ -37,9 +37,10 @@ public:
     
     IplImage* frame; 
     
-    VideoProcessing (int Height , int Width);
+    VideoProcessing (int Height , int Width, bool readfromvideo);
     
-    IplImage*  CaptureInitialFrame(CvCapture* camCapture);
+    IplImage*  CaptureFrame(CvCapture* camCapture);
+
     bool CaptureNextframe();
     
     ~ VideoProcessing ();
@@ -48,11 +49,15 @@ public:
     IplImage* GrayImg(IplImage* image);
     
     IplImage* ToGrayImg();
-    
+
+    void skipNFrames(CvCapture* capture, int n);
+
+     IplImage*  CaptureFirstFrame(CvCapture* camCapture);
+
 private:
  
     bool count_frame; 
-    
+    bool readvideo;
      
     //bool countFrameRest;
 };

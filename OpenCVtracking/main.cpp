@@ -174,8 +174,8 @@ int main (int argc, const char * argv[])
                     //FAST_ FAST_(2, imgGrayA, imgGrayB, FAST_. SURF_descriptor);
                     //FAST_. FAST_tracking(match_query, match_train);
 
-                    //ORBfeature  ORBfeature(imgGrayA, imgGrayB,0.01,0.01);
-                    //ORBfeature. ORBfeaturematch(match_query, match_train);
+                    // ORBfeature  ORBfeature(imgGrayA, imgGrayB,0.01,0.01);
+                    // ORBfeature. ORBfeaturematch(match_query, match_train);
 
                     int size_match= (int) match_query.size();
                     int numTrialFmatrix = 30;
@@ -286,7 +286,7 @@ int main (int argc, const char * argv[])
                             vector<v3_t> V3Dpts;
 
                             loop++;
-                            if (loop >15)
+                            if (loop > 20)
                             {
                                 for(int i=0;i< CameraPose.mTcMatrix.size();i++)
                                 {

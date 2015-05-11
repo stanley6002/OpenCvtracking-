@@ -83,7 +83,8 @@ void FeaturePts::ConnectedVideoSequence(vector<v2_t> Previous_pts   /*previous f
     
     //int FrameNumber       = 2;    // second and third overlapped
     
-    //this-> StackIndex=  new int [Previous_ptsize](); 
+    //this-> StackIndex=  new int [Previous_ptsize]();
+
     int* StackIdx = new int [Previous_ptsize];
     int* tempPrevious = new int [Previous_ptsize];
     int* tempCurrent  = new int [ConnectedPtsize];
@@ -195,8 +196,7 @@ void FeaturePts::CleanFeatureTrack()
 
     mv2ReprojectPts.swap(mv2ReprojectPtsEmpty); 
     mv3ProjectionPts.swap(mv3ProjectionPtsEmpty);
-    
-    //this-> StackIndex= NULL;
+
 }
 
 void FeaturePts::PointRefinement(vector<v3_t> &  Tempv3Dpts, vector <bool> tempvector)
@@ -245,39 +245,15 @@ void FeaturePts::PointRefinement(vector<v3_t> &  Tempv3Dpts, vector <bool> tempv
            // }   
         }
        
-        //cout<<" after" << (int) Tempv3Dpts.size() <<mv2_frame.size()<<" "<<mv2_location.size() <<endl;
-     
-        //_3DLocation.insert(_3DLocation.end(),Tempv3Dpts.begin(),Tempv3Dpts.end());
-        //m_3Dpts.swap(Tempv3Dpts);
     _3DLocation.insert(_3DLocation.end(),v3D.begin(),v3D.end());
-    
-    //cout<<"size of points "<<m_3Dpts.size()<<endl;
     m_3Dpts.clear();
-    //cout<<"after cleaning "<<m_3Dpts.size()<<endl;
     m_3Dpts.swap(v3D);
-    //cout<<"size of points "<<m_3Dpts.size()<<endl;
-    
+
     mv2_frame.clear();
     mv2_location.clear();
     mv2_frame.resize((int)v3D.size(), vector<int>());
     
     mv2_frame.swap(v2_frame);
     mv2_location.swap(v2_location);
-    
-    //cout<<"size of frame "<<v2_frame.size()<<endl;
-    //cout<<"size of location "<<v2_location.size()<<endl;
-    //cout<<"size of frame "<<mv2_frame.size()<<endl;
-    //cout<<"size of location "<<mv2_location.size()<<endl;
-    
-//    
-//    for (int i=0;i<(int)v3D.size() ;i++)
-//    {
-//        for(int j=0;j< mv2_frame[i].size();j++)
-//        {
-//            cout<< mv2_frame[i][j]<<" "<<mv2_location[i][j].p[0]<<" "<<mv2_location[i][j].p[1]<<" ";
-//        
-//        }
-//        cout<<endl;
-//    }
-    
+
 }

@@ -106,9 +106,10 @@ class LKFeatures
     
       LKFeatures(IplImage* imgGrayA, IplImage* imgGrayB, Function input);
     ~ LKFeatures( );
-      void ParametersInitialized( int Numberofcorner , int threshold1, int W_size , Function input);
-     void LKFeaturesTracking (Function);
-     void FeaturesMatched  (std::vector<CvPoint2D32f> &match_query, std::vector<CvPoint2D32f> &match_train);
+
+    void ParametersInitialized( int Numberofcorner , int threshold1, int W_size , Function input);
+    void LKFeaturesTracking (Function);
+    void FeaturesMatched  (std::vector<CvPoint2D32f> &match_query, std::vector<CvPoint2D32f> &match_train);
     
     private:
       

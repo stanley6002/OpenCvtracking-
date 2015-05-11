@@ -242,7 +242,7 @@ switch(input)
           cv::Mat results;
              if(LK_query_desc.type()==CV_8U)
              {
-              cv::flann::Index flannIndex(LK_query_desc, cv::flann::LshIndexParams(12, 20, 2), cvflann::FLANN_DIST_HAMMING);
+              cv::flann::Index flannIndex(LK_query_desc, cv::flann::LshIndexParams(12, 16 , 2), cvflann::FLANN_DIST_HAMMING);
               flannIndex.knnSearch(LK_train_desc, results, distance, k, cv::flann::SearchParams() );
              }
                  float ErroRatio = 0.5;
@@ -296,17 +296,17 @@ switch(input)
 
                 //cout<<LK_query_desc.size()<<endl;
 
-                cv::BFMatcher matcher(cv::NORM_HAMMING2,false);
+                //cv::BFMatcher matcher(cv::NORM_HAMMING2,false);
 
                 cv::Mat distance;
                 int k=2; // find the 2 nearest neighbors
                 cv::Mat results;
                 if(LK_query_desc.type()==CV_8U)
                 {
-                    cv::flann::Index flannIndex(LK_query_desc, cv::flann::LshIndexParams(12, 20, 2), cvflann::FLANN_DIST_HAMMING);
+                    cv::flann::Index flannIndex(LK_query_desc, cv::flann::LshIndexParams(12, 10, 2), cvflann::FLANN_DIST_HAMMING/*cvflann::FLANN_DIST_MANHATTAN*/);
                     flannIndex.knnSearch(LK_train_desc, results, distance, k, cv::flann::SearchParams() );
                 }
-                float nndrRatio = 0.8;
+                float nndrRatio = 0.5;
                 for(unsigned int i=0; i<temp_train.size(); i++)
                 {
 
@@ -369,7 +369,7 @@ void SIFTfeature::SIFTfeaturematch(vector<CvPoint2D32f> &match_query, vector<CvP
     cv::Mat src;
 
     Ptr<FeatureDetector> siftdet;
-    siftdet = new cv::SiftFeatureDetector(0.1f, 10.0f);
+    siftdet = new cv::SiftFeatureDetector(0.5f, 10.0f);
 
     Ptr<DescriptorExtractor> Extractor;
     Extractor= new FREAK(true, true);
@@ -427,16 +427,16 @@ void ORBfeature::ORBfeaturematch(vector<CvPoint2D32f> &match_query, vector<CvPoi
     cv::Mat src;
 
     Ptr<FeatureDetector> ORBdet;
-    ORBdet=new cv::OrbFeatureDetector(300);
- 
+    ORBdet=new cv::OrbFeatureDetector(500, 1.0f, 2, 5.0, 1, 0, cv::ORB::FAST_SCORE , 33);
+    ORBdet=new cv::OrbFeatureDetector;
     Ptr<DescriptorExtractor> Extractor;
     Extractor= new cv::OrbDescriptorExtractor();
 
     ORBdet->detect(ImageGray1, kpts);
-    cv::KeyPointsFilter::retainBest(kpts, 200);
+    cv::KeyPointsFilter::retainBest(kpts, 400);
     Extractor-> compute(ImageGray1, kpts, desc);
     ORBdet->detect(ImageGray2, Quepts);
-    cv::KeyPointsFilter::retainBest(Quepts, 200);
+    cv::KeyPointsFilter::retainBest(Quepts, 400);
     Extractor-> compute(ImageGray2, Quepts, src);
     std::vector<cv::DMatch> vec_matches;
 

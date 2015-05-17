@@ -9,6 +9,7 @@
 #include "sfm.h"
 #include <vector>
 # include "Relative_Pose.h"
+
 using namespace std;
 
 #define NUM_CAMERA_PARAMS 9

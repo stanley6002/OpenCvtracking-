@@ -13,6 +13,7 @@
 # include "matrix.h"
 # include "F_matrix.h"
 # include "FeaturePoint.h"
+# include "featurepointsmap.h"
 
 //#include "FeaturePoint.h"
 

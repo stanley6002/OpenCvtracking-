@@ -78,6 +78,7 @@
 		FF04B4691AF7056900D2C482 /* libcminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF04B4681AF7056900D2C482 /* libcminpack.a */; };
 		FF8433F61AFA6ECC00B7B956 /* Relative_Pose.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FF8433F41AFA6ECC00B7B956 /* Relative_Pose.cpp */; };
 		FF8433F91AFA6FC100B7B956 /* CameraPoseRefinement.c in Sources */ = {isa = PBXBuildFile; fileRef = FF8433F71AFA6FC100B7B956 /* CameraPoseRefinement.c */; };
+		FFD584271B08EC310013CA37 /* featurepointsmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FFD584251B08EC310013CA37 /* featurepointsmap.cpp */; };
 		FFDEB8A01AF862D30068E29B /* matchingandtracking.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FFDEB89E1AF862D30068E29B /* matchingandtracking.cpp */; };
 		FFED96E21AFBD45C0094B8F2 /* FeaturePoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FFED96CA1AFBD45C0094B8F2 /* FeaturePoint.cpp */; };
 		FFED96E31AFBD45C0094B8F2 /* RunSFM_Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FFED96CB1AFBD45C0094B8F2 /* RunSFM_Main.cpp */; };
@@ -194,6 +195,8 @@
 		FF8433F51AFA6ECC00B7B956 /* Relative_Pose.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Relative_Pose.h; sourceTree = SOURCE_ROOT; };
 		FF8433F71AFA6FC100B7B956 /* CameraPoseRefinement.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = CameraPoseRefinement.c; sourceTree = SOURCE_ROOT; };
 		FF8433F81AFA6FC100B7B956 /* CameraPoseRefinement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraPoseRefinement.h; sourceTree = SOURCE_ROOT; };
+		FFD584251B08EC310013CA37 /* featurepointsmap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = featurepointsmap.cpp; sourceTree = SOURCE_ROOT; };
+		FFD584261B08EC310013CA37 /* featurepointsmap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = featurepointsmap.h; sourceTree = SOURCE_ROOT; };
 		FFDEB89E1AF862D30068E29B /* matchingandtracking.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = matchingandtracking.cpp; sourceTree = SOURCE_ROOT; };
 		FFDEB89F1AF862D30068E29B /* matchingandtracking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = matchingandtracking.h; sourceTree = SOURCE_ROOT; };
 		FFDEB8A11AF862E40068E29B /* Opencvheaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Opencvheaders.h; sourceTree = SOURCE_ROOT; };
@@ -337,8 +340,10 @@
 				FFED96D11AFBD45C0094B8F2 /* OpenglPlot.h */,
 				FFED96D21AFBD45C0094B8F2 /* OpenGLMatrices.cpp */,
 				FFED96D31AFBD45C0094B8F2 /* OpenGLMatrices.h */,
-				FFED96CA1AFBD45C0094B8F2 /* FeaturePoint.cpp */,
+				FFD584251B08EC310013CA37 /* featurepointsmap.cpp */,
+				FFD584261B08EC310013CA37 /* featurepointsmap.h */,
 				FFED96D41AFBD45C0094B8F2 /* FeaturePoint.h */,
+				FFED96CA1AFBD45C0094B8F2 /* FeaturePoint.cpp */,
 				FFED96D51AFBD45C0094B8F2 /* svd.h */,
 				FFED96D61AFBD45C0094B8F2 /* triangulate.h */,
 				FFED96D91AFBD45C0094B8F2 /* miscul.h */,
@@ -506,6 +511,7 @@
 				FF8433F91AFA6FC100B7B956 /* CameraPoseRefinement.c in Sources */,
 				FF04B4661AF704E000D2C482 /* matrix.c in Sources */,
 				FF04B45E1AF7045900D2C482 /* 5point.c in Sources */,
+				FFD584271B08EC310013CA37 /* featurepointsmap.cpp in Sources */,
 				FF04B45F1AF7045900D2C482 /* svd.c in Sources */,
 				FFED96E51AFBD45C0094B8F2 /* OpenglPlot.cpp in Sources */,
 				FFED96E41AFBD45C0094B8F2 /* sfm.c in Sources */,

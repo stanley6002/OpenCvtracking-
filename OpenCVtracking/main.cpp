@@ -6,7 +6,6 @@
 //  Copyright (c) 2015 C-HChang. All rights reserved.
 //
 
-
 #include <iostream>
 #include "F_matrix.h"
 #include "videoprocessing.h"
@@ -26,7 +25,7 @@ using namespace cv;
 int Img_width;
 int Img_height;
 char key;
-bool readfromvideo= 0 ;
+bool readfromvideo= 1 ;
 
 int main (int argc, const char * argv[])
 {
@@ -43,7 +42,7 @@ int main (int argc, const char * argv[])
     }
 
     if(readfromvideo)
-    camCapture = cvCaptureFromFile( "/Users/c-hchang/Desktop/OpenCVtracking/video/P8.mp4" );
+    camCapture = cvCaptureFromFile( "/Users/c-hchang/Desktop/OpenCVtracking/video/P6.mp4" );
     else
     camCapture = cvCaptureFromCAM(CV_CAP_ANY);
 
@@ -162,7 +161,7 @@ int main (int argc, const char * argv[])
                     std::vector<CvPoint2D32f> match_query;
                     std::vector<CvPoint2D32f> match_train;
 
-                    LKFeatures LKFeatures (imgGrayA,imgGrayB, LKFeatures. Freak_descriptor);
+                    LKFeatures LKFeatures (imgGrayA,imgGrayB, LKFeatures. BRIEF_descriptor);
                     LKFeatures.FeaturesMatched (match_query, match_train);
 
                     //SIFTfeature SIFTfeature(imgGrayA, imgGrayB,2, 0.05);
@@ -286,13 +285,14 @@ int main (int argc, const char * argv[])
                             vector<v3_t> V3Dpts;
 
                             loop++;
-                            if (loop > 20)
+                            if (loop >28)
                             {
                                 for(int i=0;i< CameraPose.mTcMatrix.size();i++)
                                 {
                                     double T[3];
                                     memcpy(T, CameraPose.mTcMatrix[i].n,3*sizeof(double));
-                                    matrix_print(1,3,T);
+                                    cout<<T[0]<<" "<<-1*T[1]<<" "<<T[2]<<endl;
+                                    //matrix_print(1,3,T);
                                 }
                                 DumpPointsToPly("/Users/c-hchang/Desktop/Opencvtracking/Point/result.ply", FeaturePts. _3DLocation
                                                 , FeaturePts. _3DLocation.size());

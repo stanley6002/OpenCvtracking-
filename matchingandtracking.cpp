@@ -210,10 +210,10 @@ switch(input)
     case BRIEF_descriptor:
          {
            goodFeaturesToTrack(ImageGray1,  LK_query_kpts, 400, 0.001, 8);
-           cornerSubPix( ImageGray1, LK_query_kpts, cv::Size(7,7) , cv::Size(-1,-1) , cv::TermCriteria( CV_TERMCRIT_EPS + CV_TERMCRIT_ITER, 10, 0.001 ));
+           cornerSubPix( ImageGray1, LK_query_kpts, cv::Size(9,9) , cv::Size(-1,-1) , cv::TermCriteria( CV_TERMCRIT_EPS + CV_TERMCRIT_ITER, 10, 0.001 ));
            calcOpticalFlowPyrLK(ImageGray1, ImageGray2, LK_query_kpts, LK_train_kpts, status, err, cv::Size(40,40));
 
-           LK_descriptor = new cv::BriefDescriptorExtractor(16);
+           LK_descriptor = new cv::BriefDescriptorExtractor(32);
 
 
            int size_= (int) LK_query_kpts.size();
@@ -242,7 +242,7 @@ switch(input)
           cv::Mat results;
              if(LK_query_desc.type()==CV_8U)
              {
-              cv::flann::Index flannIndex(LK_query_desc, cv::flann::LshIndexParams(12, 16 , 2), cvflann::FLANN_DIST_HAMMING);
+              cv::flann::Index flannIndex(LK_query_desc, cv::flann::LshIndexParams(12, 10 , 2), cvflann::FLANN_DIST_HAMMING);
               flannIndex.knnSearch(LK_train_desc, results, distance, k, cv::flann::SearchParams() );
              }
                  float ErroRatio = 0.5;
@@ -269,8 +269,8 @@ switch(input)
       case Freak_descriptor:
             {
                 goodFeaturesToTrack(ImageGray1,  LK_query_kpts, 400, 0.001, 8);
-                cornerSubPix( ImageGray1, LK_query_kpts, cv::Size(7,7) , cv::Size(-1,-1) , cv::TermCriteria( CV_TERMCRIT_EPS + CV_TERMCRIT_ITER, 10, 0.001 ));
-                calcOpticalFlowPyrLK(ImageGray1, ImageGray2, LK_query_kpts, LK_train_kpts, status, err, cv::Size(40,40));
+                cornerSubPix( ImageGray1, LK_query_kpts, cv::Size(9,9) , cv::Size(-1,-1) , cv::TermCriteria( CV_TERMCRIT_EPS + CV_TERMCRIT_ITER, 10, 0.001 ));
+                calcOpticalFlowPyrLK(ImageGray1, ImageGray2, LK_query_kpts, LK_train_kpts, status, err, cv::Size(45,45));
 
                 std::vector<cv::KeyPoint> temp_query;
 
@@ -280,7 +280,7 @@ switch(input)
 
                 Ptr<DescriptorExtractor>  Extractor;
 
-                Extractor= new FREAK(true,true,30.0,1);
+                Extractor= new FREAK(true,true,32.0,1);
 
                 int size_= (int) LK_query_kpts.size();
 

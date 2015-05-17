@@ -67,9 +67,9 @@ void FeaturePts::CollectFeatureTrackProjectPts(int Previous_ptsize , v2_t* Curre
         }
     }
     
-    // Update the number of reprojection points
+     // Update the number of reprojection points
     
-    this->NumReproject = (int) mv3ProjectionPts.size();
+     this->NumReproject = (int) mv3ProjectionPts.size();
      cout<< " Projection size "<<  mv3ProjectionPts.size()<<endl;
      cout<< " ReProjection size "<< mv2ReprojectPts.size()<<endl;
 }
@@ -161,7 +161,7 @@ void FeaturePts:: UpdatedFeatureTrack(vector<v2_t>& left_pts, vector<v2_t>& righ
     cout<< "after "<<size_<<endl;
        for(int i=0;i<size_ ; i++)
          {
-        int index = (int) mv2_frame[i].size()-1;
+         int index = (int) mv2_frame[i].size()-1;
          if (mv2_frame[i][index]== FrameNum)
           {
           // pick up 2D and 3D points
@@ -201,7 +201,7 @@ void FeaturePts::CleanFeatureTrack()
 
 void FeaturePts::PointRefinement(vector<v3_t> &  Tempv3Dpts, vector <bool> tempvector)
 {
-     int NumPts = (int) Tempv3Dpts.size();
+    int NumPts = (int) Tempv3Dpts.size();
      
     vector<vector<int> >v2_frame;
     vector<vector<v2_t> >v2_location;
@@ -233,16 +233,7 @@ void FeaturePts::PointRefinement(vector<v3_t> &  Tempv3Dpts, vector <bool> tempv
                 
                }           
            }
-            //if(tempvector[i]== true)
-            //{
-                //int removal_index =i;
-                //removal_index -=  shift_index;
-                // Tempv3Dpts.erase(Tempv3Dpts.begin()+removal_index);
-                // mv2_frame.erase(mv2_frame.begin()+removal_index);
-                // mv2_location.erase(mv2_location.begin()+removal_index);
-                
-                //shift_index++;
-           // }   
+
         }
        
     _3DLocation.insert(_3DLocation.end(),v3D.begin(),v3D.end());

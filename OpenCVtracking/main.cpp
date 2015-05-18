@@ -91,6 +91,7 @@ int main (int argc, const char * argv[])
     CameraPose CameraPose;
     OpenGLPlot  OpenGLPlot (Img_width*2, Img_height*2);
     FeaturePts FeaturePts;
+    FeaMapPoints FeaMapPoints;
 
     /// flow control parameters
     int firstcapture = 1;
@@ -224,12 +225,13 @@ int main (int argc, const char * argv[])
                             CameraPose.First2viewInitialization(EpipolarGeometry.R1matrix, EpipolarGeometry.R_relative, EpipolarGeometry.t1matrix, EpipolarGeometry.t_relative);
 
                             FeaturePts.Loadv2Pts( left_pts, right_pts);
-
-                            // frame: Right-> left -> Right
-
                             FeaturePts.Loadv3Pts(V3Dpts);
                             int FrameNum= 2 ;
                             FeaturePts.LoadFeatureList(FrameNum);
+
+                            FeaMapPoints.LoadFMv2Pts( left_pts, right_pts);
+                            FeaMapPoints.LoadFMv3Pts(V3Dpts);
+                            FeaMapPoints.LoadFMFeatureList(FrameNum);
 
                         }
 
@@ -238,12 +240,13 @@ int main (int argc, const char * argv[])
 
                             CameraPose. InitializeKMatrix(Focuslength);
 
-                            int FrameNum =2;
+                            int FrameNum =2;  // frame number need to be increased //
 
                             // Connect feature point and create feature tracks
 
                             FeaturePts.ConnectedVideoSequence( FeaturePts.m_rightPts, EpipolarGeometry.lrefined_pt /*connected pts*/ , EpipolarGeometry.rrefined_pt  /* current pts*/ , EpipolarGeometry.num_ofrefined_pts,FrameNum);
 
+                            FeaMapPoints.ConnectedFMVideoSequence( EpipolarGeometry.lrefined_pt /*connected pts*/ , EpipolarGeometry.rrefined_pt  /* current pts*/ , EpipolarGeometry.num_ofrefined_pts,FrameNum);
 
                             CameraPose.Egomotion(EpipolarGeometry.R_relative, EpipolarGeometry.t_relative, FeaturePts.mv3ProjectionPts, FeaturePts.mv2ReprojectPts);
 

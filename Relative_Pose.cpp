@@ -470,7 +470,7 @@ void CameraPose:: deltavector(v2_t* _2Dpt,  v3_t* _3Dpt, double* Parametrvec_)
     
 }
 
-void CameraPose :: TriangulationN_Frames(vector<vector<v2_t> > mv2_location /*2D points location*/ , 
+void CameraPose :: TriangulationN_Frames(  vector<vector<v2_t> > mv2_location /*2D points location*/ ,
                                            vector<vector<int> >  mv2_frame /*frame number*/, 
                                            vector<v3_t>& v3Pts/*triangulation output*/ , 
                                            vector<bool>& boolvector /*save array for refinement*/)     

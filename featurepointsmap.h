@@ -27,8 +27,8 @@ public:
     int CurrentListIndex;
     int PreviousListIndex;
 
-    vector<v2_t> StackIndex;
-    vector<int> TriIndex;
+    vector<v2_t> StackIndex;  // for update video connected points
+    vector<int> TriIndex;     // for updating triangulation list
 
     int NumReproject;
     int FrameNumber;
@@ -55,8 +55,8 @@ public:
         int size_= (int) this-> FM_leftPts.size();
         if (size_ != (int) FM_rightPts.size())
         {
-            cout<<"size different program exit"<<endl;
-            exit(0);
+            cout<<"size different;program exit"<<endl;
+            exit(1);
         }
 
         for(int i=0;i< size_;i++)
@@ -81,7 +81,8 @@ public:
         {
             CurrentListIndex= (int)FM_v2_location.size();
         }
-        else{
+        else
+        {
             PreviousListIndex= CurrentListIndex;
             CurrentListIndex+= (int)FM_v2_location.size();
         }
@@ -99,7 +100,7 @@ public:
         FM_3DLocation. insert(FM_3DLocation.end(), V3Dpts.begin(), V3Dpts.end());
     }
 
-    void ConnectedFMVideoSequence( v2_t* Connected_pts /*current new frame*/,v2_t* Current_pts, int Numpts , int FrameNumber);
+    void ConnectedFMVideoSequence( v2_t* Connected_pts /*current new frame*/, v2_t* Current_pts, int Numpts , int FrameNumber);
 
     void CreateFMFeatureTrack(int* tempCurrent, int ConnectedPtsize, v2_t* Connected_pts/* current left points*/,
                               v2_t* Current_pts/*current new points*/, int FrameNumber);

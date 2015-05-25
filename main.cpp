@@ -191,7 +191,6 @@ int main (int argc, const char * argv[])
                             vector<v2_t> left_pts;
                             vector<v2_t> right_pts;
                             vector<v3_t> V3Dpts;    
-                            
 
                             SkipthisFrame =0; 
                             

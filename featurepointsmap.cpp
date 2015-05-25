@@ -101,6 +101,17 @@ void FeaMapPoints::ConnectedFMVideoSequence(v2_t* Connected_pts /* current frame
     CreateFMFeatureTrack(tempCurrent, ConnectedPtsize, Connected_pts, Current_pts , FrameNumber);
     CollectFMFeatureTrackProjectPts(Current_pts, FrameNumber);
 
+    /*
+    for (int i=0;i<FM_v2_frame.size();i++ )
+    {
+        for (int j =0; j<FM_v2_frame[i].size();j++)
+        {
+            cout<< FM_v2_frame[i][j]<<" ";
+        }
+        cout<< endl;
+    }*/
+
+    CurrentListIndex = (int) FM_v2_frame.size();
     //delete [] StackIdx;
     
     delete [] tempCurrent;
@@ -130,6 +141,7 @@ void FeaMapPoints::CreateFMFeatureTrack(int* tempCurrent, int ConnectedPtsize, v
             FM_v2_location[size_2Dlocation-1].push_back(Connected_pts[i]);
             FM_v2_location[size_2Dlocation-1].push_back(Current_pts[i]);
 
+
             TriIndex.push_back((int) FM_v2_frame.size()-1);
 
         }
@@ -146,9 +158,10 @@ void FeaMapPoints::CollectFMFeatureTrackProjectPts(v2_t* Current_pts, int FrameN
 
             FM_v2_location[indexi].push_back(Current_pts[indexj]);    // add connected feature point to existing list and collect 3D->2d POINTS
             FM_v2_frame[indexi].push_back(FrameNum);
+
             FM_v2ReprojectPts.push_back(Current_pts[indexj]);    // collect 2D reprojection pts
             FM_v3ProjectionPts.push_back(FM_3DLocation[indexi]);           // collect
-        }
+    }
     // Update the number of reprojection points
     this->NumReproject = (int) FM_v3ProjectionPts.size();
     //cout<< " Projection size "<<  FM_v3ProjectionPts.size()<<endl;

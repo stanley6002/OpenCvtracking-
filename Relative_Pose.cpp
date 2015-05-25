@@ -601,6 +601,7 @@ double CameraPose:: CameraReprojctionErrorRefinement(vector<vector<v2_t> > mv2_l
           sum=sum+temp;
         }
     }
+
     float variance = sum * (1. / size_);
     cout<<"means and variance "<< mean_err <<" "<<variance<<endl; 
     
@@ -814,4 +815,226 @@ bool CheckCheirality(v3_t pt)
         Cheirality=true;
     return(Cheirality);
 }
+
+/// new camera pose calculation ///
+void CameraPose :: Triangulation_N_frame_Map ( int CurrentFrame,
+                                               int FrameSize ,
+                                               int CurrentListIndex,
+                                               vector<vector<v2_t> > mv2_location /*2D points location*/ ,
+                                               vector<vector<int> >  mv2_frame /*frame number*/,
+                                               vector<v3_t>& v3Pts/*triangulation output*/ ,
+                                               vector<bool>& boolvector /*save array for refinement*/)
+{
+    int LowboundSearch;
+    int UpperboundSearch;
+
+    if(CurrentListIndex> 400)
+    {
+        LowboundSearch  = CurrentListIndex-400;
+        UpperboundSearch= CurrentListIndex;
+    }
+
+    else
+    {
+        LowboundSearch  = 0;
+        UpperboundSearch= CurrentListIndex;
+    }
+
+    int NumPts = UpperboundSearch- LowboundSearch;
+
+    vector<v3_t> _3Dpts;
+    _3Dpts.reserve(NumPts);
+
+    v3_t nullpts;
+    nullpts.p[0]=NULL; nullpts.p[1]=NULL; nullpts.p[2]=NULL;
+
+    for (int i=0;i< NumPts;i++)
+    _3Dpts.push_back(nullpts);
+
+    vector<bool> tempIndex(NumPts,0);
+
+    for (int i = LowboundSearch; i< UpperboundSearch; i++)
+    {
+      int FrameNum= (int)mv2_frame[i].size();
+      int UsedFrame = (int)mv2_frame[i][FrameNum-1];
+       // select the non-update 3D points //
+      if (CurrentFrame != UsedFrame)
+       {
+           tempIndex[i-LowboundSearch]=1;
+       }
+    }
+
+    for (int i = LowboundSearch; i < UpperboundSearch; i++)
+    {
+
+      int idx = i - LowboundSearch;
+
+      if(tempIndex[idx]==0)
+      {
+       int FrameNum= (int)mv2_frame[i].size();
+
+       v2_t *pv = new v2_t[FrameNum];
+       double *Rs= new double [9*  FrameNum];
+       double *ts = new double[3 * FrameNum];
+
+       for (int j=0; j<FrameNum ;j++)
+           {
+              int N =  mv2_frame[i][j];
+              double Pt3[3]= {mv2_location[i][j].p[0], mv2_location[i][j].p[1], 1.0};
+              double Translation_Scaled [3];
+              double Translated [3];
+              double K [9];
+              double Kinv [9];
+              double Rotation[9];
+              double Tc[3];
+
+              //PopTriKMattix(N, K);
+              PopKMattix(N,K);
+              matrix_invert(3, K, Kinv);
+              double p_n[3];
+              matrix_product(3, 3, 3, 1, Kinv, Pt3, p_n);
+
+              pv[j].p[0]= -p_n[0];
+              pv[j].p[1]= -p_n[1];
+
+              //PopTriRotcMatrix(N, Rotation);
+              PopRotcMatrix(N,Rotation);
+              memcpy(Rs + 9 * j, Rotation, 9 * sizeof(double));
+              //PopTriTcMatrix(N,Tc);
+
+              PopTcMatrix(N,Tc);
+              matrix_product(3,3,3,1,Rotation,Tc,Translated);
+              matrix_scale(3,1,Translated,-1.0,Translation_Scaled);
+              memcpy(ts + 3 * j,Translation_Scaled, 3 * sizeof(double));
+              
+          }
+
+          double error;
+          v3_t pt = triangulate_n(FrameNum, pv, Rs, ts, &error);
+          _3Dpts[idx]=pt;
+
+          delete []  pv;
+          delete []  Rs;
+          delete []  ts;
+       }
+    }
+
+
+    RefineN_MAPPoints( _3Dpts, NumPts, tempIndex);
+
+    //RefineN_FramePoints( _3Dpts , NumPts, tempvector);
+
+    //CameraReprojctionErrorRefinement( mv2_location /*2D points location*/ ,  mv2_frame /*frame number*/, NumPts, _3Dpts, tempvector );
+
+    //v3Pts.swap(_3Dpts);   // update 3D points
+    //cout<<"after triangulation refine "<< v3Pts.size()<<endl;
+    //boolvector.swap(tempvector) ;
+
+}
+void RefineN_MAPPoints (vector<v3_t> _3DPts, int NumPts, vector<bool>& tempvector)
+{
+    _3DdepthRefine(_3DPts, tempvector, NumPts);
+
+}
+/*
+void _3DdepthRefineMAP (vector<v3_t> m_3Dpts, vector<bool>& tempvector, int num_ofrefined_pts)
+{
+
+    int size_= num_ofrefined_pts;
+    double max_number =  999;    // remove outliers from candidated points
+    double min_number = -999;
+    double range;
+    int i;
+    int Nbins = 49;
+
+    int Bin[50]={};
+
+    int mx_index= 0;
+
+    double maxDepth;
+    double minDepth;
+
+    // Remove some incredible depth first //
+
+    for (int i=0;i< size_;i++)
+    {
+        if ( m_3Dpts[i].p[2]< min_number)
+            tempvector[i]= true;
+        if ( m_3Dpts[i].p[2]> max_number)
+            tempvector[i]= true;
+    }
+
+    // find max and min for voting
+    for (int i=0;i< size_;i++)
+    {
+        if( !tempvector[i] )
+        {
+            if( m_3Dpts[i].p[2]> min_number)
+            {
+                maxDepth = m_3Dpts[i].p[2];
+                min_number= maxDepth;
+            }
+            if( m_3Dpts[i].p[2]< max_number)
+            {
+                minDepth= m_3Dpts[i].p[2] ;
+                max_number= minDepth;
+            }
+        }
+
+    }
+
+    range = fabs((maxDepth - minDepth) / (Nbins+1));
+    for(i=0; i<size_;i++)
+    {
+        if (tempvector[i] == false)
+        {
+            float x = (float) m_3Dpts[i].p[2];
+            int idx = floor((x-minDepth)/range);
+
+            if (idx < 0)
+            {
+                idx = 0;
+            }
+
+            if (idx > 49)
+            {
+                idx = 49;
+            }
+            Bin[idx] += 1;
+
+        }
+    }
+
+
+    int mx_bin  = 0;
+    for (int i=0;i< Nbins;i++)
+    {
+        //   cout<<"each bin " <<Bin[i]<<endl;
+        if(Bin[i]> mx_bin)
+        {
+            mx_bin = Bin[i];
+            mx_index = i;
+        }
+    }
+
+
+    float depth = (minDepth+(mx_index)*range);
+    float varince= Variance (m_3Dpts, depth, size_);
+    float *densitytemp  = new float [size_];
+    cout<< depth <<"variance "<<varince <<endl;
+    for (int i=0;i< size_;i++)
+    {
+        float x = (float) m_3Dpts[i].p[2];
+        float a=-fabs(x-depth)*(1./(1.06*(sqrt(varince))*2.1));
+        //float density = exp(a);
+        densitytemp[i]=exp(a);
+        if (densitytemp[i]< MiniDensity)
+            tempvector[i] = true;
+    }
+    delete [] densitytemp;
+    
+    
+    
+}*/
+
 

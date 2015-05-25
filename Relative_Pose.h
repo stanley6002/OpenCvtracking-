@@ -231,7 +231,17 @@ class CameraPose
     double ReprojectionError(double *R, double* Tc, v3_t Pts, v2_t Projpts, double * Kmatrix);
     //inline void PopRotmatirx(double* R);
     //inline void PopTmatrix(double* T);
-    
+
+    void Triangulation_N_frame_Map ( int CurrentFram,
+                                     int FrameSize ,
+                                     int CurrentListIndex,
+                                     vector<vector<v2_t> > mv2_location /*2D points location*/ ,
+                                     vector<vector<int> >  mv2_frame /*frame number*/,
+                                     vector<v3_t>& v3Pts/*triangulation output*/ ,
+                                     vector<bool>& boolvector /*save array for refinement*/);
+
+    void RefineN_MAPPoints(vector<v3_t> _3DPts, int NumPts, vector<bool>& tempvector);
+
     CameraPose ();
     ~CameraPose ();
     

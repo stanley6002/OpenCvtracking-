@@ -59,26 +59,26 @@ void FeaMapPoints::ConnectedFMVideoSequence(v2_t* Connected_pts /* current frame
 
     for (int i=0; i< Memsize; i++)
     {
-        int shiftlowbound = i+LowboundSearch;
+        int shiftlowbound = i+ LowboundSearch;
         int FrameRowsize = (int) FM_v2_frame[i].size();
 
         if (FM_v2_frame[shiftlowbound][FrameRowsize-1] == FrameNumber-1)
         {
-        if (tempPrevious[i] != NUM)
-           {
+           if (tempPrevious[i] != NUM)
+              {
                 int rowsize = (int) FM_v2_location[shiftlowbound].size();
                 int x = FM_v2_location[shiftlowbound][rowsize-1].p[0];
                 int y = FM_v2_location[shiftlowbound][rowsize-1].p[1];
 
-                for (int j=0; j< ConnectedPtsize; j++)
-                 {
-                    if (tempCurrent[j] != NUM)
+                 for (int j=0; j< ConnectedPtsize; j++)
                     {
+                    if (tempCurrent[j] != NUM)
+                      {
                         int x_m =  (int) Connected_pts[j].p[0];
                         int y_m =  (int) Connected_pts[j].p[1];
 
-                        if (sqrt(((x-x_m)*(x-x_m))+((y-y_m)*(y-y_m)))<=1.414)
-                        {
+                         if (sqrt(((x-x_m)*(x-x_m))+((y-y_m)*(y-y_m)))<=1.414)
+                          {
                             numreprojection++;
                             //StackIndex[i]=j;
                             v2_t P;
@@ -93,11 +93,11 @@ void FeaMapPoints::ConnectedFMVideoSequence(v2_t* Connected_pts /* current frame
                             break;
                         }
                     }
-               }
-           }
+                }
+            }
         }
      }
-    //cout<<"number of reprojection:  " <<numreprojection<<endl;
+
     CreateFMFeatureTrack(tempCurrent, ConnectedPtsize, Connected_pts, Current_pts , FrameNumber);
     CollectFMFeatureTrackProjectPts(Current_pts, FrameNumber);
 
@@ -121,6 +121,7 @@ void FeaMapPoints::ConnectedFMVideoSequence(v2_t* Connected_pts /* current frame
 // create feature track with new upcoming frame //
 // Connectec_pts -> first points
 // Current_pts -> second points
+
 void FeaMapPoints::CreateFMFeatureTrack(int* tempCurrent, int ConnectedPtsize, v2_t* Connected_pts/* current left points*/, v2_t* Current_pts/*current new points*/, int FrameNumber)
 {
     for (int i =0;i<ConnectedPtsize ;i++)
@@ -141,9 +142,7 @@ void FeaMapPoints::CreateFMFeatureTrack(int* tempCurrent, int ConnectedPtsize, v
             FM_v2_location[size_2Dlocation-1].push_back(Connected_pts[i]);
             FM_v2_location[size_2Dlocation-1].push_back(Current_pts[i]);
 
-
             TriIndex.push_back((int) FM_v2_frame.size()-1);
-
         }
     }
 }
@@ -162,8 +161,6 @@ void FeaMapPoints::CollectFMFeatureTrackProjectPts(v2_t* Current_pts, int FrameN
             FM_v2ReprojectPts.push_back(Current_pts[indexj]);    // collect 2D reprojection pts
             FM_v3ProjectionPts.push_back(FM_3DLocation[indexi]);           // collect
     }
-    // Update the number of reprojection points
-    this->NumReproject = (int) FM_v3ProjectionPts.size();
-    //cout<< " Projection size "<<  FM_v3ProjectionPts.size()<<endl;
-    //cout<< " ReProjection size "<< FM_v2ReprojectPts.size()<<endl;
+     // Update the number of reprojection points
+     this->NumReproject = (int) FM_v3ProjectionPts.size();
 }

@@ -34,6 +34,7 @@ void F_matrix_process (int num_pts, v3_t* r_pt, v3_t* l_pt, double *F_final, int
     //cout<< error_brefine/(int)inliers.size()<<endl;
     v3_t *l_ptinlier= new v3_t[(int)inliers.size()];
     v3_t *r_ptinlier= new v3_t[(int)inliers.size()];
+
     for (int i=0; i<(int)inliers.size();i++)
     {
         //CvPoint newmatched;  

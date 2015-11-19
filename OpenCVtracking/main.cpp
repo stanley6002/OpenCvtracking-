@@ -174,12 +174,12 @@ int main (int argc, const char * argv[])
                     //FAST_ FAST_(2, imgGrayA, imgGrayB, FAST_. SURF_descriptor);
                     //FAST_. FAST_tracking(match_query, match_train);
 
-                    // ORBfeature  ORBfeature(imgGrayA, imgGrayB,0.01,0.01);
-                    // ORBfeature. ORBfeaturematch(match_query, match_train);
+                    //ORBfeature  ORBfeature(imgGrayA, imgGrayB,0.01,0.01);
+                    //ORBfeature. ORBfeaturematch(match_query, match_train);
 
                     int size_match= (int) match_query.size();
                     int numTrialFmatrix = 30;
-                    int numTrialRelativePose = 25;
+                    int numTrialRelativePose = 20;
                     int Focuslength= 300;
                     int Ransac_threshold= 2.0;
                     float MaxAngle;
@@ -245,7 +245,7 @@ int main (int argc, const char * argv[])
 
                             //FeaturePts.ConnectedVideoSequence( FeaturePts.m_rightPts, EpipolarGeometry.lrefined_pt /*connected pts*/ , EpipolarGeometry.rrefined_pt  /* current pts*/ , EpipolarGeometry.num_ofrefined_pts,FrameNum);
 
-                            FeaMapPoints.ConnectedFMVideoSequence( EpipolarGeometry.lrefined_pt /*connected pts*/ , EpipolarGeometry.rrefined_pt  /* current pts*/ , EpipolarGeometry.num_ofrefined_pts,FrameNum);
+                           FeaMapPoints.ConnectedFMVideoSequence( EpipolarGeometry.lrefined_pt /*connected pts*/ , EpipolarGeometry.rrefined_pt  /* current pts*/ , EpipolarGeometry.num_ofrefined_pts,FrameNum);
 
                            // CameraPose.Egomotion(EpipolarGeometry.R_relative, EpipolarGeometry.t_relative, FeaturePts.mv3ProjectionPts, FeaturePts.mv2ReprojectPts);
 
@@ -265,58 +265,53 @@ int main (int argc, const char * argv[])
 
                             //CameraPose.TriangulationN_Frames(FeaturePts. mv2_location , FeaturePts. mv2_frame , Tempv3Dpts , tempvector);
 
-                            CameraPose.Triangulation_N_frame_Map (FrameNum,
-                                                             3 ,
+                            CameraPose.Triangulation_N_frame_Map(FrameNum,
+                                                                        3 ,
                                                              FeaMapPoints.CurrentListIndex,
                                                              FeaMapPoints.FM_v2_location /*2D points location*/ ,
                                                              FeaMapPoints.FM_v2_frame /*frame number*/,
-                                                             Tempv3Dpts /*triangulation output*/ ,
+                                                             Tempv3Dpts /*triangulation output*/,
                                                              tempvector /*save array for refinement*/);
-
-
+                            // update refinement points //
                             FeaturePts.PointRefinement(Tempv3Dpts, tempvector);
 
-                            cout<< "Number of points before SFM"<<(int) FeaturePts.m_3Dpts.size()<<endl;
+                            cout<< "Number of points before SFM "<<(int) FeaturePts.m_3Dpts.size()<<endl;
                             
-                            double error = RunSFM_Nviews_Main(FeaturePts.m_3Dpts.size() /*number of 3D pts */,
+                            double error = RunSFM_Nviews_Main(FeaturePts. m_3Dpts.size() /*number of 3D pts */,
                                                               3,
                                                               0,
-                                                              CameraPose. mtriRotmatrix,     /*camera rotation matrix*/
-                                                              CameraPose. mtriTcmatrix,      /*camera translation matrix*/
-                                                              CameraPose. mtriKmatrix,       /*camera instrinstic matrix*/
+                                                              CameraPose. mtriRotmatrix, /*camera rotation matrix*/
+                                                              CameraPose. mtriTcmatrix,  /*camera translation matrix*/
+                                                              CameraPose. mtriKmatrix, /*camera instrinstic matrix*/
                                                               FeaturePts. mv2_location /*2D points location*/ ,
                                                               FeaturePts. mv2_frame    /*frame number*/,
-                                                              FeaturePts.m_3Dpts                /*triangulation output*/);
+                                                              FeaturePts. m_3Dpts      /*triangulation output*/);
 
 
                             cout<< FeaturePts.mv2_frame.size()<<endl;
-
-                            //int idx= CameraPose.mtriTcmatrix.size();
-
                             CameraPose.RemoveTri();  // remove third
 
                             vector<v2_t> left_pts;
                             vector<v2_t> right_pts;
                             vector<v3_t> V3Dpts;
-
                             loop++;
-                            if (loop >28)
+
+                            if (loop >5)
                             {
-                                for(int i=0;i< CameraPose.mTcMatrix.size();i++)
-                                {
+                                for(int i=0;i< CameraPose.mTcMatrix.size();i++) {
                                     double T[3];
                                     memcpy(T, CameraPose.mTcMatrix[i].n,3*sizeof(double));
                                     cout<<T[0]<<" "<<-1*T[1]<<" "<<T[2]<<endl;
                                     //matrix_print(1,3,T);
                                 }
-                                DumpPointsToPly("/Users/c-hchang/Desktop/Opencvtracking/Point/result.ply", FeaturePts. _3DLocation
-                                                , FeaturePts. _3DLocation.size());
+
+                                DumpPointsToPly("/Users/c-hchang/Desktop/Opencvtracking/Point/result.ply", FeaturePts. _3DLocation , FeaturePts. _3DLocation.size());
                                 break;
                             }
 
-                            FeaturePts. UpdatedFeatureTrack(left_pts,right_pts, V3Dpts, FrameNum);
+                            FeaturePts.UpdatedFeatureTrack( left_pts, right_pts, V3Dpts, FrameNum );
 
-                            FeaturePts. CleanFeatureTrack();
+                            FeaturePts.CleanFeatureTrack();
 
                             cout<<"Number of points loaded into "<<left_pts.size()<<endl;
                             

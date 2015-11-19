@@ -34,16 +34,16 @@ public:
     int FrameNumber;
 
     int List_Index;
-
+    // 3D points repository//
     vector<v3_t> FM_3Dpts;
 
     vector<v2_t> FM_leftPts;
     vector<v2_t> FM_rightPts;
 
-    // store find 3D position //
+    // store for 3D position //
     vector<v3_t> FM_3DLocation;
-
     vector<v2_t> FM_v2ReprojectPts;
+    // for 3D reporjection error calculation//
     vector<v3_t> FM_v3ProjectionPts;
 
     vector<vector<v2_t> > FM_v2_location;   // show 2D point locations

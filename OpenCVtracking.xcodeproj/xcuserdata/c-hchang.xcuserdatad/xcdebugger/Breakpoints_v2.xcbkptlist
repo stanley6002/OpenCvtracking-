@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "OpenCVtracking/main.cpp"
-            timestampString = "454284378.640837"
+            timestampString = "469561906.740121"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "318"
-            endingLineNumber = "318"
+            startingLineNumber = "313"
+            endingLineNumber = "313"
             landmarkName = "main (int argc, const char * argv[])"
             landmarkType = "7">
          </BreakpointContent>
@@ -26,29 +26,301 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "OpenCVtracking/main.cpp"
-            timestampString = "454284378.640837"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "296"
-            endingLineNumber = "296"
-            landmarkName = "main (int argc, const char * argv[])"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "OpenCVtracking/main.cpp"
-            timestampString = "454284378.640837"
+            timestampString = "469561906.740121"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "281"
             endingLineNumber = "281"
             landmarkName = "main (int argc, const char * argv[])"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Relative_Pose.cpp"
+            timestampString = "469552969.107788"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "866"
+            endingLineNumber = "866"
+            landmarkName = "CameraPose :: Triangulation_N_frame_Map ( int CurrentFrame, int FrameSize , int CurrentListIndex, vector&lt;vector&lt;v2_t&gt; &gt; mv2_location /*2D points location*/ , vector&lt;vector&lt;int&gt; &gt; mv2_frame /*frame number*/, vector&lt;v3_t&gt;&amp; v3Pts /*triangulation output*/ , vector&lt;bool&gt;&amp; boolvector"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "OpenCVtracking/main.cpp"
+            timestampString = "469561906.740121"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "277"
+            endingLineNumber = "277"
+            landmarkName = "main (int argc, const char * argv[])"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "OpenCVtracking/main.cpp"
+            timestampString = "469561906.740121"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "279"
+            endingLineNumber = "279"
+            landmarkName = "main (int argc, const char * argv[])"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FeaturePoint.cpp"
+            timestampString = "469561906.740121"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "261"
+            endingLineNumber = "261"
+            landmarkName = "FeaturePts::PointRefinement(vector&lt;v3_t&gt; &amp; Tempv3Dpts, vector &lt;bool&gt; tempvector)"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FeaturePts::PointRefinement(std::__1::vector&lt;v3_t, std::__1::allocator&lt;v3_t&gt; &gt;&amp;, std::__1::vector&lt;bool, std::__1::allocator&lt;bool&gt; &gt;)"
+                  moduleName = "OpenCVtracking"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/c-hchang/Desktop/OpenCVtracking/FeaturePoint.cpp"
+                  timestampString = "469561907.010734"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "275"
+                  endingLineNumber = "275"
+                  offsetFromSymbolStart = "4723">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FeaturePts::PointRefinement(std::__1::vector&lt;v3_t, std::__1::allocator&lt;v3_t&gt; &gt;&amp;, std::__1::vector&lt;bool, std::__1::allocator&lt;bool&gt; &gt;)"
+                  moduleName = "OpenCVtracking"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/c-hchang/Desktop/OpenCVtracking/FeaturePoint.cpp"
+                  timestampString = "469561907.010921"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "275"
+                  endingLineNumber = "275"
+                  offsetFromSymbolStart = "4750">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FeaturePoint.cpp"
+            timestampString = "469561906.740121"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "260"
+            endingLineNumber = "260"
+            landmarkName = "FeaturePts::PointRefinement(vector&lt;v3_t&gt; &amp; Tempv3Dpts, vector &lt;bool&gt; tempvector)"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FeaturePts::PointRefinement(std::__1::vector&lt;v3_t, std::__1::allocator&lt;v3_t&gt; &gt;&amp;, std::__1::vector&lt;bool, std::__1::allocator&lt;bool&gt; &gt;)"
+                  moduleName = "OpenCVtracking"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/c-hchang/Desktop/OpenCVtracking/FeaturePoint.cpp"
+                  timestampString = "469561907.0117"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "275"
+                  endingLineNumber = "275"
+                  offsetFromSymbolStart = "4723">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FeaturePts::PointRefinement(std::__1::vector&lt;v3_t, std::__1::allocator&lt;v3_t&gt; &gt;&amp;, std::__1::vector&lt;bool, std::__1::allocator&lt;bool&gt; &gt;)"
+                  moduleName = "OpenCVtracking"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/c-hchang/Desktop/OpenCVtracking/FeaturePoint.cpp"
+                  timestampString = "469561907.011855"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "275"
+                  endingLineNumber = "275"
+                  offsetFromSymbolStart = "4750">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FeaturePoint.cpp"
+            timestampString = "469561906.740121"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "256"
+            endingLineNumber = "256"
+            landmarkName = "FeaturePts::PointRefinement(vector&lt;v3_t&gt; &amp; Tempv3Dpts, vector &lt;bool&gt; tempvector)"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FeaturePts::PointRefinement(std::__1::vector&lt;v3_t, std::__1::allocator&lt;v3_t&gt; &gt;&amp;, std::__1::vector&lt;bool, std::__1::allocator&lt;bool&gt; &gt;)"
+                  moduleName = "OpenCVtracking"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/c-hchang/Desktop/OpenCVtracking/FeaturePoint.cpp"
+                  timestampString = "469561907.012606"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "275"
+                  endingLineNumber = "275"
+                  offsetFromSymbolStart = "4723">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FeaturePts::PointRefinement(std::__1::vector&lt;v3_t, std::__1::allocator&lt;v3_t&gt; &gt;&amp;, std::__1::vector&lt;bool, std::__1::allocator&lt;bool&gt; &gt;)"
+                  moduleName = "OpenCVtracking"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/c-hchang/Desktop/OpenCVtracking/FeaturePoint.cpp"
+                  timestampString = "469561907.012756"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "275"
+                  endingLineNumber = "275"
+                  offsetFromSymbolStart = "4750">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FeaturePoint.cpp"
+            timestampString = "469561906.740121"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "217"
+            endingLineNumber = "217"
+            landmarkName = "FeaturePts::PointRefinement(vector&lt;v3_t&gt; &amp; Tempv3Dpts, vector &lt;bool&gt; tempvector)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FeaturePoint.cpp"
+            timestampString = "469561906.740121"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "255"
+            endingLineNumber = "255"
+            landmarkName = "FeaturePts::PointRefinement(vector&lt;v3_t&gt; &amp; Tempv3Dpts, vector &lt;bool&gt; tempvector)"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FeaturePts::PointRefinement(std::__1::vector&lt;v3_t, std::__1::allocator&lt;v3_t&gt; &gt;&amp;, std::__1::vector&lt;bool, std::__1::allocator&lt;bool&gt; &gt;)"
+                  moduleName = "OpenCVtracking"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/c-hchang/Desktop/OpenCVtracking/FeaturePoint.cpp"
+                  timestampString = "469561907.014"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "275"
+                  endingLineNumber = "275"
+                  offsetFromSymbolStart = "4723">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FeaturePts::PointRefinement(std::__1::vector&lt;v3_t, std::__1::allocator&lt;v3_t&gt; &gt;&amp;, std::__1::vector&lt;bool, std::__1::allocator&lt;bool&gt; &gt;)"
+                  moduleName = "OpenCVtracking"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/c-hchang/Desktop/OpenCVtracking/FeaturePoint.cpp"
+                  timestampString = "469561907.014154"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "275"
+                  endingLineNumber = "275"
+                  offsetFromSymbolStart = "4750">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FeaturePoint.cpp"
+            timestampString = "469561906.740121"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "217"
+            endingLineNumber = "217"
+            landmarkName = "FeaturePts::PointRefinement(vector&lt;v3_t&gt; &amp; Tempv3Dpts, vector &lt;bool&gt; tempvector)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Relative_Pose.cpp"
+            timestampString = "469561903.124498"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "941"
+            endingLineNumber = "941"
+            landmarkName = "CameraPose :: Triangulation_N_frame_Map ( int CurrentFrame, int FrameSize , int CurrentListIndex, vector&lt;vector&lt;v2_t&gt; &gt; mv2_location /*2D points location*/ , vector&lt;vector&lt;int&gt; &gt; mv2_frame /*frame number*/, vector&lt;v3_t&gt;&amp; v3Pts /*triangulation output*/ , vector&lt;bool&gt;&amp; boolvector"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

@@ -36,7 +36,6 @@ void FeaturePts::CreateFeatureTrack(int* tempCurrent, int ConnectedPtsize, v2_t*
             //cout<<"size of frame list "<<size_frame<<endl;
             mv2_frame[size_frame-1].push_back(FrameNumber-1);
             mv2_frame[size_frame-1].push_back(FrameNumber);
-          
             
             //initialized 
             mv2_location.push_back(vector<v2_t>());
@@ -158,20 +157,18 @@ void FeaturePts:: UpdatedFeatureTrack(vector<v2_t>& left_pts, vector<v2_t>& righ
 {
 
     int size_= (int) mv2_frame.size();
-    cout<< "after "<<size_<<endl;
        for(int i=0;i<size_ ; i++)
          {
-         int index = (int) mv2_frame[i].size()-1;
-         if (mv2_frame[i][index]== FrameNum)
-          {
-          // pick up 2D and 3D points
-          v2_t leftpt  =mv2_location[i][index-1];
-          v2_t rightpt =mv2_location[i][index];
-          v3_t V3pt    =m_3Dpts[i];
-          left_pts.push_back(leftpt);
-          right_pts.push_back(rightpt);    
-          V3Dpts.push_back(V3pt);
-         
+            int index = (int) mv2_frame[i].size()-1;
+             if (mv2_frame[i][index]== FrameNum)
+                {
+                 // pick up 2D and 3D points
+                 v2_t leftpt  =mv2_location[i][index-1];
+                 v2_t rightpt =mv2_location[i][index];
+                 v3_t V3pt    =m_3Dpts[i];
+                 left_pts.push_back(leftpt);
+                 right_pts.push_back(rightpt);
+                 V3Dpts.push_back(V3pt);
           }
     }
     //cout<< left_pts.size()<<" "<<right_pts.size()<<endl;
@@ -192,50 +189,76 @@ void FeaturePts::CleanFeatureTrack()
     m_3Dpts.swap(_3DptsEmpty);
     
     mv2_location.swap(mv2_locationEmpty);   // show 2D point locations
-    mv2_frame.swap(mv2_frameEmpty);        // show frame list 
+    mv2_frame.swap(mv2_frameEmpty);         // show frame list
 
     mv2ReprojectPts.swap(mv2ReprojectPtsEmpty); 
     mv3ProjectionPts.swap(mv3ProjectionPtsEmpty);
 
 }
 
-void FeaturePts::PointRefinement(vector<v3_t> &  Tempv3Dpts, vector <bool> tempvector)
+void FeaturePts::PointRefinement(vector<v3_t> & Tempv3Dpts, vector <bool> tempvector)
 {
     int NumPts = (int) Tempv3Dpts.size();
      
     vector<vector<int> >v2_frame;
     vector<vector<v2_t> >v2_location;
     vector<v3_t> v3D;
-    
-    
+
     vector<vector<int> > v2_frametemp;
     
-    
     cout<<"size of frame "<<mv2_frame.size()<<endl;
-    
-     //mv2_frame.push_back(vector<int>());
-   
-     cout<<" before " <<NumPts <<" "<<mv2_frame.size()<<" "<<mv2_location.size() <<endl;
-     int shift_index=0;
-        for(int i=0;i< NumPts; i++)
-        {
-           if(! tempvector[i])
-           {
-           
-                v3D.push_back(Tempv3Dpts[i]);
-                v2_frame.push_back(vector<int>());
-                v2_location.push_back(vector<v2_t>());
-               for (int j=0; j< mv2_frame[i].size();j++)
-               {
-               int size = (int) v2_frame.size()-1;
-               v2_frame[size].push_back(mv2_frame[i][j]);    
-               v2_location[size].push_back(mv2_location[i][j]);
-                
-               }           
-           }
+    //mv2_frame.push_back(vector<int>());
+    cout<<" before " <<NumPts <<" "<<mv2_frame.size()<<" "<<mv2_location.size() <<endl;
 
+    int shift_index=0;
+
+    for(int i=0;i< NumPts; i++)
+     {
+       if(! tempvector[i])
+           {
+           v3D.push_back(Tempv3Dpts[i]);
+           v2_frame.push_back(vector<int>());
+           v2_location.push_back(vector<v2_t>());
+           //int _size = (int) v2_frame.size()-1;
+
+           //for (int j=0; j< mv2_frame [i].size();j++)
+           //{
+           //v2_frame[_size]. push_back(mv2_frame[i][j]);
+           //v2_location[_size].push_back(mv2_location[i][j]);
+          }
+    }
+    int idex=0;
+    for(int i=0;i< NumPts; i++)
+    {
+
+        if(! tempvector[i])
+        {
+
+            //v2_frame.push_back(vector<int>());
+            //v2_location.push_back(vector<v2_t>());
+            //int _size = (int) v2_frame.size()-1;
+            cout<<i;
+            for (int j=0; j< mv2_frame [i].size();j++)
+            {
+
+
+                cout<<" "<<mv2_frame[i][j];
+            //v2_frame[idex]. push_back(mv2_frame[i][j]);
+            //v2_location[idex].push_back(mv2_location[i][j]);
+            //idex++;
         }
-       
+            cout<<endl;
+    }
+}
+
+
+
+
+    //cout<<v2_frame.size()<<endl;
+    //cout<<endl;
+
+
+    /*
     _3DLocation.insert(_3DLocation.end(),v3D.begin(),v3D.end());
     m_3Dpts.clear();
     m_3Dpts.swap(v3D);
@@ -246,5 +269,5 @@ void FeaturePts::PointRefinement(vector<v3_t> &  Tempv3Dpts, vector <bool> tempv
     
     mv2_frame.swap(v2_frame);
     mv2_location.swap(v2_location);
-
+   */
 }

@@ -34,7 +34,9 @@ float  Variance (vector<v3_t> _3Dpts, const float depth , const int size_);
 
 bool CheckCheirality(v3_t pt);
 
+void RefineN_MAPPoints (vector<v3_t> _3DPts, int NumPts, vector<bool>& tempvector, vector<int>& remove_Idx);
 
+void _3DdepthRefineMAP (vector<v3_t> m_3Dpts, int NumPts, vector<bool>& tempvector, vector<int>& remove_Idx);
 
 using namespace std;
 typedef struct 
@@ -240,7 +242,11 @@ class CameraPose
                                      vector<v3_t>& v3Pts/*triangulation output*/ ,
                                      vector<bool>& boolvector /*save array for refinement*/);
 
-    void RefineN_MAPPoints(vector<v3_t> _3DPts, int NumPts, vector<bool>& tempvector);
+    double CameraReprojctionRefinement(vector<vector<v2_t> > mv2_location /*2D points location*/ ,
+                                                    vector<vector<int> >  mv2_frame /*frame number*/, int Numpts,
+                                       vector<v3_t> v3Pts,  vector<bool>&  tempvector, vector<int>& remove_Idx);
+
+
 
     CameraPose ();
     ~CameraPose ();

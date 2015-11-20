@@ -6,6 +6,10 @@
 //  Copyright 2015 __MyCompanyName__. All rights reserved.
 //
 
+#ifndef __OpenCVtracking__Relative_Pose__
+#define __OpenCVtracking__Relative_Pose__
+
+
 # include <vector>
 # include <iostream>
 # include "matrix.h"
@@ -60,7 +64,7 @@ double ReprojectionError();
 
 class CameraPose
 {
-    //friend class EpipolarGeometry;
+    friend class Map3DStruct;
     
     public:
     vector <RotMat> mRcMatrix;
@@ -238,8 +242,8 @@ class CameraPose
                                      int FrameSize ,
                                      int CurrentListIndex,
                                      vector<vector<v2_t> > mv2_location /*2D points location*/ ,
-                                     vector<vector<int> >  mv2_frame /*frame number*/,
-                                     vector<v3_t>& v3Pts/*triangulation output*/ ,
+                                     vector<vector<int> >  mv2_frame    /*frame number*/,
+                                     vector<v3_t>& v3Pts                /*triangulation output*/ ,
                                      vector<bool>& boolvector /*save array for refinement*/);
 
     double CameraReprojctionRefinement(vector<vector<v2_t> > mv2_location /*2D points location*/ ,
@@ -259,3 +263,4 @@ class CameraPose
 
     
 };
+#endif

@@ -15,6 +15,7 @@
 //#include "FeaturePoint.h"
 //#include "Relative_Pose.h"
 #include "RunSFM_Main.hpp"
+#include "Map3DStruct.h"
 
 CvCapture *camCapture;
 IplImage* skipNFrames(CvCapture* capture, int n);
@@ -92,6 +93,8 @@ int main (int argc, const char * argv[])
     OpenGLPlot  OpenGLPlot (Img_width*2, Img_height*2);
     FeaturePts FeaturePts;
     FeaMapPoints FeaMapPoints;
+    _3DPt _3DPt;
+    
 
     /// flow control parameters
     int firstcapture = 1;
@@ -226,8 +229,12 @@ int main (int argc, const char * argv[])
 
                             FeaturePts.Loadv2Pts( left_pts, right_pts);
                             FeaturePts.Loadv3Pts(V3Dpts);
-                            int FrameNum= 2 ;
+
+                            int FrameNum = 1 ;
                             FeaturePts.LoadFeatureList(FrameNum);
+
+                            _3DPt.Initial((int)V3Dpts.size(), V3Dpts, left_pts, right_pts, FrameNum);
+
 
                             FeaMapPoints.LoadFMv2Pts( left_pts, right_pts);
                             FeaMapPoints.LoadFMv3Pts(V3Dpts);
@@ -245,19 +252,47 @@ int main (int argc, const char * argv[])
 
                             //FeaturePts.ConnectedVideoSequence( FeaturePts.m_rightPts, EpipolarGeometry.lrefined_pt /*connected pts*/ , EpipolarGeometry.rrefined_pt  /* current pts*/ , EpipolarGeometry.num_ofrefined_pts,FrameNum);
 
-                           FeaMapPoints.ConnectedFMVideoSequence( EpipolarGeometry.lrefined_pt /*connected pts*/ , EpipolarGeometry.rrefined_pt  /* current pts*/ , EpipolarGeometry.num_ofrefined_pts,FrameNum);
+                            vector<v2_t>Reproject2D;
+                            vector<v3_t>Project3D;
+
+                            _3DPt.ConnectNewFrame( EpipolarGeometry.num_ofrefined_pts, EpipolarGeometry.lrefined_pt /* current left point*/ , EpipolarGeometry.rrefined_pt /*current new frame points*/ , FrameNum,  Reproject2D, Project3D);
+
+
+                           //FeaMapPoints.ConnectedFMVideoSequence( EpipolarGeometry.lrefined_pt /*connected pts*/ , EpipolarGeometry.rrefined_pt  /* current pts*/ , EpipolarGeometry.num_ofrefined_pts,FrameNum);
 
                            // CameraPose.Egomotion(EpipolarGeometry.R_relative, EpipolarGeometry.t_relative, FeaturePts.mv3ProjectionPts, FeaturePts.mv2ReprojectPts);
 
-                            CameraPose.Egomotion(EpipolarGeometry.R_relative, EpipolarGeometry.t_relative, FeaMapPoints.FM_v3ProjectionPts,FeaMapPoints.FM_v2ReprojectPts);
+                            CameraPose.Egomotion(EpipolarGeometry.R_relative, EpipolarGeometry.t_relative, Project3D, Reproject2D);
 
+                            vector<vector<v2_t> >V2Location;
+                            vector<vector<int> >V2Frame;
+
+                            _3DPt._3DPtGeneration(EpipolarGeometry.num_ofrefined_pts, FrameNum,  EpipolarGeometry.lrefined_pt, EpipolarGeometry.rrefined_pt, V2Location, V2Frame);
+
+                            //cout<<V2Location.size()<<endl;
+                            /*
+                            for(int i=0; i<V2Location.size();i++){
+                                for (int j=0;j<V2Location[i].size();j++){
+                                    cout<<" "<<V2Location[i][j].p[0]<<" "<<V2Location[i][j].p[1];
+                                }
+                                cout<<endl;
+                            }
+
+                            for(int i=0; i<V2Frame.size();i++){
+                                for (int j=0;j<V2Frame[i].size();j++){
+                                    cout<<" "<<V2Frame[i][j];
+                                }
+                                cout<<endl;
+                            }*/
+
+
+
+                            //CameraPose.Egomotion(EpipolarGeometry.R_relative, EpipolarGeometry.t_relative, FeaMapPoints.FM_v3ProjectionPts,FeaMapPoints.FM_v2ReprojectPts);
                             //int idx=(int) CameraPose.mtriTcmatrix.size();
                             //double T[3];
                             //memcpy(T, CameraPose.mTcMatrix[FrameNum].n,3*sizeof(double));
                             //matrix_print(3,1,T);
-
                             //cout<< FeaMapPoints.CurrentListIndex<<" "<<FeaMapPoints. PreviousListIndex<<endl;
-
                             //cout<< FeaturePts.mv2_frame.size()<<endl;
 
                             vector<v3_t> Tempv3Dpts;
@@ -265,13 +300,14 @@ int main (int argc, const char * argv[])
 
                             //CameraPose.TriangulationN_Frames(FeaturePts. mv2_location , FeaturePts. mv2_frame , Tempv3Dpts , tempvector);
 
-                            CameraPose.Triangulation_N_frame_Map(FrameNum,
-                                                                        3 ,
-                                                             FeaMapPoints.CurrentListIndex,
-                                                             FeaMapPoints.FM_v2_location /*2D points location*/ ,
-                                                             FeaMapPoints.FM_v2_frame /*frame number*/,
+                            CameraPose.Triangulation_N_frame_Map(0,
+                                                                 0,
+                                                                 0,
+                                                             V2Location /*2D points location*/ ,
+                                                             V2Frame /*frame number*/,
                                                              Tempv3Dpts /*triangulation output*/,
                                                              tempvector /*save array for refinement*/);
+
                             // update refinement points //
                             FeaturePts.PointRefinement(Tempv3Dpts, tempvector);
 

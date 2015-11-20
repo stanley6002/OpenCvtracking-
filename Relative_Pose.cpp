@@ -825,34 +825,27 @@ void CameraPose :: Triangulation_N_frame_Map ( int CurrentFrame,
                                                vector<v3_t>& v3Pts     /*triangulation output*/ ,
                                                vector<bool>& boolvector /*save array for refinement*/)
 {
-    int LowboundSearch;
-    int UpperboundSearch;
+   
+    int NumPts = (int) mv2_frame.size();
 
-    if(CurrentListIndex> 400)
-    {
-        LowboundSearch  = CurrentListIndex-400;
-        UpperboundSearch= CurrentListIndex;
-    }
+    v3_t temp;
+    temp.p[0]=0;
+    temp.p[1]=0;
+    temp.p[2]=0;
+    vector<v3_t> _3Dpts(NumPts,temp);
 
-    else
-    {
-        LowboundSearch  = 0;
-        UpperboundSearch= CurrentListIndex;
-    }
+    //_3Dpts.reserve(NumPts);
+    //v3_t nullpts;
+    //nullpts.p[0]=NULL;
+    //nullpts.p[1]=NULL;
+    //nullpts.p[2]=NULL;
 
-    int NumPts = UpperboundSearch- LowboundSearch;
-
-    vector<v3_t> _3Dpts;
-    _3Dpts.reserve(NumPts);
-
-    v3_t nullpts;
-    nullpts.p[0]=NULL; nullpts.p[1]=NULL; nullpts.p[2]=NULL;
-
-    for (int i=0;i< NumPts;i++)
-    _3Dpts.push_back(nullpts);
+    //for (int i=0;i< NumPts;i++)
+    //  _3Dpts.push_back(nullpts);
 
     vector<bool> tempIndex(NumPts,0);
 
+    /*
     for (int i = LowboundSearch; i< UpperboundSearch; i++)
     {
       int FrameNum= (int)mv2_frame[i].size();
@@ -862,23 +855,19 @@ void CameraPose :: Triangulation_N_frame_Map ( int CurrentFrame,
        {
            tempIndex[i-LowboundSearch]=1;
        }
-    }
+    }*/
 
-    for (int i = LowboundSearch; i < UpperboundSearch; i++)
+    for (int i = 0; i < NumPts; i++)
     {
 
-      int idx = i - LowboundSearch;
-
-      if(tempIndex[idx]==0)
-      {
        int FrameNum= (int)mv2_frame[i].size();
 
        v2_t *pv = new v2_t[FrameNum];
        double *Rs= new double [9*  FrameNum];
        double *ts = new double[3 * FrameNum];
 
-       for (int j=0; j<FrameNum ;j++)
-           {
+       for (int j=0; j<FrameNum ;j++) {
+
               int N =  mv2_frame[i][j];
               double Pt3[3]= {mv2_location[i][j].p[0], mv2_location[i][j].p[1], 1.0};
               double Translation_Scaled [3];
@@ -888,7 +877,7 @@ void CameraPose :: Triangulation_N_frame_Map ( int CurrentFrame,
               double Rotation[9];
               double Tc[3];
 
-              //PopTriKMattix(N, K);
+
               PopKMattix(N,K);
               matrix_invert(3, K, Kinv);
               double p_n[3];
@@ -897,10 +886,8 @@ void CameraPose :: Triangulation_N_frame_Map ( int CurrentFrame,
               pv[j].p[0]= -p_n[0];
               pv[j].p[1]= -p_n[1];
 
-              //PopTriRotcMatrix(N, Rotation);
               PopRotcMatrix(N,Rotation);
               memcpy(Rs + 9 * j, Rotation, 9 * sizeof(double));
-              //PopTriTcMatrix(N,Tc);
 
               PopTcMatrix(N,Tc);
               matrix_product(3,3,3,1,Rotation,Tc,Translated);
@@ -911,30 +898,19 @@ void CameraPose :: Triangulation_N_frame_Map ( int CurrentFrame,
 
           double error;
           v3_t pt = triangulate_n(FrameNum, pv, Rs, ts, &error);
-          _3Dpts[idx]=pt;
+          _3Dpts[i]=pt;
 
+          cout<<_3Dpts[i].p[0]<<" "<<_3Dpts[i].p[1]<<" "<<_3Dpts[i].p[2]<<endl;
           delete []  pv;
           delete []  Rs;
           delete []  ts;
        }
-    }
 
     vector<int> remove_Idx;
     RefineN_MAPPoints( _3Dpts, NumPts, tempIndex, remove_Idx);
 
     CameraReprojctionRefinement( mv2_location /*2D points location*/ ,  mv2_frame /*frame number*/, NumPts, _3Dpts, tempIndex, remove_Idx);
-       /*
-    for (int i=0;i< (int) remove_Idx.size();i++)
-        cout<< remove_Idx[i]<<endl;
-    for (int i=0;i< (int) mv2_frame.size();i++)
-    {
-        for (int j =0;j< mv2_frame[i].size();j++)
-        {
-            cout<< mv2_frame[i][j]<<" ";
 
-        }
-        cout<<endl;
-    }*/
 
     v3Pts.swap(_3Dpts);   // update 3D points
     cout<<"after triangulation refine "<< v3Pts.size()<<endl;

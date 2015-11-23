@@ -900,7 +900,7 @@ void CameraPose :: Triangulation_N_frame_Map ( int CurrentFrame,
           v3_t pt = triangulate_n(FrameNum, pv, Rs, ts, &error);
           _3Dpts[i]=pt;
 
-          cout<<_3Dpts[i].p[0]<<" "<<_3Dpts[i].p[1]<<" "<<_3Dpts[i].p[2]<<endl;
+          //cout<<_3Dpts[i].p[0]<<" "<<_3Dpts[i].p[1]<<" "<<_3Dpts[i].p[2]<<endl;
           delete []  pv;
           delete []  Rs;
           delete []  ts;
@@ -911,9 +911,9 @@ void CameraPose :: Triangulation_N_frame_Map ( int CurrentFrame,
 
     CameraReprojctionRefinement( mv2_location /*2D points location*/ ,  mv2_frame /*frame number*/, NumPts, _3Dpts, tempIndex, remove_Idx);
 
-
     v3Pts.swap(_3Dpts);   // update 3D points
-    cout<<"after triangulation refine "<< v3Pts.size()<<endl;
+
+    cout<<"befor triangulation "<<NumPts<<" after triangulation refine "<< v3Pts.size()<<endl;
     boolvector.swap(tempIndex) ;
 
 }

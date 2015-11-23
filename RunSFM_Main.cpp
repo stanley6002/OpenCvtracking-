@@ -43,7 +43,7 @@ double RunSFM_Nviews_Main(int num_pts /*number of 3D pts */,
                           vector<Kmat>&    mtriKmatrix,       /*camera instrinstic matrix*/ 
                           vector<vector<v2_t> >& mv2_location /*2D points location*/ , 
                           vector<vector<int> >&  mv2_frame    /*frame number*/, 
-                          vector<v3_t>& v3Pts                /*triangulation output*/)
+                          vector<v3_t>& v3Pts                 /*triangulation output*/)
 {
     double error ;
 
@@ -62,7 +62,8 @@ double RunSFM_Nviews_Main(int num_pts /*number of 3D pts */,
     double esp2;
 
     camera_params_t* CameraPara= new camera_params_t[num_cameras];
-    
+
+    // copy i start camera to current camera //
     for(int i=0;i< num_cameras;i++)
     {
           InitializedCameraParameters( i,         

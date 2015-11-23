@@ -1,4 +1,5 @@
- //
+
+//
 //  main.cpp
 //  OpenCVtracking
 //
@@ -245,8 +246,9 @@ int main (int argc, const char * argv[])
                         {
 
                             CameraPose. InitializeKMatrix(Focuslength);
-
-                            int FrameNum =2;  // frame number need to be increased //
+                             // Show the current frame number for feature map //
+                             // need to add frame number increased in here //
+                            int FrameNum =2;  // Show the current frame number for feature map //  // change to current frame //
 
                             // Connect feature point and create feature tracks
 
@@ -266,26 +268,25 @@ int main (int argc, const char * argv[])
 
                             vector<vector<v2_t> >V2Location;
                             vector<vector<int> >V2Frame;
+                            vector<int> Overlap;
 
-                            _3DPt._3DPtGeneration(EpipolarGeometry.num_ofrefined_pts, FrameNum,  EpipolarGeometry.lrefined_pt, EpipolarGeometry.rrefined_pt, V2Location, V2Frame);
+                            _3DPt. _3DPtGeneration(EpipolarGeometry.num_ofrefined_pts, FrameNum,  EpipolarGeometry.lrefined_pt, EpipolarGeometry.rrefined_pt, V2Location, V2Frame, Overlap);
 
                             //cout<<V2Location.size()<<endl;
-                            /*
-                            for(int i=0; i<V2Location.size();i++){
-                                for (int j=0;j<V2Location[i].size();j++){
-                                    cout<<" "<<V2Location[i][j].p[0]<<" "<<V2Location[i][j].p[1];
-                                }
-                                cout<<endl;
-                            }
+
+                            //for(int i=0; i<V2Location.size();i++){
+                            //    for (int j=0;j<V2Location[i].size();j++){
+                            //        cout<<" "<<V2Location[i][j].p[0]<<" "<<V2Location[i][j].p[1];
+                            //    }
+                            //    cout<<endl;
+                            //}
 
                             for(int i=0; i<V2Frame.size();i++){
-                                for (int j=0;j<V2Frame[i].size();j++){
+                                 for (int j=0;j<V2Frame[i].size();j++){
                                     cout<<" "<<V2Frame[i][j];
                                 }
                                 cout<<endl;
-                            }*/
-
-
+                            }
 
                             //CameraPose.Egomotion(EpipolarGeometry.R_relative, EpipolarGeometry.t_relative, FeaMapPoints.FM_v3ProjectionPts,FeaMapPoints.FM_v2ReprojectPts);
                             //int idx=(int) CameraPose.mtriTcmatrix.size();
@@ -300,31 +301,86 @@ int main (int argc, const char * argv[])
 
                             //CameraPose.TriangulationN_Frames(FeaturePts. mv2_location , FeaturePts. mv2_frame , Tempv3Dpts , tempvector);
 
+//                            for (int i=0;i<_3DPt. NUM3D();i++){
+//                                if (_3DPt.ReadReproFlag(i) == 1)
+//                                      cout<<i<<endl;
+//                               }
+//
+//                            for (int i=0;i<_3DPt.NUM3D();i++){
+//                                for (int j=0; j< _3DPt._3D[i]._2D.size();j++){
+//                                    //cout<<" "<<_3DPt._3D[i]._2D[j]._2DPt.p[0]<<" "<<_3DPt._3D[i]._2D[j]._2DPt.p[1];
+//                                    cout<<" "<<_3DPt._3D[i]._2D[j].FrameNum;
+//                                }
+//                                cout<<endl;
+//                            }
+
                             CameraPose.Triangulation_N_frame_Map(0,
                                                                  0,
                                                                  0,
                                                              V2Location /*2D points location*/ ,
-                                                             V2Frame /*frame number*/,
+                                                             V2Frame    /*frame number*/,
                                                              Tempv3Dpts /*triangulation output*/,
                                                              tempvector /*save array for refinement*/);
+                            //cout<<_3DPt.NUM3D()<<endl;
 
                             // update refinement points //
-                            FeaturePts.PointRefinement(Tempv3Dpts, tempvector);
+                            // FeaturePts.PointRefinement(Tempv3Dpts, tempvector);
 
-                            cout<< "Number of points before SFM "<<(int) FeaturePts.m_3Dpts.size()<<endl;
+                            _3DPt.PointRefinement(Tempv3Dpts, V2Location, V2Frame, Overlap , tempvector);
+
+                            //for (int i=0;i<_3DPt.NUM3D();i++){
+                                                               //for (int j=0; j< _3DPt._3D[i]._2D.size();j++)
+                                                               //{
+                                                                    //cout<<" "<<_3DPt._3D[i]._2D[j]._2DPt.p[0]<<" "<<_3DPt._3D[i]._2D[j]._2DPt.p[1];
+                            //                                        cout<<" "<<_3DPt.LatestCamera(i);
+                                                                //}
+                                                                //cout<<endl;
+                            //                                }
+
+
+                            vector<v3_t> _3DPoints;
+                            vector<int> SelectedIndex;
+                            int NumCamera=3;
+                            _3DPt.MapGeneration(_3DPoints , V2Location,  V2Frame, SelectedIndex, FrameNum, NumCamera);
+
+
+                            //for (int i=0;i<_3DPoints.size();i++) {
+                            //    cout<<_3DPoints[i].p[0]<<" "<<_3DPoints[i].p[1]<<" "<<_3DPoints[i].p[2]<<endl;
+                            //}
+
+                            /*
+                            for (int i=0;i<_3DPt.NUM3D();i++){
+                                for (int j=0; j< _3DPt._3D[i]._2D.size();j++){
+                                //cout<<" "<<_3DPt._3D[i]._2D[j]._2DPt.p[0]<<" "<<_3DPt._3D[i]._2D[j]._2DPt.p[1];
+                                cout<<" "<<_3DPt._3D[i]._2D[j].FrameNum;
+                                }
+                                cout<<endl;
+                            }*/
+
+                             cout<< "Number of points before SFM "<<(int) FeaturePts.m_3Dpts.size()<<endl;
                             
-                            double error = RunSFM_Nviews_Main(FeaturePts. m_3Dpts.size() /*number of 3D pts */,
-                                                              3,
-                                                              0,
-                                                              CameraPose. mtriRotmatrix, /*camera rotation matrix*/
-                                                              CameraPose. mtriTcmatrix,  /*camera translation matrix*/
-                                                              CameraPose. mtriKmatrix, /*camera instrinstic matrix*/
-                                                              FeaturePts. mv2_location /*2D points location*/ ,
-                                                              FeaturePts. mv2_frame    /*frame number*/,
-                                                              FeaturePts. m_3Dpts      /*triangulation output*/);
 
+//                            double error = RunSFM_Nviews_Main (FeaturePts. m_3Dpts.size() /*number of 3D pts */,
+//                                                              3,
+//                                                              0,
+//                                                              CameraPose. mtriRotmatrix, /*camera rotation matrix*/
+//                                                              CameraPose. mtriTcmatrix,  /*camera translation matrix*/
+//                                                              CameraPose. mtriKmatrix,  /*camera instrinstic matrix*/
+//                                                              FeaturePts. mv2_location  /*2D points location*/ ,
+//                                                              FeaturePts. mv2_frame     /*frame number*/,
+//                                                              FeaturePts. m_3Dpts       /*triangulation output*/);
 
-                            cout<< FeaturePts.mv2_frame.size()<<endl;
+                            double error = RunSFM_Nviews_Main ((int)_3DPoints.size() /*number of 3D pts */,
+                                                                                          3,
+                                                                                          0,
+                                                                                          CameraPose. mtriRotmatrix, /*camera rotation matrix*/
+                                                                                          CameraPose. mtriTcmatrix,  /*camera translation matrix*/
+                                                                                          CameraPose. mtriKmatrix,  /*camera instrinstic matrix*/
+                                                                                          V2Location,
+                                                                                          V2Frame    /*frame number*/,
+                                                                                          _3DPoints       /*triangulation output*/);
+
+                            //cout<< FeaturePts.mv2_frame.size()<<endl;
                             CameraPose.RemoveTri();  // remove third
 
                             vector<v2_t> left_pts;

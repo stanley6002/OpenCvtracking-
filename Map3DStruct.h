@@ -86,6 +86,7 @@ public:
 
     void MapGeneration(vector<v3_t>& _3Dpts ,vector<vector<v2_t> >&V2Location, vector<vector<int> >&V2Frame,vector<int>& SelectedIndex,  int CurrentFrame, int NumCamera);
 
+    void MapUpdate(vector<int> SelectedIdex, vector<v3_t>& _3Dpts, vector<size_t> RemoveIdx);
     inline int NumofCamera(int i)
     {
              return((int)_3D[i]._2D.size());
@@ -140,7 +141,7 @@ public:
     {
         return((int)_3D[i]._2D.size());
     }
-
+   
     inline v3_t vec3D (int i){
             v3_t pt;
             pt.p[0]= _3D[i].Point[0];
@@ -159,6 +160,7 @@ public:
 
         return(tempframe);
     }
+
     // output 2D vector of 2d features //
     inline vector<v2_t> vec2D (int i)
     {
@@ -169,7 +171,13 @@ public:
         
         return(templocation);
     }
-
+    
+     inline void Set3Dpt(int i, v3_t _3Dpts)
+    {
+               _3D[i].Point[0]= _3Dpts.p[0];
+               _3D[i].Point[1]= _3Dpts.p[1];
+               _3D[i].Point[2]= _3Dpts.p[2];
+     }
 
     inline void PrintNumFrame(int i )
     {

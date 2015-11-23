@@ -235,6 +235,7 @@ class CameraPose
     double CameraReprojctionErrorRefinement(vector<vector<v2_t> > mv2_location /*2D points location*/ ,  vector<vector<int> >  mv2_frame /*frame number*/, int Numpts, vector<v3_t> v3Pts,  vector<bool>&  tempvector );
     
     double ReprojectionError(double *R, double* Tc, v3_t Pts, v2_t Projpts, double * Kmatrix);
+
     //inline void PopRotmatirx(double* R);
     //inline void PopTmatrix(double* T);
 
@@ -249,7 +250,6 @@ class CameraPose
     double CameraReprojctionRefinement(vector<vector<v2_t> > mv2_location /*2D points location*/ ,
                                                     vector<vector<int> >  mv2_frame /*frame number*/, int Numpts,
                                        vector<v3_t> v3Pts,  vector<bool>&  tempvector, vector<int>& remove_Idx);
-
 
 
     CameraPose ();

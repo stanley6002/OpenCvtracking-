@@ -337,10 +337,17 @@ int main (int argc, const char * argv[])
                                                                 //cout<<endl;
                             //                                }
 
+                            //clean up the vector and frame //
+
+//                            vector<vector<v2_t> > temp2dlocation;
+//                            vector<vector<int> > tempframe;
+//                            V2Location.swap(temp2dlocation);
+//                            V2Frame.swap(tempframe);
 
                             vector<v3_t> _3DPoints;
                             vector<int> SelectedIndex;
-                            int NumCamera=3;
+
+                            int NumCamera=3;  /* this is used to generate # of camera for bundle adjustement*/
                             _3DPt.MapGeneration(_3DPoints , V2Location,  V2Frame, SelectedIndex, FrameNum, NumCamera);
 
 
@@ -370,18 +377,24 @@ int main (int argc, const char * argv[])
 //                                                              FeaturePts. mv2_frame     /*frame number*/,
 //                                                              FeaturePts. m_3Dpts       /*triangulation output*/);
 
+                            int StartCmaera= (FrameNum - NumCamera)+1;
+                            vector<size_t> RemoveIdx;
                             double error = RunSFM_Nviews_Main ((int)_3DPoints.size() /*number of 3D pts */,
                                                                                           3,
-                                                                                          0,
-                                                                                          CameraPose. mtriRotmatrix, /*camera rotation matrix*/
-                                                                                          CameraPose. mtriTcmatrix,  /*camera translation matrix*/
-                                                                                          CameraPose. mtriKmatrix,  /*camera instrinstic matrix*/
+                                                                                          StartCmaera,
+                                                                                          CameraPose. mRcMatrix, /*camera rotation matrix*/
+                                                                                          CameraPose. mTcMatrix,  /*camera translation matrix*/
+                                                                                          CameraPose. KMatrix,  /*camera instrinstic matrix*/
                                                                                           V2Location,
                                                                                           V2Frame    /*frame number*/,
-                                                                                          _3DPoints       /*triangulation output*/);
+                                                                                          _3DPoints       /*triangulation output*/,
+                                                                                          SelectedIndex,
+                                                                                          RemoveIdx);
 
-                            //cout<< FeaturePts.mv2_frame.size()<<endl;
-                            CameraPose.RemoveTri();  // remove third
+                            _3DPt.MapUpdate(SelectedIndex, _3DPoints , RemoveIdx);
+
+                                                      //cout<< FeaturePts.mv2_frame.size()<<endl;
+                            //CameraPose.RemoveTri();  // remove third
 
                             vector<v2_t> left_pts;
                             vector<v2_t> right_pts;
@@ -401,32 +414,35 @@ int main (int argc, const char * argv[])
                                 break;
                             }
 
-                            FeaturePts.UpdatedFeatureTrack( left_pts, right_pts, V3Dpts, FrameNum );
+                            //FeaturePts.UpdatedFeatureTrack( left_pts, right_pts, V3Dpts, FrameNum );
 
-                            FeaturePts.CleanFeatureTrack();
+                            //FeaturePts.CleanFeatureTrack();
 
-                            cout<<"Number of points loaded into "<<left_pts.size()<<endl;
+                            //cout<<"Number of points loaded into "<<left_pts.size()<<endl;
                             
-                            FeaturePts. Loadv2Pts(left_pts, right_pts);
+                            //FeaturePts. Loadv2Pts(left_pts, right_pts);
 
-                            FeaturePts. Loadv3Pts(V3Dpts);
+                            //FeaturePts. Loadv3Pts(V3Dpts);
 
-                            FeaturePts. LoadFeatureList(FrameNum);
+                            //FeaturePts. LoadFeatureList(FrameNum);
 
                             double T[3];
                             double T1[3];
+
                             //double Rtemp[9];
                             //memcpy(Rtemp, CameraPose.mtriRotmatrix[FrameNum].n,9*sizeof(double));
-                            memcpy(T, CameraPose.mtriTcmatrix[FrameNum].n,3*sizeof(double));
+
+                            //memcpy(T, CameraPose.mtriTcmatrix[FrameNum].n,3*sizeof(double));
+
                             //matrix_product331( Rtemp, T , T1);
 
                             //T1[0]=T[0]; T1[1]=-T[1];T1[2]=T[2];
                             //matrix_print(3,1,T);
 
 
-                            OpenGLPlot. Setview(FeaturePts. _3DLocation);
+                            //OpenGLPlot. Setview(FeaturePts. _3DLocation);
 
-                            OpenGLPlot. PlotCamera(T);
+                            //OpenGLPlot. PlotCamera(T);
 
                             //OpenGLPlot. PlotVertex(EpipolarGeometry.NumofPts(), V3Dpts);
                             //OpenGLPlot.PlotVertex((int) V3Dpts.size() , V3Dpts);

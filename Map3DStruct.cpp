@@ -338,3 +338,24 @@ void _3DPt::MapGeneration(vector<v3_t>& _3Dpts ,vector<vector<v2_t> >&V2Location
         }
     }
 }
+
+void _3DPt::MapUpdate(vector<int> SelectedIdex, vector<v3_t>& _3Dpts, vector<size_t> RemoveIdx)
+ {
+     // update the 3D points here //
+     int numpts= (int) SelectedIdex.size();
+     for (int i=0;i< numpts;i++){
+         if (SelectedIdex[i] !=9999){
+             int index =SelectedIdex[i];
+                 // update 3D points //
+             Set3Dpt(index,_3Dpts[i]);
+        }
+    }
+    //remove the outliers//
+     for (int i=0;i<RemoveIdx.size();i++) {
+         size_t index = RemoveIdx[i];
+         _3D.erase(_3D.begin()+(index-1));
+         //temp[index].erase(temp[1].end()-1);
+
+     }
+
+ }

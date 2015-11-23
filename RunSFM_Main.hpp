@@ -20,15 +20,17 @@ double ReprojectError( double *R, double* Tc, v3_t Pts, v2_t Projpts, double * K
 void InitializeCameraParams(camera_params_t &camera);
 
 
-double RunSFM_Nviews_Main(int num_pts /*number of 3D pts */, 
-                          int num_cameras, 
-                          int start_camera,                   
-                          vector<RotMat>&  mtriRotmatrix,     /*camera rotation matrix*/
-                          vector<TMat>&    mtriTcmatrix,      /*camera translation matrix*/
-                          vector<Kmat>&    mtriKmatrix,       /*camera instrinstic matrix*/ 
-                          vector<vector<v2_t> >& mv2_location /*2D points location*/ , 
-                          vector<vector<int> >&  mv2_frame    /*frame number*/, 
-                          vector<v3_t>& v3Pts                /*triangulation output*/);
+double RunSFM_Nviews_Main(int num_pts /*number of 3D pts */,
+                          int num_cameras,
+                          int start_camera,
+                          vector<RotMat>&  mRcMatrix,      /*camera rotation matrix*/
+                          vector<TMat>&    mTcMatrix,      /*camera translation matrix*/
+                          vector<Kmat>&    mKMatrix,       /*camera instrinstic matrix*/
+                          vector<vector<v2_t> >& mv2_location /*2D points location*/ ,
+                          vector<vector<int> >&  mv2_frame    /*frame number*/,
+                          vector<v3_t>& v3Pts                 /*triangulation output*/,
+                          vector<int>& SelecteIdx,
+                          vector<size_t>& RemoveIndx);
 
 double RunSFM_Nviews(int num_pts, int num_cameras, int start_camera, int Numofframe, 
                      camera_params_t *init_camera_params, v3_t* sfm3Dpts ,

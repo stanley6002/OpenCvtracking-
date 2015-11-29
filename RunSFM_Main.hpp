@@ -44,7 +44,8 @@ double RunSFM_Nviews(int num_pts, int num_cameras, int start_camera, int Numoffr
 void SetCameraConstraints(camera_params_t params, bool estimate_distoration); 
 void SetFocalConstraint( camera_params_t params);
 void InitializedCameraParameters ( 
-                             int i,         
+                             int i,
+                             int j,
                              vector<RotMat>  mtriRotmatrix,     /*camera rotation matrix*/
                              vector<TMat>    mtriTcmatrix,      /*camera translation matrix*/
                              vector<Kmat>    mtriKmatrix,

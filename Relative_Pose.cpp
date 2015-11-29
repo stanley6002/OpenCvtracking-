@@ -39,7 +39,8 @@ double CameraPose:: CameraReprojectError(int NumPts, double *R, double* Tc, v3_t
         
         //cout<< Vx(Projpts[i])<<" "<<Vy(Projpts[i])<<" "<< xij[0]<<" "<<xij[1]<<endl;   
         error += sqrt(dx * dx + dy * dy);
-        //cout<< Vx(Projpts[i])<<" "<<Vy(Projpts[i])<<" "<< xij[0]<<" "<<xij[1]<<" "<< sqrt(dx * dx + dy * dy) <<endl;
+
+        cout<<"reprojection error: "<<Vx(Projpts[i])<<" "<<Vy(Projpts[i])<<" "<< xij[0]<<" "<<xij[1]<<" "<< sqrt(dx * dx + dy * dy) <<endl;
     }
     return(error);
 }
@@ -129,13 +130,7 @@ void CameraPose::Egomotion(double* R, double*T, vector<v3_t> v3ProjectPts, vecto
          
          copy(v3ProjectPts.begin(), v3ProjectPts.end(), mv3ProjectPts);
          copy(v2ReprojectPts.begin(),v2ReprojectPts.end(), mv2ReprojectPts);
-        
-    //    for(int i=0;i< NumofReprojectPts;i++)
-    //      {
-    //         cout<<mv3ProjectPts[i].p[0]<<" "<<mv3ProjectPts[i].p[1]<<" "<<mv3ProjectPts[i].p[2]<<endl;
-    //         cout<<mv2ReprojectPts[i].p[0]<<" "<<mv2ReprojectPts[i].p[1]<<endl;
-    //       
-    //    }
+
     //
     //    double proj_estimation_threshold=8; 
     //    int r = find_projection_3x4_ransac(NumofReproject, mv3ProjectPts,mv2ReprojectPts ,P,200,proj_estimation_threshold);
@@ -148,35 +143,35 @@ void CameraPose::Egomotion(double* R, double*T, vector<v3_t> v3ProjectPts, vecto
     double R_relative[9];
     double T_relative[3];
     
-    memcpy(R_relative,R, 9* sizeof(double));
-    memcpy(T_relative,T, 3* sizeof(double));
+    memcpy(R_relative, R, 9* sizeof(double));
+    memcpy(T_relative, T, 3* sizeof(double));
     
     //int FrameNumber= SizeofPose()-1;  
     
     double *Rpre= new double[9];
     double *Tpre= new double[3];
-    
-    //double *Rcurrent = new double[9];
-    //double *Tcurrent = new double[3];
-    
+
+
     double fin_t[3];
     
     double updated_rotation[9];
     double updated_t[3];
     
-    PopTriRotcMatrix((int) mtriRotmatrix.size()-1, Rpre);   // load previous 
-    PopTriTcMatrix( (int)  mtriTcmatrix.size()-1,Tpre);
-    
-    
-    cout<<"Previous"<<endl;
-    cout<<Tpre[0]<<" "<<Tpre[1]<<" "<<Tpre[2]<<endl;
+    //PopTriRotcMatrix((int) mtriRotmatrix.size()-1, Rpre);   // load previous
+    //PopTriTcMatrix( (int)  mtriTcmatrix.size()-1,Tpre);
+
+    PopRotcMatrix((int) mRcMatrix.size()-1, Rpre);
+    PopTcMatrix((int) mTcMatrix.size()-1, Tpre);
+
+    matrix_print(3,3, Rpre);
+    matrix_print(3,1, Tpre);
     
     // RotCurrent * RotPrevious // 
-    
+
+
     matrix_product33(Rpre,R_relative, updated_rotation); 
     matrix_transpose_product(3, 3, 3, 1, R_relative, Tpre , fin_t); // ( update  -Ri'*Center of previsous frame )
-    
-    
+
     updated_t[0]=fin_t[0]+T_relative[0];  // add to -(Rij)'*tij
     updated_t[1]=fin_t[1]+T_relative[1];
     updated_t[2]=fin_t[2]+T_relative[2];
@@ -187,14 +182,15 @@ void CameraPose::Egomotion(double* R, double*T, vector<v3_t> v3ProjectPts, vecto
     double* Kmatrix = new double [9];
     
     PopTriKMattix((int) mtriKmatrix.size()-1, Kmatrix) ;
-    //matrix_print (3,3, Kmatrix);
+    cout<<"Kmat: "<<endl;
+    matrix_print (3,3, Kmatrix);
     
     
     
     double error1 =  CameraReprojectError( NumofReprojectPts, updated_rotation, updated_t , mv3ProjectPts , mv2ReprojectPts ,  Kmatrix);
     cout<<"reprojection error no alightment  " <<error1 / NumofReprojectPts<<endl;
 
-    // this part alight the 3D point with delat vector//   
+    // this part alight the 3D point with delat vector//
     TwoDalighment(NumofReprojectPts, updated_rotation , updated_t , mv3ProjectPts, mv2ReprojectPts);
     
     //v3_t* mv3ProjectPts= new v3_t [NumofReproject];
@@ -925,6 +921,7 @@ void RefineN_MAPPoints (vector<v3_t> _3DPts, int NumPts, vector<bool>& tempvecto
 void _3DdepthRefineMAP (vector<v3_t> m_3Dpts, int NumPts, vector<bool>& tempvector, vector<int>& remove_Idx)
 {
 
+  
     int size_= NumPts;
     double max_number =  999;    // remove outliers from candidated points
     double min_number = -999;
@@ -1062,7 +1059,7 @@ double CameraPose:: CameraReprojctionRefinement(vector<vector<v2_t> > mv2_locati
 
                 PopKMattix(c, K);
                 PopRotcMatrix(c, R);
-                PopTriTcMatrix(c, T);
+                PopTcMatrix(c, T);
 
                 err_temp += ReprojectionError(R, T, v3pt , ProjectPts, K);
             }
@@ -1095,13 +1092,14 @@ double CameraPose:: CameraReprojctionRefinement(vector<vector<v2_t> > mv2_locati
            float a= -fabs(x-mean_err)*(1./(1.06*(sqrt(variance))*2.1));
             //float density = exp(a);
            float density =exp(a);
-           if( x> mean_err)
+           if( x > mean_err)
             {
 
-             if (density< MiniDensity)
+             if (density < MiniDensity)
               {
                     remove_Idx.push_back(i);
                     tempvector[i]= true;
+                    cout<<"tempvector : "<< i<<endl;
                }
             }
         }

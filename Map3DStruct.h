@@ -53,7 +53,7 @@ void inline AddtoMap(int idx, vector<_2DFea> input ,vector<vector<v2_t> >& V2Loc
 
     for (int i=0;i< input.size();i++)
     {
-        cout<< idx <<endl;
+        //cout<< idx <<endl;
         V2Location[idx].push_back(input[i]._2DPt);
         V2Frame[idx].push_back(input[i].FrameNum);
     }
@@ -171,7 +171,7 @@ public:
         
         return(templocation);
     }
-    
+
      inline void Set3Dpt(int i, v3_t _3Dpts)
     {
                _3D[i].Point[0]= _3Dpts.p[0];

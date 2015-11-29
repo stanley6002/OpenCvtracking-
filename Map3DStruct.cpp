@@ -71,19 +71,29 @@ void _3DPt:: ConnectNewFrame(int NumPts ,v2_t* leftLocation /* current left poin
 
     // check newpt flag //
     // check newpt flag //
+     for (int i=0;i< ConnectedPtsize;i++){
+
+         cout<<"Right location "<<RightLocation[i].p[0]<<" "<<RightLocation[i].p[1]<<endl;
+     }
 
     int numreprojection =0;
 
     for (int i=0; i< Memsize; i++)
     {
+
         int shiftlowbound = i + LowboundSearch;
         //int FrameRowsize = (int) FM_v2_frame[i].size();
-        if (LatestCamera(shiftlowbound) == FrameNumber-1)
-          {
-           if (ReadReproFlag(shiftlowbound) == 0 && _3D[shiftlowbound].NewPt ==1)  // check this flag has been activated or not //
+        //if (LatestCamera(shiftlowbound) == FrameNumber-1)
+        //  {
+        //   if (ReadReproFlag(shiftlowbound) == 0 && _3D[shiftlowbound].NewPt ==1)
+         if (ReadReproFlag(shiftlowbound) == 0)
+             // check this flag has been activated or not //
+
               {
                 int x = _3D[shiftlowbound]._2D.back()._2DPt.p[0];
                 int y = _3D[shiftlowbound]._2D.back()._2DPt.p[1];
+                 // cout<<x<<" "<<y<<endl;
+
 
                  for (int j=0; j< ConnectedPtsize; j++)
                     {
@@ -92,17 +102,24 @@ void _3DPt:: ConnectNewFrame(int NumPts ,v2_t* leftLocation /* current left poin
                             int x_m =  (int) leftLocation[j].p[0];
                             int y_m =  (int) leftLocation[j].p[1];
 
+                            int x_t =  (int) RightLocation[j].p[0];
+                            int y_t =  (int) RightLocation[j].p[1];
+
                          if (sqrt(((x-x_m)*(x-x_m))+((y-y_m)*(y-y_m)))<=1.414)
                            {
+                            cout<<x_t<<" "<<y_t<<endl;
                             numreprojection++;
+
+                            cout<<_3D[i].Point[0]<<" "<< _3D[i].Point[1]<<" "<< _3D[i].Point[2]<<endl;
                             ActivateReproFlag(shiftlowbound);
 
                             // set the 3D points with corresponding 2D location //
                             ActivateReproIndx(shiftlowbound,j);
+                            //cout<<"save location: "<<shiftlowbound<<" "<<j<<endl;
                             tempCurrent[j]=0;
                             break;
                           }
-                     }
+                     //}
                  }
              }
          }
@@ -119,8 +136,26 @@ void _3DPt:: ConnectNewFrame(int NumPts ,v2_t* leftLocation /* current left poin
          {
             Project3D.push_back(Read3DPoint(shiftlowbound));
             Reproject2D.push_back(RightLocation[ReadReproIndx(shiftlowbound)]);
+
          }
      }
+     cout<<"testtt"<<endl;
+     for (int i=0; i< Reproject2D.size(); i++)
+     {
+     cout<<Reproject2D[i].p[0]<<" "<<Reproject2D[i].p[1]<<endl;
+     cout<<Project3D[i].p[0]<<" "<< Project3D[i].p[1]<<" "<<Project3D[i].p[2]<<endl;
+     }
+    // clean up all new point flag //
+    for (int i=0; i< Memsize; i++)
+    {
+        int shiftlowbound = i + LowboundSearch;
+          if (_3D[shiftlowbound].NewPt ==1){
+             // check this flag has been activated or not //
+               RemoveNewFlag(i);
+        } 
+     }
+ 
+
  }
 
 void _3DPt:: _3DPtGeneration( int NumPts , int FrameNum,  v2_t* leftLocation, v2_t* RightLocation,  vector<vector<v2_t> >&V2Location, vector<vector<int> >&V2Frame, vector<int>& Overlap)
@@ -132,7 +167,6 @@ void _3DPt:: _3DPtGeneration( int NumPts , int FrameNum,  v2_t* leftLocation, v2
     //vector<vector<v2_t> > V2Location /*2D points location*/ ;
     //vector<vector<int> >  V2Frame    /*frame number*/;
     //vector<v3_t> v3Pts ;
-    
 
     for (int i=0;i< NumPts;i++){
         Overlap.push_back(-999);
@@ -173,6 +207,7 @@ void _3DPt:: _3DPtGeneration( int NumPts , int FrameNum,  v2_t* leftLocation, v2
             vector<_2DFea> temp =  Read2DPt(shiftlowbound);
             temp.push_back(new_pt);
 
+            cout<<ReproInx<<endl;
             AddtoMap(ReproInx, temp, V2Location, V2Frame);
         }
     }
@@ -220,8 +255,6 @@ void  _3DPt::PointRefinement(vector<v3_t> _3Dpts ,vector<vector<v2_t> >&V2Locati
         _3D[i].NewPt=0;
 
 
-   // add overlapped points to existing 3d points //
-
    for (int i=0;i<(int) Overlap.size();i++)
    {
      if ( Overlap[i] != -999) /* if overlapped point */ {
@@ -241,23 +274,39 @@ void  _3DPt::PointRefinement(vector<v3_t> _3Dpts ,vector<vector<v2_t> >&V2Locati
                 temp._2DPt = V2Location[i].back();
                 temp.FrameNum = V2Frame[i].back();
 
+                //cout<< "add overlapped point: "<< V2Frame[i].back()<<endl;
                 //_3D[idx]._2D.back()._2DPt=V2Location[i].back();
                 //_3D[idx]._2D.back().FrameNum=V2Frame[i].back();
+
                 _3D[idx]._2D.push_back(temp);
-                
+
+                cout<< "add overlapped point :";
+                cout<<_3D[idx]._2D.back().FrameNum<<endl;
+
                 RemoveReproFlag(idx);
                 RemoveReproIndx(idx);
+
+
                 _3D[idx].NewPt= 1;
                 tempvector[i]=true;
                 // turn off flag and index //
                 // Set new flag //
             }
-          tempvector[i]=true;  
-        }
+
+          else {
+
+             int idx = Overlap[i];
+             tempvector[i]=true;
+             RemoveReproFlag(idx);
+             RemoveReproIndx(idx);
+          }
+       }
     }
+
     // create new points //
 
     for (int i=0;i< tempvector.size();i++){
+        if ( Overlap[i] == -999){
           if ( ! tempvector[i])
                 {
                   //int idx = Overlap[i];
@@ -279,7 +328,8 @@ void  _3DPt::PointRefinement(vector<v3_t> _3Dpts ,vector<vector<v2_t> >&V2Locati
                 }
                _3D.push_back(temp);
            }
-       }
+        }
+    }
 
 }
 //generate point map for bundle adjustment //
@@ -293,6 +343,8 @@ void _3DPt::MapGeneration(vector<v3_t>& _3Dpts ,vector<vector<v2_t> >&V2Location
     vector<vector<int> > tempframe;
 
     int _1stCamera = (CurrentFrame - NumCamera) +1;
+
+    cout<<"Initial camera shift: "<<_1stCamera<<" "<<CurrentFrame<<endl;
 
     _3Dpts.swap(temp3D);
     V2Location.swap(temp2dlocation);
@@ -318,11 +370,22 @@ void _3DPt::MapGeneration(vector<v3_t>& _3Dpts ,vector<vector<v2_t> >&V2Location
   //    PrintNumFrame(i);
   //    cout<<endl;
   //}
+  /*
+  cout<<"first camera "<<_1stCamera<<" "<<CurrentFrame<<endl;
 
     for (int i= LowboundSearch;i<UpperboundSearch;i++){
+         for (int j=0; j<_3D[i]._2D.size();j++)
+         {
+             cout<<_3D[i]._2D[j].FrameNum<<" ";
+            }
+         cout<<endl;
+         }
+ */
+    for (int i= LowboundSearch;i<UpperboundSearch;i++){
         //if  (LatestCamera(i)== CurrentFrame)
-        cout<< InitialCamera(i)<< endl;
-        if (InitialCamera(i)>=_1stCamera || LatestCamera(i) <= CurrentFrame)
+        //cout<< InitialCamera(i)<< endl;
+
+        if (InitialCamera(i)>= _1stCamera && LatestCamera(i) <= CurrentFrame)
         {
 
            _3Dpts.push_back(vec3D(i));
@@ -330,8 +393,8 @@ void _3DPt::MapGeneration(vector<v3_t>& _3Dpts ,vector<vector<v2_t> >&V2Location
             V2Location.push_back(vector<v2_t>());
             V2Frame.push_back(vector<int>());
 
-            V2Location[(int)V2Location.size()-1]=(vec2D(i));
-            V2Frame[(int)V2Frame.size()-1]=(vecFrame(i));
+            V2Location[(int)V2Location.size()-1]=vec2D(i);
+            V2Frame[(int)V2Frame.size()-1]=vecFrame(i);
 
             SelectedIndex.push_back(i);
 
@@ -342,20 +405,30 @@ void _3DPt::MapGeneration(vector<v3_t>& _3Dpts ,vector<vector<v2_t> >&V2Location
 void _3DPt::MapUpdate(vector<int> SelectedIdex, vector<v3_t>& _3Dpts, vector<size_t> RemoveIdx)
  {
      // update the 3D points here //
-     int numpts= (int) SelectedIdex.size();
-     for (int i=0;i< numpts;i++){
-         if (SelectedIdex[i] !=9999){
-             int index =SelectedIdex[i];
+     //int numpts= (int) SelectedIdex.size();
+     //int numpts=(int)_3Dpts.size();
+     //for (int i=0;i < numpts;i++){
+         //if (SelectedIdex[i] !=9999){
+         //    int index =SelectedIdex[i];
                  // update 3D points //
-             Set3Dpt(index,_3Dpts[i]);
-        }
-    }
-    //remove the outliers//
-     for (int i=0;i<RemoveIdx.size();i++) {
-         size_t index = RemoveIdx[i];
-         _3D.erase(_3D.begin()+(index-1));
-         //temp[index].erase(temp[1].end()-1);
+        //     Set3Dpt(i, _3Dpts[i]);
+     //   }
+    //}
 
+    //remove the outliers//
+     int shift=0;
+     for (int i=0;i<RemoveIdx.size();i++) {
+         size_t index = RemoveIdx[i]-shift;
+          //cout<<"Remov Index "<<RemoveIdx[i] << "index "<<index<<endl;
+         _3D.erase(_3D.begin()+(index-1));
+         shift++;
+        }
+
+     int numpts=(int)_3D.size();
+
+     for (int i=0;i<numpts;i++){
+
+          Set3Dpt(i, _3Dpts[i]);
      }
 
  }

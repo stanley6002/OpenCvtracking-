@@ -66,13 +66,17 @@ double RunSFM_Nviews_Main(int num_pts /*number of 3D pts */,
     camera_params_t* CameraPara= new camera_params_t[num_cameras];
 
     // copy i start camera to current camera //
-    for(int i= start_camera ;i< (num_cameras+start_camera) ;i++)
+    int camear_loc=0;
+    for(int i= start_camera ;i < (num_cameras+start_camera) ;i++)
     {
-          InitializedCameraParameters( i,         
+
+        InitializedCameraParameters(   i,
+                                      camear_loc,
                                       mRcMatrix,     /*camera rotation matrix*/
                                       mTcMatrix,      /*camera translation matrix*/
                                       mKMatrix,
                                       CameraPara);
+        camear_loc++;
      
     }
 
@@ -81,7 +85,8 @@ double RunSFM_Nviews_Main(int num_pts /*number of 3D pts */,
         SetCameraConstraints(CameraPara[i],0);
         SetFocalConstraint(CameraPara[i]);
     }
-    
+
+
     int Numofframe=0;
     for (int i=0;i<num_pts;i++)
     {
@@ -148,8 +153,8 @@ double RunSFM_Nviews_Main(int num_pts /*number of 3D pts */,
     //    memcpy(mtriTcmatrix[index].n,CameraPara[i].t, 3*sizeof(double) );
     //}
 
-    int i=0;
-    for (i = 0; i < num_cameras; i++) {
+    //int i=0;
+    for (int i = 0; i < num_cameras; i++) {
         double K[9] =  { CameraPara[i].f, 0.0, 0.0,
             0.0, CameraPara[i].f, 0.0,
             0.0, 0.0, 1.0 };
@@ -159,13 +164,17 @@ double RunSFM_Nviews_Main(int num_pts /*number of 3D pts */,
         memcpy(mKMatrix[index].n,K, 9*sizeof(double));
         memcpy(mRcMatrix[index].n,CameraPara[i].R, 9*sizeof(double));
         memcpy(mTcMatrix[index].n,CameraPara[i].t, 3*sizeof(double) );
+        cout<<"camera index : "<<index <<endl;
+        cout<<"after refine : "<<endl;
+        matrix_print(3,3,CameraPara[i].R);
+        matrix_print(3,1,CameraPara[i].t);
     }
 
 
 
     if (! fix_points)
     {
-        for(i=0;i< num_pts;i++)
+        for(int i=0;i< num_pts;i++)
             v3Pts[i]= sfm3Dpts[i];    
     }
     
@@ -246,6 +255,7 @@ double RunSFM_Nviews_Main(int num_pts /*number of 3D pts */,
         sel_Indx.resize(num_pts,0);
         
         int shift_index=0;
+
         for(int i=0;i< num_pts; i++)
         {
             if(! tempvector[i])
@@ -253,8 +263,10 @@ double RunSFM_Nviews_Main(int num_pts /*number of 3D pts */,
                 v3D.push_back(v3Pts[i]);
                 
                 v2_frame.push_back(vector<int>());
+
                 v2_location.push_back(vector<v2_t>());
-                sel_Indx[i]=SelecteIdx[i];
+                //sel_Indx[i]=SelecteIdx[i];
+                sel_Indx[i]=i;
 
                 for (int j=0; j< mv2_frame[i].size();j++)
                 {
@@ -298,18 +310,24 @@ double RunSFM_Nviews_Main(int num_pts /*number of 3D pts */,
 }
 
 void InitializedCameraParameters ( 
-                                 int i,         
-                                 vector<RotMat>  mtriRotmatrix,     /*camera rotation matrix*/
-                                 vector<TMat>    mtriTcmatrix,      /*camera translation matrix*/
-                                 vector<Kmat>    mtriKmatrix,
+                                 int i,
+                                 int j,
+                                 vector<RotMat>  mRotmatrix,     /*camera rotation matrix*/
+                                 vector<TMat>    mTcmatrix,      /*camera translation matrix*/
+                                 vector<Kmat>    mKmatrix,
                                  camera_params_t* CameraPara
                                  )
 
 {
-         memcpy(CameraPara[i].R, mtriRotmatrix[i].n, 9*sizeof(double));   /*Initialized rotation matrix*/
-         memcpy(CameraPara[i].t, mtriTcmatrix[i].n, 3*sizeof(double));    /*Initialized translation matrix*/
-         memcpy(CameraPara[i].K_known , mtriKmatrix[i].n, 9*sizeof(double)); /*Initialized focal length and Instrinstic matrix*/
-         CameraPara[i].f=mtriKmatrix[i].n[0];
+
+
+         memcpy(CameraPara[j].R, mRotmatrix[i].n, 9*sizeof(double));   /*Initialized rotation matrix*/
+         memcpy(CameraPara[j].t, mTcmatrix[i].n, 3*sizeof(double));    /*Initialized translation matrix*/
+         memcpy(CameraPara[j].K_known , mKmatrix[i].n, 9*sizeof(double)); /*Initialized focal length and Instrinstic matrix*/
+         CameraPara[j].f = mKmatrix[i].n[0];
+
+    cout<<"Initial focal length : "<<CameraPara[j].f<<endl;
+    
 }
 void SetCameraConstraints(camera_params_t params, bool _estimate_distortion)
 {   

@@ -26,7 +26,7 @@
                   moduleName = "OpenCVtracking"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/c-hchang/Desktop/OpenCVtracking/FeaturePoint.cpp"
-                  timestampString = "470171298.952753"
+                  timestampString = "470697814.281586"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "273"
@@ -41,7 +41,7 @@
                   moduleName = "OpenCVtracking"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/c-hchang/Desktop/OpenCVtracking/FeaturePoint.cpp"
-                  timestampString = "470171298.952941"
+                  timestampString = "470697814.28176"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "273"
@@ -74,7 +74,7 @@
                   moduleName = "OpenCVtracking"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/c-hchang/Desktop/OpenCVtracking/FeaturePoint.cpp"
-                  timestampString = "470171298.953788"
+                  timestampString = "470697814.282585"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "273"
@@ -89,7 +89,7 @@
                   moduleName = "OpenCVtracking"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/c-hchang/Desktop/OpenCVtracking/FeaturePoint.cpp"
-                  timestampString = "470171298.953972"
+                  timestampString = "470697814.282769"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "273"
@@ -122,7 +122,7 @@
                   moduleName = "OpenCVtracking"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/c-hchang/Desktop/OpenCVtracking/FeaturePoint.cpp"
-                  timestampString = "470171298.954742"
+                  timestampString = "470697814.283555"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "273"
@@ -137,7 +137,7 @@
                   moduleName = "OpenCVtracking"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/c-hchang/Desktop/OpenCVtracking/FeaturePoint.cpp"
-                  timestampString = "470171298.954913"
+                  timestampString = "470697814.283702"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "273"
@@ -186,7 +186,7 @@
                   moduleName = "OpenCVtracking"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/c-hchang/Desktop/OpenCVtracking/FeaturePoint.cpp"
-                  timestampString = "470171298.956159"
+                  timestampString = "470697814.285675"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "273"
@@ -201,7 +201,7 @@
                   moduleName = "OpenCVtracking"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/c-hchang/Desktop/OpenCVtracking/FeaturePoint.cpp"
-                  timestampString = "470171298.956313"
+                  timestampString = "470697814.285962"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "273"
@@ -234,269 +234,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Relative_Pose.cpp"
-            timestampString = "470117431.091046"
+            timestampString = "470612255.207957"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "625"
-            endingLineNumber = "625"
+            startingLineNumber = "630"
+            endingLineNumber = "630"
             landmarkName = "CameraPose:: CameraReprojctionErrorRefinement(vector&lt;vector&lt;v2_t&gt; &gt; mv2_location /*2D points location*/ , vector&lt;vector&lt;int&gt; &gt; mv2_frame /*frame number*/, int Numpts, vector&lt;v3_t&gt; v3Pts, vector&lt;bool&gt;&amp; tempvector )"
             landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Relative_Pose.cpp"
-            timestampString = "470117431.091046"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "908"
-            endingLineNumber = "908"
-            landmarkName = "CameraPose :: Triangulation_N_frame_Map ( int CurrentFrame, int FrameSize , int CurrentListIndex, vector&lt;vector&lt;v2_t&gt; &gt; mv2_location /*2D points location*/ , vector&lt;vector&lt;int&gt; &gt; mv2_frame /*frame number*/, vector&lt;v3_t&gt;&amp; v3Pts /*triangulation output*/ , vector&lt;bool&gt;&amp; boolvector"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Relative_Pose.cpp"
-            timestampString = "470117431.091046"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "906"
-            endingLineNumber = "906"
-            landmarkName = "CameraPose :: Triangulation_N_frame_Map ( int CurrentFrame, int FrameSize , int CurrentListIndex, vector&lt;vector&lt;v2_t&gt; &gt; mv2_location /*2D points location*/ , vector&lt;vector&lt;int&gt; &gt; mv2_frame /*frame number*/, vector&lt;v3_t&gt;&amp; v3Pts /*triangulation output*/ , vector&lt;bool&gt;&amp; boolvector"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Relative_Pose.cpp"
-            timestampString = "470117431.091046"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "192"
-            endingLineNumber = "192"
-            landmarkName = "CameraPose::Egomotion(double* R, double*T, vector&lt;v3_t&gt; v3ProjectPts, vector&lt;v2_t&gt; v2ReprojectPts )"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Map3DStruct.cpp"
-            timestampString = "470122438.217894"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "128"
-            endingLineNumber = "128"
-            landmarkName = "_3DPt:: ConnectNewFrame(int NumPts ,v2_t* leftLocation /* current left point*/ , v2_t* RightLocation /*current new frame points*/ , int FrameNumber, vector&lt;v2_t&gt;&amp;Reproject2D, vector&lt;v3_t&gt;&amp; Project3D)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Map3DStruct.cpp"
-            timestampString = "470122438.217894"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "148"
-            endingLineNumber = "148"
-            landmarkName = "_3DPt:: ConnectNewFrame(int NumPts ,v2_t* leftLocation /* current left point*/ , v2_t* RightLocation /*current new frame points*/ , int FrameNumber, vector&lt;v2_t&gt;&amp;Reproject2D, vector&lt;v3_t&gt;&amp; Project3D)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "OpenCVtracking/main.cpp"
-            timestampString = "470171298.657662"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "357"
-            endingLineNumber = "357"
-            landmarkName = "main (int argc, const char * argv[])"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "RunSFM_Main.cpp"
-            timestampString = "470166675.718048"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "222"
-            endingLineNumber = "222"
-            landmarkName = "RunSFM_Nviews_Main(int num_pts /*number of 3D pts */, int num_cameras, int start_camera, vector&lt;RotMat&gt;&amp; mRcMatrix, /*camera rotation matrix*/ vector&lt;TMat&gt;&amp; mTcMatrix, /*camera translation matrix*/ vector&lt;Kmat&gt;&amp; mKMatrix, /*camera instrinstic matrix*/ vector&lt;vector&lt;v2_t&gt; &gt;&amp; mv2_location /*2D points location*/ , vector&lt;vector&lt;int&gt; &gt;&amp; mv2_frame /*frame number*/, vector&lt;v3_t&gt;&amp; v3Pts /*triangulation output*/, vector&lt;int&gt;&amp; SelecteIdx, vector&lt;size_t&gt;&amp; RemoveIndx)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "OpenCVtracking/main.cpp"
-            timestampString = "470168992.483448"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "333"
-            endingLineNumber = "333"
-            landmarkName = "main (int argc, const char * argv[])"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "RunSFM_Main.cpp"
-            timestampString = "470166969.403094"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "172"
-            endingLineNumber = "172"
-            landmarkName = "RunSFM_Nviews_Main(int num_pts /*number of 3D pts */, int num_cameras, int start_camera, vector&lt;RotMat&gt;&amp; mRcMatrix, /*camera rotation matrix*/ vector&lt;TMat&gt;&amp; mTcMatrix, /*camera translation matrix*/ vector&lt;Kmat&gt;&amp; mKMatrix, /*camera instrinstic matrix*/ vector&lt;vector&lt;v2_t&gt; &gt;&amp; mv2_location /*2D points location*/ , vector&lt;vector&lt;int&gt; &gt;&amp; mv2_frame /*frame number*/, vector&lt;v3_t&gt;&amp; v3Pts /*triangulation output*/, vector&lt;int&gt;&amp; SelecteIdx, vector&lt;size_t&gt;&amp; RemoveIndx)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "OpenCVtracking/main.cpp"
-            timestampString = "470168992.483448"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "314"
-            endingLineNumber = "314"
-            landmarkName = "main (int argc, const char * argv[])"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "OpenCVtracking/main.cpp"
-            timestampString = "470168992.483448"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "275"
-            endingLineNumber = "275"
-            landmarkName = "main (int argc, const char * argv[])"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "OpenCVtracking/main.cpp"
-            timestampString = "470168992.483448"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "286"
-            endingLineNumber = "286"
-            landmarkName = "main (int argc, const char * argv[])"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "OpenCVtracking/main.cpp"
-            timestampString = "470169085.475359"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "302"
-            endingLineNumber = "302"
-            landmarkName = "main (int argc, const char * argv[])"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Map3DStruct.cpp"
-            timestampString = "470169534.658622"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "367"
-            endingLineNumber = "367"
-            landmarkName = "_3DPt::MapGeneration(vector&lt;v3_t&gt;&amp; _3Dpts ,vector&lt;vector&lt;v2_t&gt; &gt;&amp;V2Location, vector&lt;vector&lt;int&gt; &gt;&amp;V2Frame, vector&lt;int&gt;&amp; SelectedIndex, int CurrentFrame, int NumCamera)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "RunSFM_Main.cpp"
-            timestampString = "470171294.556456"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "82"
-            endingLineNumber = "82"
-            landmarkName = "RunSFM_Nviews_Main(int num_pts /*number of 3D pts */, int num_cameras, int start_camera, vector&lt;RotMat&gt;&amp; mRcMatrix, /*camera rotation matrix*/ vector&lt;TMat&gt;&amp; mTcMatrix, /*camera translation matrix*/ vector&lt;Kmat&gt;&amp; mKMatrix, /*camera instrinstic matrix*/ vector&lt;vector&lt;v2_t&gt; &gt;&amp; mv2_location /*2D points location*/ , vector&lt;vector&lt;int&gt; &gt;&amp; mv2_frame /*frame number*/, vector&lt;v3_t&gt;&amp; v3Pts /*triangulation output*/, vector&lt;int&gt;&amp; SelecteIdx, vector&lt;size_t&gt;&amp; RemoveIndx)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "RunSFM_Main.cpp"
-            timestampString = "470171609.251238"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "116"
-            endingLineNumber = "116"
-            landmarkName = "RunSFM_Nviews_Main(int num_pts /*number of 3D pts */, int num_cameras, int start_camera, vector&lt;RotMat&gt;&amp; mRcMatrix, /*camera rotation matrix*/ vector&lt;TMat&gt;&amp; mTcMatrix, /*camera translation matrix*/ vector&lt;Kmat&gt;&amp; mKMatrix, /*camera instrinstic matrix*/ vector&lt;vector&lt;v2_t&gt; &gt;&amp; mv2_location /*2D points location*/ , vector&lt;vector&lt;int&gt; &gt;&amp; mv2_frame /*frame number*/, vector&lt;v3_t&gt;&amp; v3Pts /*triangulation output*/, vector&lt;int&gt;&amp; SelecteIdx, vector&lt;size_t&gt;&amp; RemoveIndx)"
-            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

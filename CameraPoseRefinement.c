@@ -47,11 +47,11 @@ void CameraRotRefine(int num_points, v3_t *points, v2_t *projs , double *R, doub
     memcpy(GLOBAL_Rot ,R, sizeof(double)*9 );
     memcpy(GLOBAL_Tc ,T, sizeof(double)*3 );
     memcpy(GLOBAL_Kmatrix ,Kmatrix, sizeof(double)*9 );
-    matrix_print(3,3,R);
+    //matrix_print(3,3,R);
     
     Sing_camera_refine( num_points, points, projs ,R, T, Kmatrix);  //add new update rotmatrix//
     
-    printf("extrinstic matrix \n");
+    //printf("extrinstic matrix \n");
     matrix_print(3,3,Kmatrix);
     free (GLOBAL_proj); free (GLOBAL_points);
     free (GLOBAL_Rot);  free (GLOBAL_Tc);

@@ -39,8 +39,8 @@ double CameraPose:: CameraReprojectError(int NumPts, double *R, double* Tc, v3_t
         
         //cout<< Vx(Projpts[i])<<" "<<Vy(Projpts[i])<<" "<< xij[0]<<" "<<xij[1]<<endl;   
         error += sqrt(dx * dx + dy * dy);
-
-        cout<<"reprojection error: "<<Vx(Projpts[i])<<" "<<Vy(Projpts[i])<<" "<< xij[0]<<" "<<xij[1]<<" "<< sqrt(dx * dx + dy * dy) <<endl;
+        //cout<<"Num.Point <<"<<NumPts<<endl;
+        //cout<<"reprojection error: "<<Vx(Projpts[i])<<" "<<Vy(Projpts[i])<<" "<< xij[0]<<" "<<xij[1]<<" "<< sqrt(dx * dx + dy * dy) <<endl;
     }
     return(error);
 }
@@ -181,9 +181,11 @@ void CameraPose::Egomotion(double* R, double*T, vector<v3_t> v3ProjectPts, vecto
     
     double* Kmatrix = new double [9];
     
-    PopTriKMattix((int) mtriKmatrix.size()-1, Kmatrix) ;
-    cout<<"Kmat: "<<endl;
-    matrix_print (3,3, Kmatrix);
+    //PopTriKMattix((int) mtriKmatrix.size()-1, Kmatrix) ;
+    PopKMattix((int)KMatrix.size()-1, Kmatrix);
+
+    //cout<<"Kmat: "<<endl;
+    //matrix_print (3,3, Kmatrix);
     
     
     
@@ -210,15 +212,18 @@ void CameraPose::Egomotion(double* R, double*T, vector<v3_t> v3ProjectPts, vecto
     //}
     
     //double UpdateR[9];
+    cout<<"center_before nonlinear: "<<endl;
+    matrix_print(3,1,updated_t);
+
     CameraRotRefine( NumofReprojectPts  , mv3ProjectPts, mv2ReprojectPts , updated_rotation , updated_t , Kmatrix);
   
     //double error3 =  CameraReprojectError(NumofReprojectPts, updated_rotation , Tc_updated , mv3ProjectPts ,mv2ReprojectPts ,  Kmatrix);
     
     //cout<<"NumofReproject" << NumofReprojectPts <<"reprojection error " <<error3/ NumofReprojectPts <<endl;
     
-    cout<<"center_nonlinear"<<endl;
-    matrix_print(3,1,updated_t);
-    matrix_print(3,3,Kmatrix);
+    //cout<<"center_nonlinear"<<endl;
+    //matrix_print(3,1,updated_t);
+    //matrix_print(3,3,Kmatrix);
     
     // update new camera pose data
     
@@ -909,7 +914,7 @@ void CameraPose :: Triangulation_N_frame_Map ( int CurrentFrame,
 
     v3Pts.swap(_3Dpts);   // update 3D points
 
-    cout<<"befor triangulation "<<NumPts<<" after triangulation refine "<< v3Pts.size()<<endl;
+    //cout<<"befor triangulation "<<NumPts<<" after triangulation refine "<< v3Pts.size()<<endl;
     boolvector.swap(tempIndex) ;
 
 }
@@ -942,11 +947,15 @@ void _3DdepthRefineMAP (vector<v3_t> m_3Dpts, int NumPts, vector<bool>& tempvect
     {
       if (tempvector[i]==0)
       {
-        if ( m_3Dpts[i].p[2]< min_number)
-            remove_Idx.push_back(i);
+          if ( m_3Dpts[i].p[2]< min_number){
+              remove_Idx.push_back(i);
+              tempvector[i]=1;
+          }
 
-        if ( m_3Dpts[i].p[2]> max_number)
+          if ( m_3Dpts[i].p[2]> max_number){
             remove_Idx.push_back(i);
+            tempvector[i]=1;
+          }
       }
     }
 

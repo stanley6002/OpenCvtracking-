@@ -44,7 +44,7 @@ int main (int argc, const char * argv[])
     }
 
     if(readfromvideo)
-    camCapture = cvCaptureFromFile( "/Users/c-hchang/Desktop/OpenCVtracking/video/P6.mp4" );
+    camCapture = cvCaptureFromFile( "/Users/c-hchang/Desktop/OpenCVtracking/video/P9.mp4" );
     else
     camCapture = cvCaptureFromCAM(CV_CAP_ANY);
 
@@ -121,7 +121,7 @@ int main (int argc, const char * argv[])
             if ( _1stframe)
             {
                 frame = cvQueryFrame(camCapture);
-                frame = skipNFrames(camCapture, 10);
+                frame = skipNFrames(camCapture, 5);
                 imgB  = cvCloneImage(frame);
             }
 
@@ -206,7 +206,7 @@ int main (int argc, const char * argv[])
                     cvShowImage("test", Two_image);
                     cvReleaseImage(&Two_image);
 
-                    //cvWaitKey( 5 );
+                    cvWaitKey(1);
 
                     if  (EpipolarGeometry.SkipFrame())
                     {
@@ -262,6 +262,7 @@ int main (int argc, const char * argv[])
 
                             _3DPt.ConnectNewFrame( EpipolarGeometry.num_ofrefined_pts, EpipolarGeometry.lrefined_pt /* current left point*/ , EpipolarGeometry.rrefined_pt /*current new frame points*/ , FrameNum,  Reproject2D, Project3D);
 
+                            cout<<"corresponding points : "<<Reproject2D.size()<<" "<<Project3D.size()<<endl;
                             
                             CameraPose.Egomotion(EpipolarGeometry.R_relative, EpipolarGeometry.t_relative, Project3D, Reproject2D);
 
@@ -269,18 +270,18 @@ int main (int argc, const char * argv[])
                             vector<vector<int> >V2Frame;
                             vector<int> Overlap;
 
-                            cout<<"v2 location: "<<V2Location.size()<<" "<<V2Frame.size()<<endl;
+                            //cout<<"v2 location: "<<V2Location.size()<<" "<<V2Frame.size()<<endl;
 
                             _3DPt. _3DPtGeneration(EpipolarGeometry.num_ofrefined_pts, FrameNum,  EpipolarGeometry.lrefined_pt, EpipolarGeometry.rrefined_pt, V2Location, V2Frame, Overlap);
 
 
-                            cout<<"before Map: "<<endl;
-                            for (int i=0;i< V2Frame.size();i++){
-                                for  (int j=0;j< V2Frame[i].size();j++){
-                                    cout<<V2Frame[i][j]<<" ";
-                                }
-                                cout<<endl;
-                            }
+                            //cout<<"before Map: "<<endl;
+                            //for (int i=0;i< V2Frame.size();i++){
+                            //    for  (int j=0;j< V2Frame[i].size();j++){
+                            //        cout<<V2Frame[i][j]<<" ";
+                            //    }
+                            //    cout<<endl;
+                            //}
 
 
                             vector<v3_t> Tempv3Dpts;
@@ -294,6 +295,11 @@ int main (int argc, const char * argv[])
                                                              Tempv3Dpts /*triangulation output*/,
                                                              tempvector /*save array for refinement*/);
 
+                            for (int i=0;i<Tempv3Dpts.size();i++){
+                                cout<<Tempv3Dpts[i].p[0]<<" "<<Tempv3Dpts[i].p[1]<<" "<<Tempv3Dpts[i].p[2]<<endl;
+                            }
+
+                            
                             _3DPt.PointRefinement(Tempv3Dpts, V2Location, V2Frame, Overlap , tempvector);
 
                             vector<v3_t> _3DPoints;
@@ -303,13 +309,13 @@ int main (int argc, const char * argv[])
                             _3DPt.MapGeneration(_3DPoints , V2Location,  V2Frame, SelectedIndex, FrameNum, NumCamera);
 
 
-                            cout<<"after Map: "<<endl;
-                            for (int i=0;i< V2Frame.size();i++){
-                                for  (int j=0;j< V2Frame[i].size();j++){
-                                    cout<<V2Frame[i][j]<<" ";
-                                }
-                                cout<<endl;
-                            }
+                            //cout<<"after Map: "<<endl;
+                            //for (int i=0;i< V2Frame.size();i++){
+                            //    for  (int j=0;j< V2Frame[i].size();j++){
+                            //        cout<<V2Frame[i][j]<<" ";
+                            //    }
+                            //    cout<<endl;
+                            //}
 
 
                              cout<< "Number of points before SFM "<<(int) FeaturePts.m_3Dpts.size()<<endl;
@@ -354,7 +360,11 @@ int main (int argc, const char * argv[])
 
                             _3DPt.MapUpdate(SelectedIndex, _3DPoints , RemoveIdx);
 
-            
+                          
+
+
+
+
                             //cout<< FeaturePts.mv2_frame.size()<<endl;
                             //CameraPose.RemoveTri();  // remove third
 
@@ -363,12 +373,12 @@ int main (int argc, const char * argv[])
                             //vector<v3_t> V3Dpts;
                             loop++;
 
-                            if (loop >5)
+                            if (loop >10)
                             {
                                 for(int i=0;i< CameraPose.mTcMatrix.size();i++) {
                                     double T[3];
                                     memcpy(T, CameraPose.mTcMatrix[i].n,3*sizeof(double));
-                                    cout<<T[0]<<" "<<-1*T[1]<<" "<<T[2]<<endl;
+                                    cout<<T[0]<<" "<<1*T[1]<<" "<<T[2]<<endl;
                                     //matrix_print(1,3,T);
                                 }
 

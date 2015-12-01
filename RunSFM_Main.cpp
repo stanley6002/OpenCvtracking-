@@ -49,15 +49,7 @@ double RunSFM_Nviews_Main(int num_pts /*number of 3D pts */,
 {
     double error ;
 
-    
-//    for (int i = 0; i < num_cameras; i++) 
-//{
-//        
-//  double t[3] =  {mtriTcmatrix[i].n[0],mtriTcmatrix[i].n[1],mtriTcmatrix[i].n[2]};
-//  cout<< "camera_center"<<endl;
-//  matrix_print(3,1, t); 
-//        
-//}
+
 
     
     double *S = new double[num_cameras*num_cameras*7*7];
@@ -110,8 +102,9 @@ double RunSFM_Nviews_Main(int num_pts /*number of 3D pts */,
     {
        for (int j = 0; j < mv2_frame[i].size(); j++) 
         {
-            int c = mv2_frame[i][j];
-          
+            int c = mv2_frame[i][j]-start_camera;
+
+            //cout<< "frame number: "<< c<< endl;
             vmask[nz_count * num_cameras + c] = 1;
             projections[2 * arr_idx + 0] = mv2_location[i][j].p[0];
             projections[2 * arr_idx + 1] = mv2_location[i][j].p[1];
@@ -131,7 +124,7 @@ double RunSFM_Nviews_Main(int num_pts /*number of 3D pts */,
   
     cout<<"points for SFM"<< num_pts<<endl;
     
-    run_sfm(num_pts, num_cameras, start_camera , vmask , projections, 
+    run_sfm(num_pts, num_cameras, /*start_camera*/0 , vmask , projections,
             /*focal length estimatation ? 0 : 1*/  EstimateFocal   ,
             /* initial camera parameters*/ CameraPara, 
             /*initial 3D points */ sfm3Dpts, 
@@ -154,6 +147,7 @@ double RunSFM_Nviews_Main(int num_pts /*number of 3D pts */,
     //}
 
     //int i=0;
+
     for (int i = 0; i < num_cameras; i++) {
         double K[9] =  { CameraPara[i].f, 0.0, 0.0,
             0.0, CameraPara[i].f, 0.0,
@@ -265,8 +259,8 @@ double RunSFM_Nviews_Main(int num_pts /*number of 3D pts */,
                 v2_frame.push_back(vector<int>());
 
                 v2_location.push_back(vector<v2_t>());
-                //sel_Indx[i]=SelecteIdx[i];
-                sel_Indx[i]=i;
+                sel_Indx[i]=SelecteIdx[i];
+                //sel_Indx[i]=i;
 
                 for (int j=0; j< mv2_frame[i].size();j++)
                 {
@@ -278,7 +272,11 @@ double RunSFM_Nviews_Main(int num_pts /*number of 3D pts */,
             }
             else
             {
-                sel_Indx[i]=9999;
+                v3_t pt3D;
+                pt3D.p[0]= -999; pt3D.p[1]= -999; pt3D.p[2]= -999;
+                v3D.push_back(pt3D);
+                sel_Indx[i]=SelecteIdx[i];
+                cout<<"remove Index: "<<i<<endl;
                 RemoveIndx.push_back(SelecteIdx[i]);
             }
         }

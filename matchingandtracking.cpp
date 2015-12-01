@@ -161,7 +161,7 @@ void FAST_ :: points2keypoints(const vector<cv::Point2f>& in, vector<cv::KeyPoin
 LKFeatures :: LKFeatures(IplImage* imgGrayA, IplImage* imgGrayB, LKFeatures::Function input)
 {
 
-  int Numberofcorner=400;
+  int Numberofcorner=500;
   int threshold1=0.01;
   int Windowsize=7;
   int Wsize =16;

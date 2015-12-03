@@ -28,6 +28,8 @@ public:
     
     bool captureNextFrame;
     bool captureThirdFrame;
+
+    bool EndOfFrame;
     
     IplImage* imgGray1;
     IplImage* imgGray2;

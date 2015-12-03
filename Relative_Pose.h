@@ -9,7 +9,6 @@
 #ifndef __OpenCVtracking__Relative_Pose__
 #define __OpenCVtracking__Relative_Pose__
 
-
 # include <vector>
 # include <iostream>
 # include "matrix.h"

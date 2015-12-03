@@ -212,7 +212,7 @@ double RunSFM_Nviews_Main(int num_pts /*number of 3D pts */,
             }
              double mean_err= (error/num_pts);
         
-             cout<<"error after sfm "<< mean_err<<endl;
+             //cout<<"error after sfm "<< mean_err<<endl;
              double summmation;
         
            for (int i=0;i<num_pts;i++)
@@ -236,7 +236,7 @@ double RunSFM_Nviews_Main(int num_pts /*number of 3D pts */,
                    {
                      if (density < 0.15) {
                         tempvector[i] = true;
-                        cout<<"remove by sfm result"<<" "<< x<<endl;
+                        //cout<<"remove by sfm result"<<" "<< x<<endl;
                      }
                  }
             }
@@ -276,7 +276,7 @@ double RunSFM_Nviews_Main(int num_pts /*number of 3D pts */,
                 pt3D.p[0]= -999; pt3D.p[1]= -999; pt3D.p[2]= -999;
                 v3D.push_back(pt3D);
                 sel_Indx[i]=SelecteIdx[i];
-                cout<<"remove Index: "<<i<<endl;
+                //cout<<"remove Index: "<<i<<endl;
                 RemoveIndx.push_back(SelecteIdx[i]);
             }
         }

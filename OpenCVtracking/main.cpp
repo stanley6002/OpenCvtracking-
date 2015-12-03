@@ -34,24 +34,28 @@ int main (int argc, const char * argv[])
     if (readfromvideo)
     {
 
-        Img_width=320;
-        Img_height=240;
+        //Img_width=320;
+        //Img_height=240;
+        Img_width=640;
+        Img_height=480;
     }
     else
     {
-        Img_width=320;
-        Img_height=240;
+        //Img_width=320;
+        //Img_height=240;
+        Img_width=640;
+        Img_height=480;
     }
 
     if(readfromvideo)
-    camCapture = cvCaptureFromFile( "/Users/c-hchang/Desktop/OpenCVtracking/video/P9.mp4" );
+    camCapture = cvCaptureFromFile( "/Users/c-hchang/Desktop/OpenCVtracking/video/P3.mp4" );
     else
     camCapture = cvCaptureFromCAM(CV_CAP_ANY);
 
     if (!(camCapture))
     {
         cout << "Failed to capture from camera" << endl;
-        return 0;
+        return -1;
     }
 
     cvSetCaptureProperty(camCapture, CV_CAP_PROP_FRAME_WIDTH,  Img_width);
@@ -112,6 +116,7 @@ int main (int argc, const char * argv[])
                 fprintf( stderr, "Cannot open AVI!\n" );
                 return 1;
             }
+
             // exit if it reaches the last frame
            if( ! cvGrabFrame(camCapture))
             {
@@ -121,7 +126,7 @@ int main (int argc, const char * argv[])
             if ( _1stframe)
             {
                 frame = cvQueryFrame(camCapture);
-                frame = skipNFrames(camCapture, 5);
+                frame = skipNFrames(camCapture, 2);
                 imgB  = cvCloneImage(frame);
             }
 
@@ -132,6 +137,8 @@ int main (int argc, const char * argv[])
                 {
                     frame = skipNFrames(camCapture, 0);
                     frame = VideoProcessing.CaptureFrame(camCapture);
+                    if (VideoProcessing.EndOfFrame)
+                         goto stop;
 
                     if (! CaptureFrames)
                     {
@@ -145,6 +152,8 @@ int main (int argc, const char * argv[])
             {
                 cout<<"Frame skipped "<<endl;
                 frame = VideoProcessing.CaptureFrame(camCapture);
+                if (VideoProcessing.EndOfFrame)
+                    goto stop;
 
                 if (! CaptureFrames)
                 {
@@ -155,6 +164,9 @@ int main (int argc, const char * argv[])
                 }
 
             }
+
+                cvShowImage("test", frame);
+                cvWaitKey(1);
 
                 if(CaptureFrames==1)
                 {
@@ -176,10 +188,10 @@ int main (int argc, const char * argv[])
                     //SURFfeature  SURFfeature(imgGrayA, imgGrayB,  400 );
                     //SURFfeature. SURFfeaturematch(match_query, match_train);
 
-                    //FAST_ FAST_(2, imgGrayA, imgGrayB, FAST_. SURF_descriptor);
+                    //FAST_ FAST_(8, imgGrayA, imgGrayB, FAST_. SURF_descriptor);
                     //FAST_. FAST_tracking(match_query, match_train);
 
-                    //ORBfeature  ORBfeature(imgGrayA, imgGrayB,0.01,0.01);
+                    //ORBfeature  ORBfeature(imgGrayA, imgGrayB,0.1,0.1);
                     //ORBfeature. ORBfeaturematch(match_query, match_train);
 
                     int size_match= (int) match_query.size();
@@ -202,11 +214,12 @@ int main (int argc, const char * argv[])
                     EpipolarGeometry.FindApicalAngle(MaxAngle);
                     cout<<"Apical angle : "<<EpipolarGeometry.ApicalAngle<<endl;
                     
-                    IplImage* Two_image=EpipolarGeometry.plot_two_imagesf(imgA, imgC);
-                    cvShowImage("test", Two_image);
-                    cvReleaseImage(&Two_image);
 
-                    cvWaitKey(1);
+                    //IplImage* Two_image=EpipolarGeometry.plot_two_imagesf(imgA, imgC);
+                    //cvShowImage("test", Two_image);
+                    //cvReleaseImage(&Two_image);
+
+                    //cvWaitKey(1);
 
                     if  (EpipolarGeometry.SkipFrame())
                     {
@@ -243,7 +256,7 @@ int main (int argc, const char * argv[])
                             FeaMapPoints.LoadFMFeatureList(FrameNum);
 
                         }
-  // start from 3rd frames //
+//  // start from 3rd frames //
                         else
                         {
 
@@ -295,9 +308,9 @@ int main (int argc, const char * argv[])
                                                              Tempv3Dpts /*triangulation output*/,
                                                              tempvector /*save array for refinement*/);
 
-                            for (int i=0;i<Tempv3Dpts.size();i++){
-                                cout<<Tempv3Dpts[i].p[0]<<" "<<Tempv3Dpts[i].p[1]<<" "<<Tempv3Dpts[i].p[2]<<endl;
-                            }
+                            //for (int i=0;i<Tempv3Dpts.size();i++){
+                            //    cout<<Tempv3Dpts[i].p[0]<<" "<<Tempv3Dpts[i].p[1]<<" "<<Tempv3Dpts[i].p[2]<<endl;
+                            //}
 
                             
                             _3DPt.PointRefinement(Tempv3Dpts, V2Location, V2Frame, Overlap , tempvector);
@@ -373,7 +386,7 @@ int main (int argc, const char * argv[])
                             //vector<v3_t> V3Dpts;
                             loop++;
 
-                            if (loop >10)
+                            if (loop ==30)
                             {
                                 for(int i=0;i< CameraPose.mTcMatrix.size();i++) {
                                     double T[3];
@@ -383,7 +396,7 @@ int main (int argc, const char * argv[])
                                 }
 
                                 DumpPointsToPly("/Users/c-hchang/Desktop/Opencvtracking/Point/result.ply", FeaturePts. _3DLocation , FeaturePts. _3DLocation.size());
-                                break;
+                                //break;
                             }
 
                             //FeaturePts.UpdatedFeatureTrack( left_pts, right_pts, V3Dpts, FrameNum );
@@ -425,7 +438,7 @@ int main (int argc, const char * argv[])
                         }
                           imgB= cvCloneImage(frame);
                          ThirdFrame= true;
-                    }
+                   }
 
                 }
 
@@ -438,12 +451,20 @@ int main (int argc, const char * argv[])
         }
 
     while (true) ;
+
     cvReleaseImage(&frame);
     cvReleaseImage(&imgA);
     cvReleaseImage(&imgB);
     cvReleaseImage(&imgC);
     cvReleaseImage(&imgGrayA);
     cvReleaseImage(&imgGrayB);
+
+
+    stop:
+      cout<<"jump to stop : ";
+      DumpPointsToPly("/Users/c-hchang/Desktop/Opencvtracking/Point/result.ply", FeaturePts. _3DLocation , FeaturePts. _3DLocation.size());
+
+
 
 }
 

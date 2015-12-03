@@ -13,7 +13,7 @@ using namespace cv;
 IplImage* VideoProcessing :: capture(CvCapture* camCapture)
 {
      frame = cvQueryFrame(camCapture);
-     Image1=cvCloneImage(frame);
+     Image1= cvCloneImage(frame);
     
 
     return(Image1);
@@ -41,6 +41,7 @@ VideoProcessing:: VideoProcessing (int Width , int Height, bool readfromvideo)
      ImgHeight = Height;
      count_frame= FALSE;
      readvideo = readfromvideo;
+     EndOfFrame= FALSE;
 
      imgGray1  = cvCreateImage(cv::Size(Width, Height), IPL_DEPTH_8U, 1);
      imgGray2  = cvCreateImage(cv::Size(Width, Height), IPL_DEPTH_8U, 1);
@@ -59,7 +60,7 @@ VideoProcessing:: VideoProcessing (int Width , int Height, bool readfromvideo)
 
 IplImage* VideoProcessing :: CaptureFrame(CvCapture* camCapture)
 {
-vector<cv::Point2f> cornerfirst, cornersecond;
+    vector<cv::Point2f> cornerfirst, cornersecond;
 
     if (count_frame)
     {   
@@ -67,8 +68,16 @@ vector<cv::Point2f> cornerfirst, cornersecond;
         if (readvideo)
         {
             IplImage* tempframe = cvQueryFrame(camCapture);
-            cvResize(tempframe, frame);
-            Image2= cvCloneImage(frame);
+
+            if(tempframe==NULL){
+                EndOfFrame=true;
+                return(NULL);
+            }
+
+            if(! EndOfFrame){
+              cvResize(tempframe, frame);
+              Image2= cvCloneImage(frame);
+            }
         }
 
         //Mat MatGray1, MatGray2;
@@ -77,6 +86,9 @@ vector<cv::Point2f> cornerfirst, cornersecond;
             frame = cvQueryFrame(camCapture);
             Image2= cvCloneImage(frame);
         }
+
+      if(! EndOfFrame)
+      {
         
         cvCvtColor(Image1,imgGray1, CV_BGR2GRAY);  
         cvCvtColor(Image2,imgGray2, CV_BGR2GRAY);
@@ -109,13 +121,17 @@ vector<cv::Point2f> cornerfirst, cornersecond;
         count_frame= FALSE;
         captureNextFrame=true;
         
+      }
     }
-
     if( ! count_frame)
     {
         if (readvideo)
         {
             IplImage* tempframe = cvQueryFrame(camCapture);
+
+            if(tempframe==NULL)
+                EndOfFrame=true;
+
             cvResize(tempframe, frame);
             Image1= cvCloneImage(frame);
             count_frame = true;

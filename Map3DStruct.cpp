@@ -207,7 +207,7 @@ void _3DPt:: _3DPtGeneration( int NumPts , int FrameNum,  v2_t* leftLocation, v2
             vector<_2DFea> temp =  Read2DPt(shiftlowbound);
             temp.push_back(new_pt);
 
-            cout<<ReproInx<<endl;
+            //cout<<ReproInx<<endl;
             AddtoMap(ReproInx, temp, V2Location, V2Frame);
         }
     }
@@ -280,8 +280,8 @@ void  _3DPt::PointRefinement(vector<v3_t> _3Dpts ,vector<vector<v2_t> >&V2Locati
 
                 _3D[idx]._2D.push_back(temp);
 
-                cout<< "add overlapped point :";
-                cout<<_3D[idx]._2D.back().FrameNum<<endl;
+                //cout<< "add overlapped point :";
+                //cout<<_3D[idx]._2D.back().FrameNum<<endl;
 
                 RemoveReproFlag(idx);
                 RemoveReproIndx(idx);
@@ -442,6 +442,6 @@ void _3DPt::MapUpdate(vector<int> SelectedIdex, vector<v3_t>& _3Dpts, vector<siz
 
 
 
-     for (int i=0;i<(int)NUM3D();i++)
-         cout<<_3D[i].Point[0]<<" "<< _3D[i].Point[1]<<" "<< _3D[i].Point[2]<<endl;
+     //for (int i=0;i<(int)NUM3D();i++)
+     //    cout<<_3D[i].Point[0]<<" "<< _3D[i].Point[1]<<" "<< _3D[i].Point[2]<<endl;
  }

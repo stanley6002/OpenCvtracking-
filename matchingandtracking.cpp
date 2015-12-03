@@ -201,7 +201,7 @@ switch(input)
        case Optical_flow:
          {
            
-           goodFeaturesToTrack(ImageGray1, corners,  400, 0.01,10);
+           goodFeaturesToTrack(ImageGray1, corners,  400, 0.001,10);
            cornerSubPix( ImageGray1, corners, cv::Size(9,9) , cv::Size(-1,-1) , cv::TermCriteria( CV_TERMCRIT_EPS + CV_TERMCRIT_ITER, 10, 0.001 ));
            calcOpticalFlowPyrLK(ImageGray1, ImageGray2, corners, nextPts, status, err, cv::Size(40,40));
            break;
@@ -209,8 +209,8 @@ switch(input)
 
     case BRIEF_descriptor:
          {
-           goodFeaturesToTrack(ImageGray1,  LK_query_kpts, 400, 0.001, 8);
-           cornerSubPix( ImageGray1, LK_query_kpts, cv::Size(9,9) , cv::Size(-1,-1) , cv::TermCriteria( CV_TERMCRIT_EPS + CV_TERMCRIT_ITER, 10, 0.001 ));
+           goodFeaturesToTrack(ImageGray1,  LK_query_kpts, 500, 0.001, 10);
+           cornerSubPix( ImageGray1, LK_query_kpts, cv::Size(7,7) , cv::Size(-1,-1) , cv::TermCriteria( CV_TERMCRIT_EPS + CV_TERMCRIT_ITER, 10, 0.001 ));
            calcOpticalFlowPyrLK(ImageGray1, ImageGray2, LK_query_kpts, LK_train_kpts, status, err, cv::Size(40,40));
 
            LK_descriptor = new cv::BriefDescriptorExtractor(32);
@@ -432,6 +432,7 @@ void ORBfeature::ORBfeaturematch(vector<CvPoint2D32f> &match_query, vector<CvPoi
     Ptr<DescriptorExtractor> Extractor;
     Extractor= new cv::OrbDescriptorExtractor();
 
+    
     ORBdet->detect(ImageGray1, kpts);
     cv::KeyPointsFilter::retainBest(kpts, 400);
     Extractor-> compute(ImageGray1, kpts, desc);

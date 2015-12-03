@@ -1108,7 +1108,7 @@ double CameraPose:: CameraReprojctionRefinement(vector<vector<v2_t> > mv2_locati
               {
                     remove_Idx.push_back(i);
                     tempvector[i]= true;
-                    cout<<"tempvector : "<< i<<endl;
+                    //cout<<"tempvector : "<< i<<endl;
                }
             }
         }

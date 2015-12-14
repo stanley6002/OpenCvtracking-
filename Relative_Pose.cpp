@@ -772,10 +772,46 @@ float Variance (vector<v3_t> _3Dpts, const float depth , const int size_)
     
 }
 
-void DumpPointsToPly(char *output_directory, vector<v3_t> points
-                     ,int num_points) 
-{ 
-    static char ply_header[] = 
+//void DumpPointsToPly(char *output_directory, vector<v3_t> points
+//                     ,int num_points) 
+//{ 
+//    static char ply_header[] = 
+//    {"ply\n"
+//        "format ascii 1.0\n"
+//        "element face 0\n"
+//        "property list uint8 int32 vertex_indices\n"
+//        "element vertex %d\n"
+//        "property float x\n"
+//        "property float y\n"
+//        "property float z\n"
+//        "end_header\n"};
+//    
+//    char ply_out[256];
+//    //sprintf(ply_out, "%s/%s", output_directory, filename);
+//    
+//    FILE *f = fopen(output_directory, "w");
+//    
+//    if (f == NULL) 
+//    {
+//        printf("Error opening file %s for writing\n", ply_out);
+//        return;
+//    }
+//    
+//    /* Print the ply header */
+//    fprintf(f, ply_header,num_points);
+//    
+//    for (int i = 0; i < num_points; i++)
+//    {
+//        
+//        /* Output the vertex */
+//        fprintf(f, "%0.6f %0.6f %0.6f\n", points[i].p[0],(-1)*points[i].p[1],points[i].p[2]);
+//    }
+//    
+//    fclose(f);
+//}
+void DumpPointsToPly(char *output_directory, vector<v3_t> points ,int num_points, vector<v3_t> color)
+{
+    static char ply_header[] =
     {"ply\n"
         "format ascii 1.0\n"
         "element face 0\n"
@@ -784,31 +820,38 @@ void DumpPointsToPly(char *output_directory, vector<v3_t> points
         "property float x\n"
         "property float y\n"
         "property float z\n"
+        "property uchar diffuse_red \n"
+        "property uchar diffuse_green \n"
+        "property uchar diffuse_blue \n"
         "end_header\n"};
-    
+
     char ply_out[256];
     //sprintf(ply_out, "%s/%s", output_directory, filename);
-    
+
     FILE *f = fopen(output_directory, "w");
-    
-    if (f == NULL) 
+
+    if (f == NULL)
     {
         printf("Error opening file %s for writing\n", ply_out);
         return;
     }
-    
+
     /* Print the ply header */
     fprintf(f, ply_header,num_points);
-    
+
     for (int i = 0; i < num_points; i++)
     {
-        
+
         /* Output the vertex */
-        fprintf(f, "%0.6f %0.6f %0.6f\n", points[i].p[0],(-1)*points[i].p[1],points[i].p[2]);
+        fprintf(f, "%0.6f %0.6f %0.6f  %d  %d  %d\n", points[i].p[0],points[i].p[1],points[i].p[2],
+                (int)color[i].p[0],
+                (int)color[i].p[1],
+                (int)color[i].p[2]);
     }
-    
+
     fclose(f);
 }
+
 bool CheckCheirality(v3_t pt)
 {
     bool Cheirality=false;

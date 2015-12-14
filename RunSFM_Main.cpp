@@ -116,7 +116,7 @@ double RunSFM_Nviews_Main(int num_pts /*number of 3D pts */,
 
     bool EstimateFocal= 1 ;
     bool UseFocalconstraints= 0;  
-    bool fix_points= 0 ; 
+    bool fix_points= 1 ;
     bool UsePointConstraint= 0;
     bool remove_outliers=1;
     int  NumIteration= 7 ;
@@ -158,10 +158,10 @@ double RunSFM_Nviews_Main(int num_pts /*number of 3D pts */,
         memcpy(mKMatrix[index].n,K, 9*sizeof(double));
         memcpy(mRcMatrix[index].n,CameraPara[i].R, 9*sizeof(double));
         memcpy(mTcMatrix[index].n,CameraPara[i].t, 3*sizeof(double) );
-        cout<<"camera index : "<<index <<endl;
-        cout<<"after refine : "<<endl;
-        matrix_print(3,3,CameraPara[i].R);
-        matrix_print(3,1,CameraPara[i].t);
+        //cout<<"camera index : "<<index <<endl;
+        //cout<<"after refine : "<<endl;
+        //matrix_print(3,3,CameraPara[i].R);
+        //matrix_print(3,1,CameraPara[i].t);
     }
 
 
@@ -236,7 +236,7 @@ double RunSFM_Nviews_Main(int num_pts /*number of 3D pts */,
                    {
                      if (density < 0.15) {
                         tempvector[i] = true;
-                        //cout<<"remove by sfm result"<<" "<< x<<endl;
+                        cout<<"remove by sfm result"<<" "<< x<<endl;
                      }
                  }
             }

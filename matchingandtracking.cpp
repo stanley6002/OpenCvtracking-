@@ -162,7 +162,7 @@ LKFeatures :: LKFeatures(IplImage* imgGrayA, IplImage* imgGrayB, LKFeatures::Fun
 {
 
   int Numberofcorner=500;
-  int threshold1=0.01;
+  int threshold1=0.001;
   int Windowsize=7;
   int Wsize =16;
   ParametersInitialized(Numberofcorner, threshold1, Wsize, input);
@@ -201,17 +201,17 @@ switch(input)
        case Optical_flow:
          {
            
-           goodFeaturesToTrack(ImageGray1, corners,  400, 0.001,10);
-           cornerSubPix( ImageGray1, corners, cv::Size(9,9) , cv::Size(-1,-1) , cv::TermCriteria( CV_TERMCRIT_EPS + CV_TERMCRIT_ITER, 10, 0.001 ));
+           goodFeaturesToTrack(ImageGray1, corners,  300, 0.001,10);
+           cornerSubPix( ImageGray1, corners, cv::Size(13,13) , cv::Size(-1,-1) , cv::TermCriteria( CV_TERMCRIT_EPS + CV_TERMCRIT_ITER, 10, 0.001 ));
            calcOpticalFlowPyrLK(ImageGray1, ImageGray2, corners, nextPts, status, err, cv::Size(40,40));
            break;
          }
 
     case BRIEF_descriptor:
          {
-           goodFeaturesToTrack(ImageGray1,  LK_query_kpts, 500, 0.001, 10);
-           cornerSubPix( ImageGray1, LK_query_kpts, cv::Size(7,7) , cv::Size(-1,-1) , cv::TermCriteria( CV_TERMCRIT_EPS + CV_TERMCRIT_ITER, 10, 0.001 ));
-           calcOpticalFlowPyrLK(ImageGray1, ImageGray2, LK_query_kpts, LK_train_kpts, status, err, cv::Size(40,40));
+           goodFeaturesToTrack(ImageGray1,  LK_query_kpts, 400, 0.005, 15);
+           cornerSubPix( ImageGray1, LK_query_kpts, cv::Size(23,23) , cv::Size(-1,-1) , cv::TermCriteria( CV_TERMCRIT_EPS + CV_TERMCRIT_ITER, 10, 0.001 ));
+           calcOpticalFlowPyrLK(ImageGray1, ImageGray2, LK_query_kpts, LK_train_kpts, status, err, cv::Size(21,21));
 
            LK_descriptor = new cv::BriefDescriptorExtractor(32);
 
@@ -268,9 +268,9 @@ switch(input)
          }
       case Freak_descriptor:
             {
-                goodFeaturesToTrack(ImageGray1,  LK_query_kpts, 400, 0.001, 8);
-                cornerSubPix( ImageGray1, LK_query_kpts, cv::Size(9,9) , cv::Size(-1,-1) , cv::TermCriteria( CV_TERMCRIT_EPS + CV_TERMCRIT_ITER, 10, 0.001 ));
-                calcOpticalFlowPyrLK(ImageGray1, ImageGray2, LK_query_kpts, LK_train_kpts, status, err, cv::Size(45,45));
+                goodFeaturesToTrack(ImageGray1,  LK_query_kpts, 400, 0.001, 13);
+                cornerSubPix( ImageGray1, LK_query_kpts, cv::Size(13,13) , cv::Size(-1,-1) , cv::TermCriteria( CV_TERMCRIT_EPS + CV_TERMCRIT_ITER, 10, 0.001 ));
+                calcOpticalFlowPyrLK(ImageGray1, ImageGray2, LK_query_kpts, LK_train_kpts, status, err, cv::Size(31,31));
 
                 std::vector<cv::KeyPoint> temp_query;
 
@@ -280,7 +280,7 @@ switch(input)
 
                 Ptr<DescriptorExtractor>  Extractor;
 
-                Extractor= new FREAK(true,true,32.0,1);
+                Extractor= new FREAK(true,true, 32.0,1);
 
                 int size_= (int) LK_query_kpts.size();
 

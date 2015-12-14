@@ -17,6 +17,7 @@
 //#include "Relative_Pose.h"
 #include "RunSFM_Main.hpp"
 #include "Map3DStruct.h"
+#include "DepthMap.h"
 
 CvCapture *camCapture;
 IplImage* skipNFrames(CvCapture* capture, int n);
@@ -48,7 +49,7 @@ int main (int argc, const char * argv[])
     }
 
     if(readfromvideo)
-    camCapture = cvCaptureFromFile( "/Users/c-hchang/Desktop/OpenCVtracking/video/P3.mp4" );
+    camCapture = cvCaptureFromFile( "/Users/c-hchang/Desktop/OpenCVtracking/video/P36.MOV" );
     else
     camCapture = cvCaptureFromCAM(CV_CAP_ANY);
 
@@ -135,7 +136,7 @@ int main (int argc, const char * argv[])
                 bool CaptureFrames=0;
                 if (! SkipthisFrame)
                 {
-                    frame = skipNFrames(camCapture, 0);
+                    frame = skipNFrames(camCapture, 1);
                     frame = VideoProcessing.CaptureFrame(camCapture);
                     if (VideoProcessing.EndOfFrame)
                          goto stop;
@@ -144,7 +145,7 @@ int main (int argc, const char * argv[])
                     {
                         if (VideoProcessing.captureNextFrame)
                         {
-                            CaptureFrames =1;
+                            CaptureFrames = 1;
                         }
                     }
                 }
@@ -180,6 +181,7 @@ int main (int argc, const char * argv[])
                     std::vector<CvPoint2D32f> match_train;
 
                     LKFeatures LKFeatures (imgGrayA,imgGrayB, LKFeatures. BRIEF_descriptor);
+                    //LKFeatures LKFeatures (imgGrayA,imgGrayB, LKFeatures. Freak_descriptor);
                     LKFeatures.FeaturesMatched (match_query, match_train);
 
                     //SIFTfeature SIFTfeature(imgGrayA, imgGrayB,2, 0.05);
@@ -188,7 +190,7 @@ int main (int argc, const char * argv[])
                     //SURFfeature  SURFfeature(imgGrayA, imgGrayB,  400 );
                     //SURFfeature. SURFfeaturematch(match_query, match_train);
 
-                    //FAST_ FAST_(8, imgGrayA, imgGrayB, FAST_. SURF_descriptor);
+                    //FAST_ FAST_(70, imgGrayA, imgGrayB, FAST_. SURF_descriptor);
                     //FAST_. FAST_tracking(match_query, match_train);
 
                     //ORBfeature  ORBfeature(imgGrayA, imgGrayB,0.1,0.1);
@@ -200,26 +202,21 @@ int main (int argc, const char * argv[])
                     int Focuslength= 300;
                     int Ransac_threshold= 2.0;
                     float MaxAngle;
-                    float F_matrix_threshold=1;
+                    float F_matrix_threshold=0.8;
 
                     if(readfromvideo)
-                    MaxAngle = 0.035;
+                    MaxAngle = 0.030;
                     else  
-                    MaxAngle = 0.035;
+                    MaxAngle = 0.030;
 
                     EpipolarGeometry EpipolarGeometry(match_query, match_train, size_match, numTrialFmatrix, numTrialRelativePose, Focuslength, Ransac_threshold,F_matrix_threshold,Img_width,Img_height );
 
                     EpipolarGeometry.FindFundamentalMatrix();
                     EpipolarGeometry.FindRelativePose(EpipolarGeometry. FivePoints );
                     EpipolarGeometry.FindApicalAngle(MaxAngle);
-                    cout<<"Apical angle : "<<EpipolarGeometry.ApicalAngle<<endl;
+
+                   //cout<<"Apical angle : "<<EpipolarGeometry.ApicalAngle<<endl;
                     
-
-                    //IplImage* Two_image=EpipolarGeometry.plot_two_imagesf(imgA, imgC);
-                    //cvShowImage("test", Two_image);
-                    //cvReleaseImage(&Two_image);
-
-                    //cvWaitKey(1);
 
                     if  (EpipolarGeometry.SkipFrame())
                     {
@@ -242,18 +239,15 @@ int main (int argc, const char * argv[])
 
                             CameraPose.First2viewInitialization(EpipolarGeometry.R1matrix, EpipolarGeometry.R_relative, EpipolarGeometry.t1matrix, EpipolarGeometry.t_relative);
 
-                            FeaturePts.Loadv2Pts( left_pts, right_pts);
-                            FeaturePts.Loadv3Pts(V3Dpts);
 
                             FrameNum = 1 ;
-                            FeaturePts.LoadFeatureList(FrameNum);
+                            //FeaturePts.LoadFeatureList(FrameNum);
 
                             _3DPt.Initial((int)V3Dpts.size(), V3Dpts, left_pts, right_pts, FrameNum);
 
+                            _3DPt.ColorIniitalization(frame , right_pts);
 
-                            FeaMapPoints.LoadFMv2Pts( left_pts, right_pts);
-                            FeaMapPoints.LoadFMv3Pts(V3Dpts);
-                            FeaMapPoints.LoadFMFeatureList(FrameNum);
+                            EpipolarMatching(CameraPose, imgGrayA, imgGrayB);
 
                         }
 //  // start from 3rd frames //
@@ -266,8 +260,6 @@ int main (int argc, const char * argv[])
                             FrameNum += 1;  // Show the current frame number for feature map //  // change to current frame //
 
                             // Connect feature point and create feature tracks
-
-                            //FeaturePts.ConnectedVideoSequence( FeaturePts.m_rightPts, EpipolarGeometry.lrefined_pt /*connected pts*/ , EpipolarGeometry.rrefined_pt  /* current pts*/ , EpipolarGeometry.num_ofrefined_pts,FrameNum);
 
                             vector<v2_t>Reproject2D;
                             vector<v3_t>Project3D;
@@ -283,18 +275,8 @@ int main (int argc, const char * argv[])
                             vector<vector<int> >V2Frame;
                             vector<int> Overlap;
 
-                            //cout<<"v2 location: "<<V2Location.size()<<" "<<V2Frame.size()<<endl;
 
                             _3DPt. _3DPtGeneration(EpipolarGeometry.num_ofrefined_pts, FrameNum,  EpipolarGeometry.lrefined_pt, EpipolarGeometry.rrefined_pt, V2Location, V2Frame, Overlap);
-
-
-                            //cout<<"before Map: "<<endl;
-                            //for (int i=0;i< V2Frame.size();i++){
-                            //    for  (int j=0;j< V2Frame[i].size();j++){
-                            //        cout<<V2Frame[i][j]<<" ";
-                            //    }
-                            //    cout<<endl;
-                            //}
 
 
                             vector<v3_t> Tempv3Dpts;
@@ -308,11 +290,6 @@ int main (int argc, const char * argv[])
                                                              Tempv3Dpts /*triangulation output*/,
                                                              tempvector /*save array for refinement*/);
 
-                            //for (int i=0;i<Tempv3Dpts.size();i++){
-                            //    cout<<Tempv3Dpts[i].p[0]<<" "<<Tempv3Dpts[i].p[1]<<" "<<Tempv3Dpts[i].p[2]<<endl;
-                            //}
-
-                            
                             _3DPt.PointRefinement(Tempv3Dpts, V2Location, V2Frame, Overlap , tempvector);
 
                             vector<v3_t> _3DPoints;
@@ -321,33 +298,9 @@ int main (int argc, const char * argv[])
                             int NumCamera=3;  /* this is used to generate # of camera for bundle adjustement*/
                             _3DPt.MapGeneration(_3DPoints , V2Location,  V2Frame, SelectedIndex, FrameNum, NumCamera);
 
-
-                            //cout<<"after Map: "<<endl;
-                            //for (int i=0;i< V2Frame.size();i++){
-                            //    for  (int j=0;j< V2Frame[i].size();j++){
-                            //        cout<<V2Frame[i][j]<<" ";
-                            //    }
-                            //    cout<<endl;
-                            //}
-
-
-                             cout<< "Number of points before SFM "<<(int) FeaturePts.m_3Dpts.size()<<endl;
                             
-
-//                            double error = RunSFM_Nviews_Main (FeaturePts. m_3Dpts.size() /*number of 3D pts */,
-//                                                              3,
-//                                                              0,
-//                                                              CameraPose. mtriRotmatrix, /*camera rotation matrix*/
-//                                                              CameraPose. mtriTcmatrix,  /*camera translation matrix*/
-//                                                              CameraPose. mtriKmatrix,  /*camera instrinstic matrix*/
-//                                                              FeaturePts. mv2_location  /*2D points location*/ ,
-//                                                              FeaturePts. mv2_frame     /*frame number*/,
-//                                                              FeaturePts. m_3Dpts       /*triangulation output*/);
-
                             int StartCmaera= (FrameNum - NumCamera)+1;
                             vector<size_t> RemoveIdx;
-
-
 
                             double error = RunSFM_Nviews_Main ((int)_3DPoints.size() /*number of 3D pts */,
                                                                                           3,
@@ -361,80 +314,9 @@ int main (int argc, const char * argv[])
                                                                                           SelectedIndex,
                                                                                           RemoveIdx);
 
-                            //cout<<"after Map: "<<endl;
-                            //for (int i=0;i< V2Frame.size();i++){
-                            //    for  (int j=0;j< V2Frame[i].size();j++){
-                            //        cout<<V2Frame[i][j]<<" ";
-                            //    }
-                            //    cout<<endl;
-                            //}
+                            _3DPt.MapUpdate( SelectedIndex, _3DPoints , RemoveIdx, imgA);
 
-
-
-                            _3DPt.MapUpdate(SelectedIndex, _3DPoints , RemoveIdx);
-
-                          
-
-
-
-
-                            //cout<< FeaturePts.mv2_frame.size()<<endl;
-                            //CameraPose.RemoveTri();  // remove third
-
-                            //vector<v2_t> left_pts;
-                            //vector<v2_t> right_pts;
-                            //vector<v3_t> V3Dpts;
                             loop++;
-
-                            if (loop ==30)
-                            {
-                                for(int i=0;i< CameraPose.mTcMatrix.size();i++) {
-                                    double T[3];
-                                    memcpy(T, CameraPose.mTcMatrix[i].n,3*sizeof(double));
-                                    cout<<T[0]<<" "<<1*T[1]<<" "<<T[2]<<endl;
-                                    //matrix_print(1,3,T);
-                                }
-
-                                DumpPointsToPly("/Users/c-hchang/Desktop/Opencvtracking/Point/result.ply", FeaturePts. _3DLocation , FeaturePts. _3DLocation.size());
-                                //break;
-                            }
-
-                            //FeaturePts.UpdatedFeatureTrack( left_pts, right_pts, V3Dpts, FrameNum );
-
-                            //FeaturePts.CleanFeatureTrack();
-
-                            //cout<<"Number of points loaded into "<<left_pts.size()<<endl;
-                            
-                            //FeaturePts. Loadv2Pts(left_pts, right_pts);
-
-                            //FeaturePts. Loadv3Pts(V3Dpts);
-
-                            //FeaturePts. LoadFeatureList(FrameNum);
-
-                            //double T[3];
-                            //double T1[3];
-
-                            //double Rtemp[9];
-                            //memcpy(Rtemp, CameraPose.mtriRotmatrix[FrameNum].n,9*sizeof(double));
-
-                            //memcpy(T, CameraPose.mtriTcmatrix[FrameNum].n,3*sizeof(double));
-
-                            //matrix_product331( Rtemp, T , T1);
-
-                            //T1[0]=T[0]; T1[1]=-T[1];T1[2]=T[2];
-                            //matrix_print(3,1,T);
-
-
-                            //OpenGLPlot. Setview(FeaturePts. _3DLocation);
-
-                            //OpenGLPlot. PlotCamera(T);
-
-                            //OpenGLPlot. PlotVertex(EpipolarGeometry.NumofPts(), V3Dpts);
-                            //OpenGLPlot.PlotVertex((int) V3Dpts.size() , V3Dpts);
-                            //cout<< CameraPose.SizeofPose()<<endl;
-                            //cout<< FeaturePts.NumReproject<<endl;
-
-
                         }
                           imgB= cvCloneImage(frame);
                          ThirdFrame= true;
@@ -447,8 +329,7 @@ int main (int argc, const char * argv[])
             }
                 // exit if user presses 'x'          
                 _1stframe=false;
-            
-        }
+    }
 
     while (true) ;
 
@@ -461,11 +342,25 @@ int main (int argc, const char * argv[])
 
 
     stop:
-      cout<<"jump to stop : ";
-      DumpPointsToPly("/Users/c-hchang/Desktop/Opencvtracking/Point/result.ply", FeaturePts. _3DLocation , FeaturePts. _3DLocation.size());
+      cout<<"jump to stop : generate 3D ply file ";
+      vector<v3_t> output;
+      vector<v3_t> color;
+      for (int i=0;i<_3DPt.Numof3Dpts();i++){
+           output.push_back( _3DPt.Read3DPoint(i));
+           color.push_back( _3DPt.ReadColor(i));
+           //cout<<
+           //int Rcolor =  _3DPt._3D[i].R; int Gcolor =  _3DPt._3D[i].G; int Bcolor =  _3DPt._3D[i].B;
+          //cout << Rcolor <<" "<<Gcolor<<" "<<Bcolor<<endl;
+      }
+    cout<<endl;
+      for(int i=0;i< CameraPose.mTcMatrix.size();i++) {
+        double T[3];
+        memcpy(T, CameraPose.mTcMatrix[i].n,3*sizeof(double));
+        cout<<T[0]<<" "<<1*T[1]<<" "<<T[2]<<" "<<255<<" "<<0<<" "<<0<<endl;
+      }
 
-
-
+     DumpPointsToPly("/Users/c-hchang/Desktop/Opencvtracking/Point/result.ply", output ,_3DPt.Numof3Dpts(), color);
+     //DumpPointsToPly("/Users/c-hchang/Desktop/Opencvtracking/Point/result.ply", output , _3DPt.Numof3Dpts());
 }
 
 IplImage* skipNFrames(CvCapture* capture, int n)

@@ -129,9 +129,10 @@ IplImage* VideoProcessing :: CaptureFrame(CvCapture* camCapture)
         {
             IplImage* tempframe = cvQueryFrame(camCapture);
 
-            if(tempframe==NULL)
+            if(tempframe==NULL){
                 EndOfFrame=true;
-
+                return(NULL);
+            }
             cvResize(tempframe, frame);
             Image1= cvCloneImage(frame);
             count_frame = true;

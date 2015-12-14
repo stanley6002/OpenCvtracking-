@@ -104,7 +104,7 @@ void _3DPt:: ConnectNewFrame(int NumPts ,v2_t* leftLocation /* current left poin
                             //int x_t =  (int) RightLocation[j].p[0];
                             //int y_t =  (int) RightLocation[j].p[1];
 
-                         if (sqrt(((x-x_m)*(x-x_m))+((y-y_m)*(y-y_m)))<=1.414)
+                         if (sqrt(((x-x_m)*(x-x_m))+((y-y_m)*(y-y_m)))<=2.4)
                            {
                             //cout<<x_t<<" "<<y_t<<endl;
                             numreprojection++;
@@ -286,7 +286,6 @@ void  _3DPt::PointRefinement(vector<v3_t> _3Dpts ,vector<vector<v2_t> >&V2Locati
                 RemoveReproFlag(idx);
                 RemoveReproIndx(idx);
 
-
                 _3D[idx].NewPt= 1;
                 tempvector[i]=true;
                 // turn off flag and index //
@@ -406,7 +405,7 @@ void _3DPt::MapGeneration(vector<v3_t>& _3Dpts ,vector<vector<v2_t> >&V2Location
     }
 }
 
-void _3DPt::MapUpdate(vector<int> SelectedIdex, vector<v3_t>& _3Dpts, vector<size_t> RemoveIdx)
+void _3DPt::MapUpdate(vector<int> SelectedIdex, vector<v3_t>& _3Dpts, vector<size_t> RemoveIdx, IplImage* inputImg)
  {
 
      // update the 3D points here //
@@ -420,17 +419,19 @@ void _3DPt::MapUpdate(vector<int> SelectedIdex, vector<v3_t>& _3Dpts, vector<siz
      //   }
     //}
 
+
     //remove the outliers//
      int numpts=(int)_3Dpts.size();
      for (int i=0;i<numpts;i++){
 
          int index = SelectedIdex[i];
          Set3Dpt(index, _3Dpts[i]);
+         SetColor(inputImg, index);
      }
 
      int shift=0;
      
-     cout<<NUM3D()<<endl;
+     //cout<<NUM3D()<<endl;
 
      for (int i=0;i<RemoveIdx.size();i++) {
          size_t index = RemoveIdx[i]-shift;
@@ -445,3 +446,49 @@ void _3DPt::MapUpdate(vector<int> SelectedIdex, vector<v3_t>& _3Dpts, vector<siz
      //for (int i=0;i<(int)NUM3D();i++)
      //    cout<<_3D[i].Point[0]<<" "<< _3D[i].Point[1]<<" "<< _3D[i].Point[2]<<endl;
  }
+void _3DPt::ColorIniitalization(const IplImage* InputImg , const vector<v2_t>right_pts)
+{
+
+    int Img_width = (InputImg->width)/2;
+    int Img_height = (InputImg->height)/2;
+
+    for (int i=0;i<NUM3D();i++)
+    {
+        int  x = right_pts[i].p[0]+ (Img_width);
+        int  y = right_pts[i].p[1]+ (Img_height);
+
+        //int R= CV_IMAGE_ELEM (imgA, uchar, x,  (3 *y));
+        //int G= CV_IMAGE_ELEM (imgA, uchar, x , (3 * y)+1);
+        //int B= CV_IMAGE_ELEM (imgA, uchar, x , (3 * y)+2);
+
+
+        _3D[i].B = CV_IMAGE_ELEM (InputImg, uchar, y,  (3 *x));
+        _3D[i].G = CV_IMAGE_ELEM (InputImg, uchar, y , (3 * x)+1);
+        _3D[i].R = CV_IMAGE_ELEM (InputImg, uchar, y , (3 * x)+2);
+    }
+
+}
+void _3DPt::SetColor(const IplImage* InputImg, int Index)
+{
+
+    int Img_width = (InputImg->width)/2;
+    int Img_height = (InputImg->height)/2;
+
+
+
+    int x = _3D[Index]._2D.back()._2DPt.p[0]+ Img_width;
+    int y = _3D[Index]._2D.back()._2DPt.p[1]+ Img_height;
+
+        //int R= CV_IMAGE_ELEM (imgA, uchar, x,  (3 *y));
+        //int G= CV_IMAGE_ELEM (imgA, uchar, x , (3 * y)+1);
+        //int B= CV_IMAGE_ELEM (imgA, uchar, x , (3 * y)+2);
+        //cout<<"R: "<<R<<" "<<G<<" "<<B<<endl;
+
+        _3D[Index].B = CV_IMAGE_ELEM (InputImg, uchar, y,  (3 *x));
+        _3D[Index].G = CV_IMAGE_ELEM (InputImg, uchar, y , (3 * x)+1);
+        _3D[Index].R = CV_IMAGE_ELEM (InputImg, uchar, y , (3 * x)+2);
+    //}
+
+
+
+}

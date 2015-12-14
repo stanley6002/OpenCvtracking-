@@ -78,6 +78,7 @@
 		FF04B4691AF7056900D2C482 /* libcminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF04B4681AF7056900D2C482 /* libcminpack.a */; };
 		FF8433F61AFA6ECC00B7B956 /* Relative_Pose.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FF8433F41AFA6ECC00B7B956 /* Relative_Pose.cpp */; };
 		FF8433F91AFA6FC100B7B956 /* CameraPoseRefinement.c in Sources */ = {isa = PBXBuildFile; fileRef = FF8433F71AFA6FC100B7B956 /* CameraPoseRefinement.c */; };
+		FFC0FD711C19CA34006003D9 /* DepthMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FFC0FD6F1C19CA34006003D9 /* DepthMap.cpp */; };
 		FFC9EF811BFE24F3003DB935 /* Map3DStruct.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FFC9EF7F1BFE24F3003DB935 /* Map3DStruct.cpp */; };
 		FFD584271B08EC310013CA37 /* featurepointsmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FFD584251B08EC310013CA37 /* featurepointsmap.cpp */; };
 		FFDEB8A01AF862D30068E29B /* matchingandtracking.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FFDEB89E1AF862D30068E29B /* matchingandtracking.cpp */; };
@@ -196,6 +197,8 @@
 		FF8433F51AFA6ECC00B7B956 /* Relative_Pose.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Relative_Pose.h; sourceTree = SOURCE_ROOT; };
 		FF8433F71AFA6FC100B7B956 /* CameraPoseRefinement.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = CameraPoseRefinement.c; sourceTree = SOURCE_ROOT; };
 		FF8433F81AFA6FC100B7B956 /* CameraPoseRefinement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraPoseRefinement.h; sourceTree = SOURCE_ROOT; };
+		FFC0FD6F1C19CA34006003D9 /* DepthMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DepthMap.cpp; sourceTree = SOURCE_ROOT; };
+		FFC0FD701C19CA34006003D9 /* DepthMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DepthMap.h; sourceTree = SOURCE_ROOT; };
 		FFC9EF7F1BFE24F3003DB935 /* Map3DStruct.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Map3DStruct.cpp; sourceTree = SOURCE_ROOT; };
 		FFC9EF801BFE24F3003DB935 /* Map3DStruct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Map3DStruct.h; sourceTree = SOURCE_ROOT; };
 		FFD584251B08EC310013CA37 /* featurepointsmap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = featurepointsmap.cpp; sourceTree = SOURCE_ROOT; };
@@ -389,6 +392,8 @@
 				FF04B4461AF46BBC00D2C482 /* videoprocessing.cpp */,
 				FFC9EF7F1BFE24F3003DB935 /* Map3DStruct.cpp */,
 				FFC9EF801BFE24F3003DB935 /* Map3DStruct.h */,
+				FFC0FD6F1C19CA34006003D9 /* DepthMap.cpp */,
+				FFC0FD701C19CA34006003D9 /* DepthMap.h */,
 			);
 			path = OpenCVtracking;
 			sourceTree = "<group>";
@@ -534,6 +539,7 @@
 				FF04B4621AF7045900D2C482 /* poly3.c in Sources */,
 				FF04B4611AF7045900D2C482 /* poly1.c in Sources */,
 				FFED96E81AFBD45C0094B8F2 /* sba_lapack.c in Sources */,
+				FFC0FD711C19CA34006003D9 /* DepthMap.cpp in Sources */,
 				FF04B45D1AF7045900D2C482 /* triangulate.c in Sources */,
 				FFDEB8A01AF862D30068E29B /* matchingandtracking.cpp in Sources */,
 				FF04B4501AF703FF00D2C482 /* epipolar.c in Sources */,
@@ -585,13 +591,14 @@
 					/usr/local/include/opencv/,
 					"/usr/local/Cellar/cminpack/1.3.0/include/cminpack-1/",
 					/usr/local/include/,
+					/usr/local/include/Eigen/,
 				);
 				"LIBRARY_SEARCH_PATHS[arch=*]" = /usr/local/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
-				USER_HEADER_SEARCH_PATHS = "/usr/local/include/opencv/ /usr/local/include/opencv2/ /usr/local/Cellar/cminpack/1.3.0/include/ /usr/local/include/";
+				USER_HEADER_SEARCH_PATHS = "/usr/local/include/opencv/ /usr/local/include/opencv2/ /usr/local/Cellar/cminpack/1.3.0/include/ /usr/local/include/ /usr/local/include/Eigen/";
 				"USER_HEADER_SEARCH_PATHS[arch=*]" = "/usr/local/include/opencv/ /usr/local/include/opencv2/ /usr/local/Cellar/cminpack/1.3.0/include/cminpack-1/ /usr/local/include/";
 			};
 			name = Debug;

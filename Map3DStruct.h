@@ -39,6 +39,13 @@ typedef struct
     bool NewPt=0;
     int  RepIndx= VALID;
     bool removeIdx=0;
+    //unsigned int R= 255;
+    //unsigned int G= 255;
+    //unsigned int B= 255;
+
+    uchar R='c';
+    uchar G='c';
+    uchar B='c';
 
 } Pt3D;
 
@@ -86,7 +93,12 @@ public:
 
     void MapGeneration(vector<v3_t>& _3Dpts ,vector<vector<v2_t> >&V2Location, vector<vector<int> >&V2Frame,vector<int>& SelectedIndex,  int CurrentFrame, int NumCamera);
 
-    void MapUpdate(vector<int> SelectedIdex, vector<v3_t>& _3Dpts, vector<size_t> RemoveIdx);
+    void MapUpdate(vector<int> SelectedIdex, vector<v3_t>& _3Dpts, vector<size_t> RemoveIdx, IplImage* inputImg);
+
+    void ColorIniitalization(const IplImage* InputImg , const vector<v2_t>right_pts);
+
+    void SetColor(const IplImage* InputImg, int Index);
+
     inline int NumofCamera(int i)
     {
              return((int)_3D[i]._2D.size());
@@ -95,9 +107,11 @@ public:
     inline int Numof3Dpts() {
         return((int)_3D.size());
     }
+
     inline int LatestCamera(int i) {
         return((int)_3D[i]._2D.back().FrameNum);
     }
+
     inline int InitialCamera(int i){
         return((int)_3D[i]._2D.front ().FrameNum);
     }
@@ -105,6 +119,15 @@ public:
     inline v3_t Read3DPoint(int i){
         v3_t temp;
         temp.p[0]= _3D[i].Point[0]; temp.p[1]= _3D[i].Point[1]; temp.p[2]= _3D[i].Point[2];
+        return(temp);
+    }
+    inline v3_t ReadColor(int i)
+    {
+        v3_t temp;
+        double Rcolor=_3D[i].R;  double Gcolor= _3D[i].G;  double Bcolor= _3D[i].B;
+        temp.p[0]=Rcolor;
+        temp.p[1]=Gcolor;
+        temp.p[2]=Bcolor;
         return(temp);
     }
     inline bool ReadReproFlag(int i) {
@@ -178,7 +201,7 @@ public:
                _3D[i].Point[1]= _3Dpts.p[1];
                _3D[i].Point[2]= _3Dpts.p[2];
      }
-
+     
     inline void PrintNumFrame(int i )
     {
         int size = NUMFRAME(i);
@@ -186,6 +209,8 @@ public:
              cout<<_3D[i]._2D[j].FrameNum<<" ";
         }
     }
+
+
 };
 
 

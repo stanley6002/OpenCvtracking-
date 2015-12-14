@@ -22,8 +22,10 @@
 
 double ReprojectError( double *R, double* Tc, v3_t Pts, v2_t Projpts, double * Kmatrix);
 
-void  DumpPointsToPly(char *output_directory, vector<v3_t> points
-                     ,int num_points) ;
+//void  DumpPointsToPly(char *output_directory, vector<v3_t> points
+//                     ,int num_points) ;
+
+void DumpPointsToPly(char *output_directory, vector<v3_t> points ,int num_points, vector<v3_t> color);
 
 bool  CheckCheirality(v3_t _3DPts);
 
@@ -64,6 +66,7 @@ double ReprojectionError();
 class CameraPose
 {
     friend class Map3DStruct;
+    friend class DepthMap;
     
     public:
     vector <RotMat> mRcMatrix;

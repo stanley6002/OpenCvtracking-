@@ -49,7 +49,7 @@ int main (int argc, const char * argv[])
     }
 
     if(readfromvideo)
-    camCapture = cvCaptureFromFile( "/Users/c-hchang/Desktop/OpenCVtracking/video/P36.MOV" );
+    camCapture = cvCaptureFromFile( "/Users/c-hchang/Desktop/OpenCVtracking/video/P36.mov" );
     else
     camCapture = cvCaptureFromCAM(CV_CAP_ANY);
 
@@ -180,8 +180,8 @@ int main (int argc, const char * argv[])
                     std::vector<CvPoint2D32f> match_query;
                     std::vector<CvPoint2D32f> match_train;
 
-                    LKFeatures LKFeatures (imgGrayA,imgGrayB, LKFeatures. BRIEF_descriptor);
-                    //LKFeatures LKFeatures (imgGrayA,imgGrayB, LKFeatures. Freak_descriptor);
+                    //LKFeatures LKFeatures (imgGrayA,imgGrayB, LKFeatures. BRIEF_descriptor);
+                    LKFeatures LKFeatures (imgGrayA,imgGrayB, LKFeatures. Freak_descriptor);
                     LKFeatures.FeaturesMatched (match_query, match_train);
 
                     //SIFTfeature SIFTfeature(imgGrayA, imgGrayB,2, 0.05);
@@ -205,9 +205,9 @@ int main (int argc, const char * argv[])
                     float F_matrix_threshold=0.8;
 
                     if(readfromvideo)
-                    MaxAngle = 0.030;
+                    MaxAngle = 0.03;
                     else  
-                    MaxAngle = 0.030;
+                    MaxAngle = 0.03;
 
                     EpipolarGeometry EpipolarGeometry(match_query, match_train, size_match, numTrialFmatrix, numTrialRelativePose, Focuslength, Ransac_threshold,F_matrix_threshold,Img_width,Img_height );
 
@@ -247,7 +247,7 @@ int main (int argc, const char * argv[])
 
                             _3DPt.ColorIniitalization(frame , right_pts);
 
-                            EpipolarMatching(CameraPose, imgGrayA, imgGrayB);
+                            EpipolarMatching(CameraPose, imgGrayA, imgGrayB, imgA, imgC);
 
                         }
 //  // start from 3rd frames //

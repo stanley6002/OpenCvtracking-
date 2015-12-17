@@ -809,6 +809,7 @@ float Variance (vector<v3_t> _3Dpts, const float depth , const int size_)
 //    
 //    fclose(f);
 //}
+
 void DumpPointsToPly(char *output_directory, vector<v3_t> points ,int num_points, vector<v3_t> color)
 {
     static char ply_header[] =

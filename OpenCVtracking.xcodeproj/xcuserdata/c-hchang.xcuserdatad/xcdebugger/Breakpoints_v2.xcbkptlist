@@ -26,7 +26,7 @@
                   moduleName = "OpenCVtracking"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/c-hchang/Desktop/OpenCVtracking/FeaturePoint.cpp"
-                  timestampString = "471820467.67579"
+                  timestampString = "471981093.985111"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "273"
@@ -41,7 +41,7 @@
                   moduleName = "OpenCVtracking"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/c-hchang/Desktop/OpenCVtracking/FeaturePoint.cpp"
-                  timestampString = "471820467.676006"
+                  timestampString = "471981093.98542"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "273"
@@ -74,7 +74,7 @@
                   moduleName = "OpenCVtracking"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/c-hchang/Desktop/OpenCVtracking/FeaturePoint.cpp"
-                  timestampString = "471820467.67687"
+                  timestampString = "471981095.059408"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "273"
@@ -89,7 +89,7 @@
                   moduleName = "OpenCVtracking"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/c-hchang/Desktop/OpenCVtracking/FeaturePoint.cpp"
-                  timestampString = "471820467.677076"
+                  timestampString = "471981095.059744"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "273"
@@ -122,7 +122,7 @@
                   moduleName = "OpenCVtracking"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/c-hchang/Desktop/OpenCVtracking/FeaturePoint.cpp"
-                  timestampString = "471820467.677868"
+                  timestampString = "471981095.090162"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "273"
@@ -137,7 +137,7 @@
                   moduleName = "OpenCVtracking"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/c-hchang/Desktop/OpenCVtracking/FeaturePoint.cpp"
-                  timestampString = "471820467.678045"
+                  timestampString = "471981095.090406"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "273"
@@ -186,7 +186,7 @@
                   moduleName = "OpenCVtracking"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/c-hchang/Desktop/OpenCVtracking/FeaturePoint.cpp"
-                  timestampString = "471820467.679544"
+                  timestampString = "471981095.212214"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "273"
@@ -201,7 +201,7 @@
                   moduleName = "OpenCVtracking"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/c-hchang/Desktop/OpenCVtracking/FeaturePoint.cpp"
-                  timestampString = "471820467.679704"
+                  timestampString = "471981095.212433"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "273"
@@ -266,7 +266,7 @@
                   moduleName = "OpenCVtracking"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/c-hchang/Desktop/OpenCVtracking/OpenCVtracking/main.cpp"
-                  timestampString = "471820467.682575"
+                  timestampString = "471981095.215928"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "364"
@@ -281,7 +281,7 @@
                   moduleName = "OpenCVtracking"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/c-hchang/Desktop/OpenCVtracking/OpenCVtracking/main.cpp"
-                  timestampString = "471820467.682776"
+                  timestampString = "471981095.216088"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "364"
@@ -296,7 +296,7 @@
                   moduleName = "OpenCVtracking"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/c-hchang/Desktop/OpenCVtracking/OpenCVtracking/main.cpp"
-                  timestampString = "471820467.68294"
+                  timestampString = "471981095.216227"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "364"
@@ -311,12 +311,12 @@
                   moduleName = "OpenCVtracking"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/c-hchang/Desktop/OpenCVtracking/OpenCVtracking/main.cpp"
-                  timestampString = "471820467.683176"
+                  timestampString = "471981095.216374"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "364"
                   endingLineNumber = "364"
-                  offsetFromSymbolStart = "4474">
+                  offsetFromSymbolStart = "4488">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -326,12 +326,12 @@
                   moduleName = "OpenCVtracking"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/c-hchang/Desktop/OpenCVtracking/OpenCVtracking/main.cpp"
-                  timestampString = "471820467.683377"
+                  timestampString = "471981095.216524"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "364"
                   endingLineNumber = "364"
-                  offsetFromSymbolStart = "4656">
+                  offsetFromSymbolStart = "4670">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -341,12 +341,12 @@
                   moduleName = "OpenCVtracking"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/c-hchang/Desktop/OpenCVtracking/OpenCVtracking/main.cpp"
-                  timestampString = "471820467.683533"
+                  timestampString = "471981095.216658"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "364"
                   endingLineNumber = "364"
-                  offsetFromSymbolStart = "7915">
+                  offsetFromSymbolStart = "7929">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -356,12 +356,12 @@
                   moduleName = "OpenCVtracking"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/c-hchang/Desktop/OpenCVtracking/OpenCVtracking/main.cpp"
-                  timestampString = "471820467.683691"
+                  timestampString = "471981095.216797"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "364"
                   endingLineNumber = "364"
-                  offsetFromSymbolStart = "8448">
+                  offsetFromSymbolStart = "8462">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -371,12 +371,12 @@
                   moduleName = "OpenCVtracking"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/c-hchang/Desktop/OpenCVtracking/OpenCVtracking/main.cpp"
-                  timestampString = "471820467.683832"
+                  timestampString = "471981095.216935"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "364"
                   endingLineNumber = "364"
-                  offsetFromSymbolStart = "8518">
+                  offsetFromSymbolStart = "8532">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -386,12 +386,12 @@
                   moduleName = "OpenCVtracking"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/c-hchang/Desktop/OpenCVtracking/OpenCVtracking/main.cpp"
-                  timestampString = "471820467.684091"
+                  timestampString = "471981095.217068"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "364"
                   endingLineNumber = "364"
-                  offsetFromSymbolStart = "10306">
+                  offsetFromSymbolStart = "10320">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -403,43 +403,43 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DepthMap.cpp"
-            timestampString = "471818747.382514"
+            timestampString = "471903730.158575"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "251"
-            endingLineNumber = "251"
-            landmarkName = "EpipolarMatching(CameraPose input, IplImage* Image1, IplImage* Image2)"
+            startingLineNumber = "252"
+            endingLineNumber = "252"
+            landmarkName = "EpipolarMatching(CameraPose input, IplImage* Image1, IplImage* Image2, IplImage* colorImage1, IplImage* colorImage2)"
             landmarkType = "7">
             <Locations>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "EpipolarMatching(CameraPose, _IplImage*, _IplImage*)"
+                  symbolName = "EpipolarMatching(CameraPose, _IplImage*, _IplImage*, _IplImage*, _IplImage*)"
                   moduleName = "OpenCVtracking"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/c-hchang/Desktop/OpenCVtracking/DepthMap.cpp"
-                  timestampString = "471820467.688145"
+                  timestampString = "471981095.219961"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "252"
-                  endingLineNumber = "252"
-                  offsetFromSymbolStart = "4637">
+                  startingLineNumber = "253"
+                  endingLineNumber = "253"
+                  offsetFromSymbolStart = "4652">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "EpipolarMatching(CameraPose, _IplImage*, _IplImage*)"
+                  symbolName = "EpipolarMatching(CameraPose, _IplImage*, _IplImage*, _IplImage*, _IplImage*)"
                   moduleName = "OpenCVtracking"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/c-hchang/Desktop/OpenCVtracking/DepthMap.cpp"
-                  timestampString = "471820467.688501"
+                  timestampString = "471981095.220273"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "252"
-                  endingLineNumber = "252"
-                  offsetFromSymbolStart = "4742">
+                  startingLineNumber = "253"
+                  endingLineNumber = "253"
+                  offsetFromSymbolStart = "4757">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -467,12 +467,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DepthMap.cpp"
-            timestampString = "471818747.382514"
+            timestampString = "471903730.158575"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "250"
-            endingLineNumber = "250"
-            landmarkName = "EpipolarMatching(CameraPose input, IplImage* Image1, IplImage* Image2)"
+            startingLineNumber = "251"
+            endingLineNumber = "251"
+            landmarkName = "EpipolarMatching(CameraPose input, IplImage* Image1, IplImage* Image2, IplImage* colorImage1, IplImage* colorImage2)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -483,12 +483,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DepthMap.cpp"
-            timestampString = "471818747.382514"
+            timestampString = "471903730.158575"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "248"
-            endingLineNumber = "248"
-            landmarkName = "EpipolarMatching(CameraPose input, IplImage* Image1, IplImage* Image2)"
+            startingLineNumber = "249"
+            endingLineNumber = "249"
+            landmarkName = "EpipolarMatching(CameraPose input, IplImage* Image1, IplImage* Image2, IplImage* colorImage1, IplImage* colorImage2)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -499,12 +499,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DepthMap.cpp"
-            timestampString = "471818747.382514"
+            timestampString = "471930174.152805"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "310"
-            endingLineNumber = "310"
-            landmarkName = "DepthSmooth(cv::Mat depthMap)"
+            startingLineNumber = "367"
+            endingLineNumber = "367"
+            landmarkName = "DepthSmooth(cv::Mat depthMap,IplImage* colorImage)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DepthMap.cpp"
+            timestampString = "471930231.465182"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "349"
+            endingLineNumber = "349"
+            landmarkName = "DepthSmooth(cv::Mat depthMap,IplImage* colorImage)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

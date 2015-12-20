@@ -16,8 +16,11 @@
 #define MAX_WIDTH  30
 #define MIN_HEIGHT 30
 #define MAX_HEIGHT 30
-#define MAXGRA 3000
-# define SSDWindow 9
+#define MAXGRA 500
+#define SSDWindow 9
+#define MAX_ERROR 1000000.0f
+#define RegSize 23
+#define PatchSize 25
 
 // match first two initial frame//
 void EpipolarMatching(CameraPose input, IplImage* Image1, IplImage* Image2, IplImage* colorImage1, IplImage* colorImage2)
@@ -25,12 +28,13 @@ void EpipolarMatching(CameraPose input, IplImage* Image1, IplImage* Image2, IplI
     int ImgWidth = Image1->width;
     int ImgHeight = Image1->height;
 
+    int ImgCenterWidth=  (ImgWidth*0.5);
+    int ImgCenterHeight= (ImgHeight*0.5);
+
     //cv::Mat m11(ImgHeight, ImgWidth, CV_8UC1); //3-channel
-    cv::Mat f = cv::Mat::zeros(ImgHeight,ImgWidth,CV_64F);
+    cv::Mat DepthMap = cv::Mat::zeros(ImgHeight,ImgWidth,CV_64F);
 
-    //imshow("f",f);
-
-    float Depth[ImgWidth*ImgHeight];
+    //float Depth[ImgWidth*ImgHeight];
 
     double Kmatrix[9], Rmatrix[9], Tmatrix[3];
 
@@ -38,8 +42,7 @@ void EpipolarMatching(CameraPose input, IplImage* Image1, IplImage* Image2, IplI
     input.PopTcMatrix(1, Tmatrix);
     input.PopRotcMatrix(1, Rmatrix);
 
-
-    Eigen::Vector3d TMat;
+    Eigen::Vector3d TMat;  // the host matrix for x
     memcpy(TMat.data(), Tmatrix, sizeof(double)*3*1);
     TMat[2]=-1*TMat[2];
 
@@ -52,19 +55,15 @@ void EpipolarMatching(CameraPose input, IplImage* Image1, IplImage* Image2, IplI
     KMat(0,2)= 1*ImgWidth*0.5f;
     KMat(1,2)= 1*ImgHeight*0.5f;
 
-
     float pixelx , pixely, pixelDy , pixelDx;
 
     IplImage* imgB;
     imgB  = cvCloneImage(Image1);
     IplImage* imgC;
     imgC  = cvCloneImage(Image2);
-    int Plot=0;
 
     vector<cv::Point> pt;
     vector<cv::Point> cpt;
-
-    int test=0;
 
     for(int y= MIN_HEIGHT ;y< ImgHeight-MAX_HEIGHT; y++)
 
@@ -83,11 +82,8 @@ void EpipolarMatching(CameraPose input, IplImage* Image1, IplImage* Image2, IplI
         float  MaxIdepth= 0.001f;    // set MaxDepth 100;
         float  MinIdepth= 0.5f;     // set MinDepth 5;
 
-        //float  MinIdepth= 1.0f;
-
         if (eplGradSquared> MAXGRA) {
-             
-                //Eigen::Vector3d KinvP =  Eigen::Vector3d(x,y,1.0f);
+
              Eigen::Vector3d KinvP =  Eigen::Vector3d(x,y,1.0f);
              Eigen::Vector3d pInf =   KMat*RMat*KMat.inverse()*KinvP;
 
@@ -96,9 +92,6 @@ void EpipolarMatching(CameraPose input, IplImage* Image1, IplImage* Image2, IplI
 
              ClosePt = ClosePt / ClosePt[2];
              FarPt = FarPt/FarPt[2];
-
-                //cout<< ClosePt<<endl;
-                //cout<<FarPt<<endl;
 
              float incx = ClosePt[0] - FarPt[0];
              float incy = ClosePt[1] - FarPt[1];
@@ -112,17 +105,18 @@ void EpipolarMatching(CameraPose input, IplImage* Image1, IplImage* Image2, IplI
              float cpy =  FarPt[1];
 
              int  counter=0;
-             int pixelRef[25];
+             int pixelRef[PatchSize];
 
-                ReferencePatch(Image1, 25 /*size*/ ,  pixelRef, x, y);
+                ReferencePatch(Image1, PatchSize /*size*/ ,  pixelRef, x, y);
 
                 //float SSDError;
                 int cpxfinal=0;
                 int cpyfinal=0;
-                float MixError =  99999999.0;
+
+                float MinError =  99999999.0;
 
 
-                while (((cpx) >1 && (cpy)>1 && (cpx) <ImgWidth-1 && (cpy)<ImgHeight-1) && counter< 18)  // need new boundry test//
+                while (((cpx) >1 && (cpy)>1 && (cpx) <ImgWidth-1 && (cpy)<ImgHeight-1) && counter< 15 )  // need new boundry test//
                  {
 
                    float SSDError=0;
@@ -134,22 +128,20 @@ void EpipolarMatching(CameraPose input, IplImage* Image1, IplImage* Image2, IplI
 
                    float eplGradSquared = pixelx * pixelx + pixely * pixely+ pixelDy*pixelDy+  pixelDx*pixelDx;
 
-                   if(eplGradSquared> 100.0f){
+                  // if (eplGradSquared>500.0f) {
+                        SSDError = MatchingProcess(pixelRef, Image2,  cpx,  cpy, PatchSize);
 
-                        SSDError = MatchingProcess(pixelRef, Image2,  cpx,  cpy, 25);
-
-                       if(SSDError<MixError)
+                       if(SSDError<MinError)
                         {
                          cpxfinal = cpx;
                          cpyfinal = cpy;
-                         MixError = SSDError;
+                         MinError = SSDError;
                        }
-                    }
 
                      cpx+= incx;
                      cpy+= incy;
                      counter++;
-                 }
+                     }
 
                  //if(test==1001){
                  //    cvCircle(imgC,cv::Point(cpxfinal,cpyfinal), 2.0 , CV_RGB(255,255,255),3.0,8,0);
@@ -157,30 +149,31 @@ void EpipolarMatching(CameraPose input, IplImage* Image1, IplImage* Image2, IplI
                  //   cvShowImage("new1", imgC);
                  //   cvShowImage("new", imgB);
                  //   cvWaitKey();
-                //}
+                 //}
 
-                test++;
+                //test++;
 
 
-                if (MixError<4000.0f) {
+                if (MinError < MAX_ERROR)
+                {
 
                     if(incx*incx>incy*incy)
                     {
-                        float oldX = cpxfinal ;
-                        float nominator = 300*(TMat[0]-TMat[2]);
+                        //float oldX = cpxfinal ;
+                        //float nominator = 300*(TMat[0]-TMat[2]);
 
                         Eigen::Vector3d KPnew =  Eigen::Vector3d(cpxfinal,cpyfinal,1.0f);
 
-                         //cvCircle(imgB,cv::Point(x,y), 0.5 , CV_RGB(255,255,255),3.0,8,0);
+                        //cvCircle(imgB,cv::Point(x,y), 0.5 , CV_RGB(255,255,255),3.0,8,0);
                         //cvCircle(imgC,cv::Point(cpxfinal,cpyfinal), 0.5 , CV_RGB(255,255,255),3.0,8,0);
 
-                        KPnew[0]=KPnew[0]-320;
-                        KPnew[1]=KPnew[1]-240;
+                        KPnew[0]=KPnew[0]- ImgCenterWidth;
+                        KPnew[1]=KPnew[1]- ImgCenterHeight;
 
-                        pInf[0]=pInf[0]-320;
-                        pInf[1]=pInf[1]-240;
+                        pInf[0]=pInf[0]- ImgCenterWidth;
+                        pInf[1]=pInf[1]- ImgCenterHeight;
 
-                        Eigen::Vector3f Xnew= KPnew.cast<float>()-pInf.cast<float>();
+                        Eigen::Vector3f Xnew= KPnew.cast<float>() -  pInf.cast<float>();
 
                         Eigen::Vector3f Tk;
                         Tk[0]=  300.0f*TMat[0];
@@ -188,16 +181,16 @@ void EpipolarMatching(CameraPose input, IplImage* Image1, IplImage* Image2, IplI
 
                         float depth = (-1*Tk[0]/Xnew[0])*(1.0/pInf[2]);
 
-                        double x_3d = (double(cpxfinal)-320);
-                        double y_3d = (double(cpyfinal)-240);
-                        double x_ref = (double(x)-320);
-                        double y_ref = (double(y)-240);
+                        double x_3d = (double(cpxfinal)-ImgCenterWidth);
+                        double y_3d = (double(cpyfinal)-ImgCenterHeight);
+                        //double x_ref = (double(x)-(ImgWidth*0.5));
+                        //double y_ref = (double(y)-(ImgHeight*0.5));
 
-                        if(abs(depth)<40 && depth<0){
+                        if(abs(depth) < 40 && depth<0){
                             // cvCircle(imgC,cv::Point( cpxfinal, cpyfinal), 0.5 , CV_RGB(255,255,255),3.0,8,0);
                             // cvCircle(imgB,cv::Point( x, y), 0.5 , CV_RGB(255,255,255),3.0,8,0);\
                             //cout<<"before : "<< -1*depth*(x_3d/300.0f)<<" "<<-1*depth*(y_3d/300.0f)<<" "<<depth<<endl;
-                            f.at<double>(y_3d+240, x_3d+320)=fabs(depth);
+                            DepthMap.at<double>(y_3d+ImgCenterHeight, x_3d+ImgCenterWidth)=fabs(depth);
                         }
 
                          /* triangulation
@@ -229,98 +222,104 @@ void EpipolarMatching(CameraPose input, IplImage* Image1, IplImage* Image2, IplI
                         Eigen::Vector3d KPnew =  Eigen::Vector3d(cpxfinal,cpyfinal,1.0f);
                         Eigen::Vector3f Xnew= KPnew.cast<float>()-pInf.cast<float>();
                         Xnew = Xnew* (1.0/pInf[2]);
-                        double x_3d = (double(cpxfinal)-320);
-                        double y_3d = (double(cpyfinal)-240);
+                        double x_3d = (double(cpxfinal)-ImgCenterWidth);
+                        double y_3d = (double(cpyfinal)-ImgCenterHeight);
                        Eigen::Vector3f Tk;
                        Tk[0]= 300.0f*TMat[0];
                        Tk[1]= 300.0f*TMat[1];
                        float depth = -1*Tk[2]/Xnew[2];
                        cout << -1*depth*(x_3d/300.0f)<<" "<<-1*depth*(y_3d/300.0f)<<" "<<depth<<endl;
                     }
-               }
-
-            }
+                 }
+              }
+           //}
      }
 
-    DepthSmooth(f, colorImage2);
+    DepthSmooth(DepthMap, colorImage2);
     //IplImage* stereoImag = plot_Stereo_imagesf(imgB, imgC, 3000 , pt, cpt);
     //cvShowImage("new", stereoImag);
-    imshow("f",f);
+    //imshow("f",f);
+
+    FILE *file_ = fopen("/Users/c-hchang/Desktop/OpenCVtracking/matrix.txt", "w");
+
+
+    /* Print the ply header */
+    //fprintf(f, ply_header,num_points);
+
+    for (int i = 0; i < ImgWidth ; i++)
+    {
+        for (int j =0 ;j< ImgHeight ;j++) {
+            /* Output the vertex */
+            fprintf(file_, "%0.0f %s", DepthMap.at<double>(j,i)," ");
+        }
+        fprintf(file_,"\n");
+    }
+
+    fclose(file_);
+
+
+    
     cvShowImage("new", imgB);
     cvShowImage("new1", imgC);
     cvWaitKey('p');
     //cvWaitKey('p');
 }
 
-cv::Mat DepthSmooth(cv::Mat depthMap,IplImage* colorImage)
+cv::Mat DepthSmooth(cv::Mat depthMap ,IplImage* colorImage)
 {
 
-    cv::Mat temp = cv::Mat::zeros(320,240,CV_64F);
-    int width =depthMap.cols;
-    int height = depthMap.rows;
+    //cv::Mat temp = cv::Mat::zeros(320,240,CV_64F);
+    int Imgwidth =depthMap.cols;
+    int Imgheight = depthMap.rows;
     int regu_size=3;
+    int coutA=0;
 
-    for (int i=0;i< width ;i++)
+    for (int i=0;i< Imgwidth ;i++)
     {
-        for (int j=0;j< height;j++)
+        for (int j=0;j< Imgheight;j++) // horizontal
         {
             float sumDepth=0.0;
             int count_=0;
-          if (depthMap.at<double>(j,i)!= 0.0)
+          if (depthMap.at<double> (j,i) > 0.0f)
           {
-            for (int radiusy =j-4; radiusy< (j+3); radiusy++)
+            for (int radiusy = j- RegSize; radiusy<j+ RegSize; radiusy++)
                 {
-                    for (int radiusx = i-4; radiusx < (i+3); radiusx++)
+                    for (int radiusx =i- RegSize ; radiusx <(i+ RegSize); radiusx++)
                     {
-                        if((j-regu_size>0) && (i-regu_size>0) && (j+ regu_size<height) && (i+regu_size<width))
+                        if((j- (RegSize*0.5) > 0) && (i- (RegSize*0.5)>0) && (j+ (RegSize*0.5) < Imgheight) && (i+ (RegSize*0.5)< Imgwidth))
                         {
 
-                          if (depthMap.at<double>(radiusy,radiusx) != 0.0)
+                          if (depthMap.at<double>(radiusy,radiusx) > 0.0f)
                           {
-                          //cout<< depthMap.at<double>(radiusy,radiusx)<<endl;
-                          sumDepth+= depthMap.at<double>(radiusy,radiusx);
-                          count_++;
+                           sumDepth+= depthMap.at<double>(radiusy,radiusx);
+                           count_++;
                           }
 
                     }
                 }
             }
-            if (count_ >6)
-             {
 
-                double depth = sumDepth*(1.0/count_);
-                //cout<<depth<<endl;
-                //cout<<sumDepth*(1.0/count_)<<" "<<count_<<endl;
-                //cout << -1*depth*((i-320)/300.0f)<<" "<<-1*depth*((j-240)/300.0f)<<" "<<-1*depth<<endl;
+            double depth = sumDepth*(1.0/count_);
 
-
-                                 //cout<< depthMap.at<double>(radiusy,radiusx)<<endl;
-                                 //sumDepth+= depthMap.at<double>(radiusy,radiusx);
-                                 //count_++;
-                        depthMap.at<double>(j-4,i)= depth; depthMap.at<double>(j-3,i)= depth;
-                        depthMap.at<double>(j-2,i)= depth; depthMap.at<double>(j-1,i)= depth;
-                        depthMap.at<double>(j,i)= depth;   depthMap.at<double>(j+1,i)= depth;
-                        depthMap.at<double>(j+2,i)= depth;
-                        depthMap.at<double>(j,i-4)= depth;  depthMap.at<double>(j,i-3)= depth;
-                        depthMap.at<double>(j,i-2)= depth;  depthMap.at<double>(j,i-1)= depth;
-                        //depthMap.at<double>(j,i)= depth;
-                        depthMap.at<double>(j,i+1)= depth; depthMap.at<double>(j,i+2)= depth;
-
-                     }
-
-
-                //DumpPointsToPly(<#char *output_directory#>, <#vector<v3_t> points#>, <#int num_points#>, <#vector<v3_t> color#>)
-             }
-              else
-                  depthMap.at<double>(j,i)=0.0;
-              //    cout<<count_<<endl;
-          }   //depthMap.at<double>(j,i)= sumDepth*(1.0/count_);
-        }
+              for (int radiusy = j- RegSize ; radiusy<j+  RegSize; radiusy++)
+              {
+                  for (int radiusx =i- RegSize ; radiusx <(i+ RegSize); radiusx++)
+                      if((j- (RegSize*0.5) > 0) && (i- (RegSize*0.5)>0) && (j+ (RegSize*0.5) < Imgheight) && (i+ (RegSize*0.5)<Imgwidth))
+                      {
+                        if (depthMap.at<double>(radiusy,radiusx) > 0.0f)
+                            {
+                              depthMap.at<double>(radiusy,radiusx)=depth;
+                             }
+                        }
+                    }
+                }
+           }
+    }
     std::vector<v3_t> _3DPoint_vec;
     std::vector<v3_t> _color_vec;
 
-  for (int i=0;i< width ;i++){
-      for (int j=0;j< height;j++){
+  for (int i=0;i< Imgwidth ;i++){
+      for (int j=0;j< Imgheight;j++){
           if (depthMap.at<double>(j,i) != 0.0 )
             {
                 //double depth=depthMap.at<double>(j,i);
@@ -328,8 +327,9 @@ cv::Mat DepthSmooth(cv::Mat depthMap,IplImage* colorImage)
                 double depth= depthMap.at<double>(j,i);
                 v3_t _3DPoint;
                 v3_t _color;
-                _3DPoint.p[0]= -1*depth*((i-320)/300.0f);
-                _3DPoint.p[1]= -1*depth*((j-240)/300.0f);
+
+                _3DPoint.p[0]= -1*depth*((i-(Imgwidth*0.5))/300.0f);
+                _3DPoint.p[1]= -1*depth*((j-(Imgheight*0.5))/300.0f);
                 _3DPoint.p[2]= -1*depth;
 
                 _color.p[2] = CV_IMAGE_ELEM (colorImage, uchar, j , (3 * i));
@@ -347,22 +347,21 @@ cv::Mat DepthSmooth(cv::Mat depthMap,IplImage* colorImage)
     }
 
     DumpPointsToPly("/Users/c-hchang/Desktop/OpenCVtracking/matrix.ply", _3DPoint_vec ,(int)_3DPoint_vec.size(), _color_vec);
-    FILE *f = fopen("/Users/c-hchang/Desktop/OpenCVtracking/matrix.txt", "w");
 
-
+    //FILE *f = fopen("/Users/c-hchang/Desktop/OpenCVtracking/matrix.txt", "w");
     /* Print the ply header */
     //fprintf(f, ply_header,num_points);
 
-    for (int i = 0; i < width; i++)
-    {
-        for (int j =0 ;j< height;j++) {
+    //for (int i = 0; i < width; i++)
+    //{
+    //    for (int j =0 ;j< height;j++) {
         /* Output the vertex */
-            fprintf(f, "%0.0f %s",depthMap.at<double>(j,i)," ");
-         }
-         fprintf(f,"\n");
-    }
+    //        fprintf(f, "%0.0f %s",depthMap.at<double>(j,i)," ");
+    //      }
+    //     fprintf(f,"\n");
+    //}
 
-    fclose(f);
+    //fclose(f);
 
     return(depthMap);
 
@@ -430,12 +429,14 @@ float MatchingProcess(int* pixelRef, IplImage*Image2, float cpx, float cpy, int 
 
     if (Pathsize==9)
     {
-    float pixelTarget[Pathsize];
-    float pixelRef_f[Pathsize];
+        float pixelTarget[Pathsize];
+        float pixelRef_f[Pathsize];
 
-    for(int i=0;i< Pathsize;i++){
-          RefSummation += pixelRef[i];
-        pixelRef_f[i]= pixelRef[i]; }
+    for(int i=0;i< Pathsize;i++)
+    {
+    RefSummation += pixelRef[i];
+    pixelRef_f[i]= pixelRef[i];
+    }
 
      pixelTarget[0] = CV_IMAGE_ELEM (Image2, uchar, int(cpy-1),  int(cpx-1));
      pixelTarget[1] = CV_IMAGE_ELEM (Image2, uchar, int(cpy-1),  int(cpx));
@@ -473,7 +474,8 @@ float MatchingProcess(int* pixelRef, IplImage*Image2, float cpx, float cpy, int 
 
         for(int i=0;i< Pathsize;i++){
             RefSummation += pixelRef[i];
-            pixelRef_f[i]= pixelRef[i]; }
+            pixelRef_f[i]= pixelRef[i];
+        }
 
         pixelTarget[0] = CV_IMAGE_ELEM (Image2, uchar, int(cpy)-2,  int(cpx)-2);
         pixelTarget[1] = CV_IMAGE_ELEM (Image2, uchar, int(cpy)-2,  int(cpx)-1);

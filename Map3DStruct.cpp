@@ -104,7 +104,7 @@ void _3DPt:: ConnectNewFrame(int NumPts ,v2_t* leftLocation /* current left poin
                             //int x_t =  (int) RightLocation[j].p[0];
                             //int y_t =  (int) RightLocation[j].p[1];
 
-                         if (sqrt(((x-x_m)*(x-x_m))+((y-y_m)*(y-y_m)))<=2.2)
+                         if (sqrt(((x-x_m)*(x-x_m))+((y-y_m)*(y-y_m)))<=2.6)
                            {
                             //cout<<x_t<<" "<<y_t<<endl;
                             numreprojection++;

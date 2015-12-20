@@ -49,7 +49,7 @@ int main (int argc, const char * argv[])
     }
 
     if(readfromvideo)
-    camCapture = cvCaptureFromFile( "/Users/c-hchang/Desktop/OpenCVtracking/video/P36.mov" );
+    camCapture = cvCaptureFromFile( "/Users/c-hchang/Desktop/OpenCVtracking/video/P3.mp4" );
     else
     camCapture = cvCaptureFromCAM(CV_CAP_ANY);
 
@@ -180,8 +180,8 @@ int main (int argc, const char * argv[])
                     std::vector<CvPoint2D32f> match_query;
                     std::vector<CvPoint2D32f> match_train;
 
-                    //LKFeatures LKFeatures (imgGrayA,imgGrayB, LKFeatures. BRIEF_descriptor);
-                    LKFeatures LKFeatures (imgGrayA,imgGrayB, LKFeatures. Freak_descriptor);
+                    LKFeatures LKFeatures (imgGrayA,imgGrayB, LKFeatures. BRIEF_descriptor);
+                    //LKFeatures LKFeatures (imgGrayA,imgGrayB, LKFeatures. Freak_descriptor);
                     LKFeatures.FeaturesMatched (match_query, match_train);
 
                     //SIFTfeature SIFTfeature(imgGrayA, imgGrayB,2, 0.05);

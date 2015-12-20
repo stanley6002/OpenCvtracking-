@@ -209,7 +209,7 @@ switch(input)
 
     case BRIEF_descriptor:
          {
-           goodFeaturesToTrack(ImageGray1,  LK_query_kpts, 600, 0.001, 13);
+           goodFeaturesToTrack(ImageGray1,  LK_query_kpts, 400, 0.001, 13);
            cornerSubPix( ImageGray1, LK_query_kpts, cv::Size(13,13) , cv::Size(-1,-1) , cv::TermCriteria( CV_TERMCRIT_EPS + CV_TERMCRIT_ITER, 10, 0.001 ));
            calcOpticalFlowPyrLK(ImageGray1, ImageGray2, LK_query_kpts, LK_train_kpts, status, err, cv::Size(31,31));
 
@@ -268,7 +268,7 @@ switch(input)
          }
       case Freak_descriptor:
             {
-                goodFeaturesToTrack(ImageGray1,  LK_query_kpts, 600, 0.001, 13);
+                goodFeaturesToTrack(ImageGray1,  LK_query_kpts, 400, 0.001, 13);
                 cornerSubPix( ImageGray1, LK_query_kpts, cv::Size(13,13) , cv::Size(-1,-1) , cv::TermCriteria( CV_TERMCRIT_EPS + CV_TERMCRIT_ITER, 10, 0.001 ));
                 calcOpticalFlowPyrLK(ImageGray1, ImageGray2, LK_query_kpts, LK_train_kpts, status, err, cv::Size(31,31));
 

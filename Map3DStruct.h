@@ -209,8 +209,6 @@ public:
              cout<<_3D[i]._2D[j].FrameNum<<" ";
         }
     }
-
-
 };
 
 

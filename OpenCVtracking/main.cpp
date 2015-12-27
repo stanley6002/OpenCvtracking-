@@ -49,7 +49,7 @@ int main (int argc, const char * argv[])
     }
 
     if(readfromvideo)
-    camCapture = cvCaptureFromFile( "/Users/c-hchang/Desktop/OpenCVtracking/video/P3.mp4" );
+    camCapture = cvCaptureFromFile( "/Users/c-hchang/Desktop/OpenCVtracking/video/P49.MOV" );
     else
     camCapture = cvCaptureFromCAM(CV_CAP_ANY);
 
@@ -99,6 +99,8 @@ int main (int argc, const char * argv[])
     OpenGLPlot  OpenGLPlot (Img_width*2, Img_height*2);
     FeaturePts FeaturePts;
     FeaMapPoints FeaMapPoints;
+    DMap DMap(Img_width, Img_height);
+
     _3DPt _3DPt;
     int FrameNum =0;
 
@@ -180,8 +182,8 @@ int main (int argc, const char * argv[])
                     std::vector<CvPoint2D32f> match_query;
                     std::vector<CvPoint2D32f> match_train;
 
-                    LKFeatures LKFeatures (imgGrayA,imgGrayB, LKFeatures. BRIEF_descriptor);
-                    //LKFeatures LKFeatures (imgGrayA,imgGrayB, LKFeatures. Freak_descriptor);
+                    //LKFeatures LKFeatures (imgGrayA,imgGrayB, LKFeatures. BRIEF_descriptor);
+                    LKFeatures LKFeatures (imgGrayA,imgGrayB, LKFeatures. Freak_descriptor);
                     LKFeatures.FeaturesMatched (match_query, match_train);
 
                     //SIFTfeature SIFTfeature(imgGrayA, imgGrayB,2, 0.05);
@@ -205,9 +207,9 @@ int main (int argc, const char * argv[])
                     float F_matrix_threshold=0.8;
 
                     if(readfromvideo)
-                    MaxAngle = 0.03;
+                    MaxAngle = 0.033;
                     else  
-                    MaxAngle = 0.03;
+                    MaxAngle = 0.033;
 
                     EpipolarGeometry EpipolarGeometry(match_query, match_train, size_match, numTrialFmatrix, numTrialRelativePose, Focuslength, Ransac_threshold,F_matrix_threshold,Img_width,Img_height );
 
@@ -247,7 +249,7 @@ int main (int argc, const char * argv[])
 
                             _3DPt.ColorIniitalization(frame , right_pts);
 
-                            EpipolarMatching(CameraPose, imgGrayA, imgGrayB, imgA, imgC);
+                            EpipolarMatching(DMap,CameraPose, imgGrayA, imgGrayB, imgA, imgC);
 
                         }
 //  // start from 3rd frames //
@@ -315,6 +317,14 @@ int main (int argc, const char * argv[])
                                                                                           RemoveIdx);
 
                             _3DPt.MapUpdate( SelectedIndex, _3DPoints , RemoveIdx, imgA);
+
+                            double KMat[9];
+                            CameraPose.PopKMattix((loop+1), KMat);
+                            
+                            double TMat[3];
+                            CameraPose.PopTcMatrix((loop+1), TMat);
+
+                            EpipolarMatching_1 ( EpipolarGeometry.R_relative,  EpipolarGeometry.t_relative,  KMat , TMat , imgGrayA , imgGrayB , imgA , imgC, loop);
 
                             loop++;
                         }
